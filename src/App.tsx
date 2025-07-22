@@ -1,5 +1,5 @@
-import React from 'react';
-import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch, Calendar, Timer, BarChart3, Percent } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch, Calendar, Timer, BarChart3, Percent, Info, FileText, GitCommit, Settings } from 'lucide-react';
 import { TestResults } from './types';
 import { MetricCard } from './components/MetricCard';
 import { ResponseTimeChart } from './components/ResponseTimeChart';
@@ -70,6 +70,8 @@ const testData: TestResults = {
 };
 
 function App() {
+  const [activeTab, setActiveTab] = useState<'summary' | 'metadata'>('summary');
+
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -85,6 +87,14 @@ function App() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   return (
@@ -148,18 +158,165 @@ function App() {
         </header>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Key Metrics (removed since we have compact cards) */}
-          
-          {/* Charts and Stats */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <ResponseTimeChart responseTimes={testData.responseTimes} />
-            <RequestStats stats={testData.requestStats} />
+          {/* Tab Navigation */}
+          <div className="mb-6">
+            <div className="border-b border-slate-700">
+              <nav className="-mb-px flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('summary')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'summary'
+                      ? 'border-blue-500 text-blue-400'
+                      : 'border-transparent text-slate-400 hover:text-slate-300'
+                  }`}
+                >
+                  Summary
+                </button>
+                <button
+                  onClick={() => setActiveTab('metadata')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'metadata'
+                      ? 'border-blue-500 text-blue-400'
+                      : 'border-transparent text-slate-400 hover:text-slate-300'
+                  }`}
+                >
+                  Metadata
+                </button>
+              </nav>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <AssertionStats stats={testData.assertionStats} />
-            <SeverityStats stats={testData.severityStats} />
-          </div>
+          {/* Tab Content */}
+          {activeTab === 'summary' ? (
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-6">Test Summary</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ResponseTimeChart responseTimes={testData.responseTimes} />
+                <RequestStats stats={testData.requestStats} />
+                <AssertionStats stats={testData.assertionStats} />
+                <SeverityStats stats={testData.severityStats} />
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-6">Test Metadata</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Test Information */}
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <Info className="w-5 h-5 text-blue-400" />
+                    Test Information
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Test Type:</span>
+                      <span className="text-white font-medium">{testData.test.type}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Simulation:</span>
+                      <span className="text-white font-medium text-sm">{testData.test.simulationName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Environment:</span>
+                      <span className="text-white font-medium">{testData.environment || 'Not specified'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Branch:</span>
+                      <span className="text-white font-medium">{testData.branch || 'Not specified'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Version Information */}
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <GitCommit className="w-5 h-5 text-green-400" />
+                    Version Information
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Gatling Version:</span>
+                      <span className="text-white font-medium">{testData.gatlingVersion}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Parser Version:</span>
+                      <span className="text-white font-medium">{testData.parserVersion}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Severity Version:</span>
+                      <span className="text-white font-medium">{testData.severityVersion}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Requirements Version:</span>
+                      <span className="text-white font-medium">{testData.requirementsVersion}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* File Locations */}
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 lg:col-span-2">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-purple-400" />
+                    File Locations
+                  </h3>
+                  <div className="space-y-3">
+                    <div>
+                      <span className="text-slate-400 text-sm">Gatling Report:</span>
+                      <p className="text-white font-mono text-sm mt-1 break-all">{testData.gatlingReportLocation}</p>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 text-sm">Gatling Log:</span>
+                      <p className="text-white font-mono text-sm mt-1 break-all">{testData.gatlingLogLocation}</p>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 text-sm">Requirements File:</span>
+                      <p className="text-white font-mono text-sm mt-1 break-all">{testData.requirementsFileLocation}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Git Information */}
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <GitBranch className="w-5 h-5 text-orange-400" />
+                    Git Information
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Git Hash:</span>
+                      <span className="text-white font-medium font-mono text-sm">
+                        {testData.gitHash ? testData.gitHash.substring(0, 8) : 'Not specified'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Test Requirements:</span>
+                      <span className={`font-medium ${testData.testRequirements ? 'text-green-400' : 'text-red-400'}`}>
+                        {testData.testRequirements ? 'Enabled' : 'Disabled'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Test Configuration */}
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <Settings className="w-5 h-5 text-cyan-400" />
+                    Test Configuration
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Rate Granularity:</span>
+                      <span className="text-white font-medium">{testData.rateGranularity}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Created:</span>
+                      <span className="text-white font-medium">{formatDate(testData.createdTime)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Footer */}
           <footer className="mt-12 text-center">
