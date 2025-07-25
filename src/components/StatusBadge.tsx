@@ -1,21 +1,24 @@
 import React from 'react';
-import { CheckCircle, XCircle } from 'lucide-react';
 
 interface StatusBadgeProps {
   status: string;
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
-  const isSuccess = status === 'PASS';
-  
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'pass':
+        return 'bg-green-500';
+      case 'fail':
+        return 'bg-red-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
   return (
-    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${
-      isSuccess 
-        ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-        : 'bg-red-500/20 text-red-400 border border-red-500/30'
-    }`}>
-      {isSuccess ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+    <span className={`px-2 py-1 text-xs font-semibold text-white rounded-full ${getStatusColor(status)}`}>
       {status}
-    </div>
+    </span>
   );
 };
