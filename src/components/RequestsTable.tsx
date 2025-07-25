@@ -540,8 +540,23 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                               </div>
                               
                               {result.responseTimes?.percentiles && (
-                                <div className="relative h-32">
-                                  <svg className="w-full h-full" viewBox="0 0 320 140">
+                                <div className="space-y-2">
+                                  {/* Legend */}
+                                  <div className="flex items-center gap-4 text-xs">
+                                    <div className="flex items-center gap-1">
+                                      <div className="w-3 h-0.5 bg-blue-500"></div>
+                                      <span className="text-slate-400">Actual</span>
+                                    </div>
+                                    {result.requirements?.percentiles && result.requirements.percentiles.length > 0 && (
+                                      <div className="flex items-center gap-1">
+                                        <div className="w-3 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(to right, #ef4444 0, #ef4444 2px, transparent 2px, transparent 4px)'}}></div>
+                                        <span className="text-slate-400">Requirements</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                  
+                                  <div className="relative h-32">
+                                    <svg className="w-full h-full" viewBox="0 0 320 140">
                                     {/* Grid lines */}
                                     <defs>
                                       <pattern id="grid" width="30" height="12" patternUnits="userSpaceOnUse">
@@ -662,7 +677,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                         </>
                                       );
                                     })()}
-                                  </svg>
+                                    </svg>
+                                  </div>
                                 </div>
                               )}
                             </div>
