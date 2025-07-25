@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { TestResults, RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
+import { SeverityBadge } from './SeverityBadge';
 
 interface RequestsTableProps {
   testData: TestResults;
 }
 
-type SortColumn = 'name' | 'status' | 'min' | 'max' | 'totalCount' | 'errorPercentage' | string;
+type SortColumn = 'name' | 'status' | 'severity' | 'min' | 'max' | 'totalCount' | 'errorPercentage' | string;
 type SortDirection = 'asc' | 'desc';
 
 export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
@@ -59,6 +60,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
           return result.request?.requestName || '';
         case 'status':
           return result.status || '';
+        case 'severity':
+          return result.severity || '';
         case 'min':
           return result.responseTimes?.min || 0;
         case 'max':
@@ -209,6 +212,11 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                 Status
               </SortableHeader>
             )}
+            {testData.severityVersion && (
+              <SortableHeader column="severity">
+                Severity
+              </SortableHeader>
+            )}
             <SortableHeader column="min">
               Min
             </SortableHeader>
@@ -249,6 +257,11 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                 {testData.testRequirements && (
                   <td className="px-2 py-4 text-center">
                     <StatusBadge status={result.status} />
+                  </td>
+                )}
+                {testData.severityVersion && (
+                  <td className="px-2 py-4 text-center">
+                    <SeverityBadge severity={result.severity} />
                   </td>
                 )}
                 <td className="px-2 py-4 text-sm text-center text-slate-300">
