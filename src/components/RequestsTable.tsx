@@ -31,6 +31,11 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       );
     }
 
+    // Get available percentiles dynamically from the first result
+    const availablePercentiles = requestResults.length > 0 && requestResults[0]?.responseTimes?.percentiles 
+      ? Object.keys(requestResults[0].responseTimes.percentiles).sort((a, b) => parseFloat(a) - parseFloat(b))
+      : [];
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
@@ -38,11 +43,12 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
           <tr className="border-b border-slate-700">
             <th className="px-6 py-4 text-left text-sm font-semibold text-white">Request Name</th>
             <th className="px-6 py-4 text-center text-sm font-semibold text-white">Min (ms)</th>
+            {availablePercentiles.map(percentile => (
+              <th key={percentile} className="px-6 py-4 text-center text-sm font-semibold text-white">
+                {parseFloat(percentile) === 100 ? '100th %ile' : `${parseFloat(percentile)}th %ile`}
+              </th>
+            ))}
             <th className="px-6 py-4 text-center text-sm font-semibold text-white">Max (ms)</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">50th %ile</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">90th %ile</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">95th %ile</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">99th %ile</th>
             <th className="px-6 py-4 text-center text-sm font-semibold text-white">Total Count</th>
             <th className="px-6 py-4 text-center text-sm font-semibold text-white">Error %</th>
           </tr>
@@ -68,20 +74,13 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                 <td className="px-6 py-4 text-sm text-center text-slate-300">
                   {formatResponseTime(result.responseTimes?.min || 0)}
                 </td>
+                {availablePercentiles.map(percentile => (
+                  <td key={percentile} className="px-6 py-4 text-sm text-center text-slate-300">
+                    {formatResponseTime(result.responseTimes?.percentiles?.[percentile] || 0)}
+                  </td>
+                ))}
                 <td className="px-6 py-4 text-sm text-center text-slate-300">
                   {formatResponseTime(result.responseTimes?.max || 0)}
-                </td>
-                <td className="px-6 py-4 text-sm text-center text-slate-300">
-                  {formatResponseTime(result.responseTimes?.percentiles?.['50.0'] || 0)}
-                </td>
-                <td className="px-6 py-4 text-sm text-center text-slate-300">
-                  {formatResponseTime(result.responseTimes?.percentiles?.['90.0'] || 0)}
-                </td>
-                <td className="px-6 py-4 text-sm text-center text-slate-300">
-                  {formatResponseTime(result.responseTimes?.percentiles?.['95.0'] || 0)}
-                </td>
-                <td className="px-6 py-4 text-sm text-center text-slate-300">
-                  {formatResponseTime(result.responseTimes?.percentiles?.['99.0'] || 0)}
                 </td>
                 <td className="px-6 py-4 text-sm text-center text-slate-300">
                   {(result.totalCount || 0).toLocaleString()}
