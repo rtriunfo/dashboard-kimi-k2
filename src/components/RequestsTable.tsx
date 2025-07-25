@@ -541,14 +541,14 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                               
                               {result.responseTimes?.percentiles && (
                                 <div className="relative h-32">
-                                  <svg className="w-full h-full" viewBox="0 0 300 120">
+                                  <svg className="w-full h-full" viewBox="0 0 320 140">
                                     {/* Grid lines */}
                                     <defs>
                                       <pattern id="grid" width="30" height="12" patternUnits="userSpaceOnUse">
                                         <path d="M 30 0 L 0 0 0 12" fill="none" stroke="#374151" strokeWidth="0.5" opacity="0.3"/>
                                       </pattern>
                                     </defs>
-                                    <rect width="100%" height="100%" fill="url(#grid)" />
+                                    <rect x="30" y="10" width="280" height="100" fill="url(#grid)" />
                                     
                                     {(() => {
                                       const percentiles = Object.entries(result.responseTimes.percentiles)
@@ -560,8 +560,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                       const valueRange = maxValue - minValue || 1;
                                       
                                       const points = percentiles.map((p, i) => {
-                                        const x = (i / (percentiles.length - 1)) * 280 + 10;
-                                        const y = 110 - ((p.value - minValue) / valueRange) * 100;
+                                        const x = (i / (percentiles.length - 1)) * 260 + 40;
+                                        const y = 100 - ((p.value - minValue) / valueRange) * 80 + 10;
                                         return `${x},${y}`;
                                       }).join(' ');
                                       
@@ -576,8 +576,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                           />
                                           {/* Points */}
                                           {percentiles.map((p, i) => {
-                                            const x = (i / (percentiles.length - 1)) * 280 + 10;
-                                            const y = 110 - ((p.value - minValue) / valueRange) * 100;
+                                            const x = (i / (percentiles.length - 1)) * 260 + 40;
+                                            const y = 100 - ((p.value - minValue) / valueRange) * 80 + 10;
                                             return (
                                               <g key={p.percentile}>
                                                 <circle
@@ -591,7 +591,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                                 {/* Percentile labels */}
                                                 <text
                                                   x={x}
-                                                  y="115"
+                                                  y="125"
                                                   textAnchor="middle"
                                                   className="text-xs fill-slate-400"
                                                   fontSize="9"
@@ -604,8 +604,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                             );
                                           })}
                                           {/* Y-axis labels */}
-                                          <text x="2" y="12" className="text-xs fill-slate-400" fontSize="8">{maxValue}</text>
-                                          <text x="2" y="118" className="text-xs fill-slate-400" fontSize="8">{minValue}</text>
+                                          <text x="5" y="15" className="text-xs fill-slate-400" fontSize="8">{maxValue}</text>
+                                          <text x="5" y="105" className="text-xs fill-slate-400" fontSize="8">{minValue}</text>
                                         </>
                                       );
                                     })()}
