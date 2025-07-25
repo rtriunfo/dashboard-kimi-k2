@@ -21,6 +21,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [numericOperator, setNumericOperator] = useState<'gt' | 'lt'>('gt');
   const [numericValue, setNumericValue] = useState<string>('');
   const [isNumericDropdownOpen, setIsNumericDropdownOpen] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   try {
     const requestResults = testData?.requestResults || [];
 
@@ -130,6 +131,16 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       setSelectedSeverities(new Set());
       setNumericField('');
       setNumericValue('');
+    };
+
+    const toggleRowExpansion = (resultId: number) => {
+      const newExpandedRows = new Set(expandedRows);
+      if (newExpandedRows.has(resultId)) {
+        newExpandedRows.delete(resultId);
+      } else {
+        newExpandedRows.add(resultId);
+      }
+      setExpandedRows(newExpandedRows);
     };
 
     const getNumericFieldValue = (result: RequestResult, field: string): number => {
@@ -444,16 +455,26 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               return null;
             }
             
+            const isExpanded = expandedRows.has(result.id || index);
+            
             return (
-              <tr 
-                key={result.id || index} 
-                className={`border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors ${
-                  index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-800/10'
-                }`}
-              >
-                <td className="px-2 py-4 text-sm text-white font-medium">
-                  {result.request?.requestName || 'Unknown Request'}
-                </td>
+              <React.Fragment key={result.id || index}>
+                <tr 
+                  className={`border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors ${
+                    index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-800/10'
+                  }`}
+                >
+                  <td className="px-2 py-4 text-sm text-white font-medium">
+                    <button
+                      onClick={() => toggleRowExpansion(result.id || index)}
+                      className="flex items-center gap-2 text-left hover:text-blue-400 transition-colors"
+                    >
+                      <span className="text-xs">
+                        {isExpanded ? '▼' : '▶'}
+                      </span>
+                      {result.request?.requestName || 'Unknown Request'}
+                    </button>
+                  </td>
                 {testData.testRequirements && (
                   <td className="px-2 py-4 text-center">
                     <StatusBadge status={result.status} />
@@ -486,7 +507,104 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                     {Number(result.errorPercentage || 0).toFixed(2)}%
                   </span>
                 </td>
-              </tr>
+                </tr>
+                
+                {isExpanded && (
+                  <tr className="bg-slate-900/50">
+                    <td colSpan={7 + (testData.testRequirements ? 1 : 0) + (testData.severityVersion ? 1 : 0) + availablePercentiles.length} className="px-6 py-4">
+                      <div className="space-y-4">
+                        <h4 className="text-lg font-semibold text-white mb-3">Request Details</h4>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {/* Basic Information */}
+                          <div className="bg-slate-800/50 rounded-lg p-4">
+                            <h5 className="text-sm font-semibold text-slate-300 mb-2">Basic Information</h5>
+                            <div className="space-y-2 text-sm">
+                              <div><span className="text-slate-400">ID:</span> <span className="text-white">{result.id}</span></div>
+                              <div><span className="text-slate-400">Name:</span> <span className="text-white">{result.request?.requestName}</span></div>
+                              <div><span className="text-slate-400">Total Count:</span> <span className="text-white">{(result.totalCount || 0).toLocaleString()}</span></div>
+                              <div><span className="text-slate-400">Pass Count:</span> <span className="text-green-400">{(result.passCount || 0).toLocaleString()}</span></div>
+                              <div><span className="text-slate-400">Fail Count:</span> <span className="text-red-400">{(result.failCount || 0).toLocaleString()}</span></div>
+                              <div><span className="text-slate-400">Error Rate:</span> <span className="text-white">{Number(result.errorPercentage || 0).toFixed(2)}%</span></div>
+                              <div><span className="text-slate-400">Rate:</span> <span className="text-white">{Number(result.rate || 0).toFixed(2)} {result.rateGranularity}</span></div>
+                            </div>
+                          </div>
+
+                          {/* Response Times */}
+                          <div className="bg-slate-800/50 rounded-lg p-4">
+                            <h5 className="text-sm font-semibold text-slate-300 mb-2">Response Times (ms)</h5>
+                            <div className="space-y-2 text-sm">
+                              <div><span className="text-slate-400">Min:</span> <span className="text-white">{result.responseTimes?.min || 0}</span></div>
+                              <div><span className="text-slate-400">Max:</span> <span className="text-white">{result.responseTimes?.max || 0}</span></div>
+                              {result.responseTimes?.percentiles && Object.entries(result.responseTimes.percentiles).map(([percentile, value]) => (
+                                <div key={percentile}>
+                                  <span className="text-slate-400">{parseFloat(percentile) === 100 ? '100th' : `${parseFloat(percentile)}th`} Percentile:</span> 
+                                  <span className="text-white ml-1">{value}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Requirements (if available) */}
+                          {result.requirements && (
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                              <h5 className="text-sm font-semibold text-slate-300 mb-2">Requirements</h5>
+                              <div className="space-y-2 text-sm">
+                                <div><span className="text-slate-400">Status:</span> <StatusBadge status={result.requirements.status} /></div>
+                                <div><span className="text-slate-400">Passed:</span> <span className="text-green-400">{result.requirements.passed}</span></div>
+                                <div><span className="text-slate-400">Failed:</span> <span className="text-red-400">{result.requirements.failed}</span></div>
+                                
+                                {result.requirements.percentiles && result.requirements.percentiles.length > 0 && (
+                                  <div className="mt-3">
+                                    <h6 className="text-xs font-semibold text-slate-400 mb-2">Percentile Requirements</h6>
+                                    <div className="space-y-1">
+                                      {result.requirements.percentiles.map((req, idx) => (
+                                        <div key={idx} className="flex items-center justify-between text-xs">
+                                          <span className="text-slate-400">{req.percentile}th:</span>
+                                          <div className="flex items-center gap-2">
+                                            <StatusBadge status={req.status} />
+                                            <span className="text-white">{req.value}ms</span>
+                                            {req.difference !== null && (
+                                              <span className={`${req.difference > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                                                ({req.difference > 0 ? '+' : ''}{req.difference}ms)
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Additional metadata if available */}
+                        {(result.request?.requestDescription || result.request?.requestPriority || result.request?.tags) && (
+                          <div className="bg-slate-800/50 rounded-lg p-4">
+                            <h5 className="text-sm font-semibold text-slate-300 mb-2">Additional Information</h5>
+                            <div className="space-y-2 text-sm">
+                              {result.request?.requestDescription && (
+                                <div><span className="text-slate-400">Description:</span> <span className="text-white">{result.request.requestDescription}</span></div>
+                              )}
+                              {result.request?.requestPriority && (
+                                <div><span className="text-slate-400">Priority:</span> <span className="text-white">{result.request.requestPriority}</span></div>
+                              )}
+                              {result.request?.tags && (
+                                <div><span className="text-slate-400">Tags:</span> <span className="text-white">{result.request.tags}</span></div>
+                              )}
+                              {result.request?.createdTime && (
+                                <div><span className="text-slate-400">Created:</span> <span className="text-white">{new Date(result.request.createdTime).toLocaleString()}</span></div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             );
           })}
         </tbody>
