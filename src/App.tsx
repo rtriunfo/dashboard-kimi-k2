@@ -3,6 +3,7 @@ import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch
 import { TestResults } from './types';
 import { MetricCard } from './components/MetricCard';
 import { ResponseTimeChart } from './components/ResponseTimeChart';
+import { ResponseTimesDetailChart } from './components/ResponseTimesDetailChart';
 import { StatusBadge } from './components/StatusBadge';
 import { RequestStats } from './components/RequestStats';
 import { AssertionStats } from './components/AssertionStats';
@@ -70,7 +71,7 @@ const testData: TestResults = {
 };
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'summary' | 'metadata'>('summary');
+  const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes'>('summary');
 
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -103,14 +104,14 @@ function App() {
       
       <div className="relative z-10">
         {/* Header with compact metrics */}
-        <header className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <header className="border-b bg-slate-800/50 backdrop-blur-sm border-slate-700">
+          <div className="px-4 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-white mb-1">
+                <h1 className="mb-1 text-3xl font-bold text-white">
                   Gatling Performance Dashboard
                 </h1>
-                <p className="text-slate-400 flex items-center gap-2">
+                <p className="flex items-center gap-2 text-slate-400">
                   <Activity className="w-4 h-4" />
                   {testData.test.description}
                 </p>
@@ -122,7 +123,7 @@ function App() {
             </div>
             
             {/* Compact metric cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-4">
+            <div className="grid grid-cols-2 gap-3 mt-4 sm:grid-cols-3 lg:grid-cols-5">
               <CompactMetricCard
                 icon={Calendar}
                 label="Start Time"
@@ -157,11 +158,11 @@ function App() {
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
           {/* Tab Navigation */}
           <div className="mb-6">
             <div className="border-b border-slate-700">
-              <nav className="-mb-px flex space-x-8">
+              <nav className="flex -mb-px space-x-8">
                 <button
                   onClick={() => setActiveTab('summary')}
                   className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
@@ -171,6 +172,16 @@ function App() {
                   }`}
                 >
                   Summary
+                </button>
+                <button
+                  onClick={() => setActiveTab('responseTimes')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'responseTimes'
+                      ? 'border-blue-500 text-blue-400'
+                      : 'border-transparent text-slate-400 hover:text-slate-300'
+                  }`}
+                >
+                  Response Times
                 </button>
                 <button
                   onClick={() => setActiveTab('metadata')}
@@ -189,102 +200,146 @@ function App() {
           {/* Tab Content */}
           {activeTab === 'summary' ? (
             <div>
-              <h2 className="text-2xl font-bold text-white mb-6">Test Summary</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <h2 className="mb-6 text-2xl font-bold text-white">Test Summary</h2>
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <ResponseTimeChart responseTimes={testData.responseTimes} />
                 <RequestStats stats={testData.requestStats} />
                 <AssertionStats stats={testData.assertionStats} />
                 <SeverityStats stats={testData.severityStats} />
               </div>
             </div>
+          ) : activeTab === 'responseTimes' ? (
+            <div>
+              <h2 className="mb-6 text-2xl font-bold text-white">Response Times Analysis</h2>
+              <div className="grid grid-cols-1 gap-6">
+                <ResponseTimesDetailChart responseTimes={testData.responseTimes} />
+                <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+                  <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
+                    <Clock className="w-5 h-5 text-blue-400" />
+                    Response Time Metrics
+                  </h3>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="p-4 rounded-lg bg-slate-700/50">
+                      <div className="text-3xl font-bold text-white">{testData.responseTimes.min}<span className="ml-1 text-sm">ms</span></div>
+                      <div className="mt-1 text-sm text-slate-400">Minimum</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-slate-700/50">
+                      <div className="text-3xl font-bold text-white">{testData.responseTimes.percentiles["50.0"]}<span className="ml-1 text-sm">ms</span></div>
+                      <div className="mt-1 text-sm text-slate-400">Median (P50)</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-slate-700/50">
+                      <div className="text-3xl font-bold text-white">{testData.responseTimes.max}<span className="ml-1 text-sm">ms</span></div>
+                      <div className="mt-1 text-sm text-slate-400">Maximum</div>
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <h4 className="mb-3 text-sm font-medium text-slate-300">Performance Insights</h4>
+                    <ul className="space-y-2 text-sm text-slate-400">
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-400 mt-0.5">•</span>
+                        <span>50% of requests complete in {testData.responseTimes.percentiles["50.0"]}ms or less</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-400 mt-0.5">•</span>
+                        <span>90% of requests complete in {testData.responseTimes.percentiles["90.0"]}ms or less</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-400 mt-0.5">•</span>
+                        <span>The slowest 1% of requests take more than {testData.responseTimes.percentiles["99.0"]}ms</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           ) : (
             <div>
-              <h2 className="text-2xl font-bold text-white mb-6">Test Metadata</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <h2 className="mb-6 text-2xl font-bold text-white">Test Metadata</h2>
+              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 {/* Test Information */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+                  <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
                     <Info className="w-5 h-5 text-blue-400" />
                     Test Information
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-slate-400">Test Type:</span>
-                      <span className="text-white font-medium">{testData.test.type}</span>
+                      <span className="font-medium text-white">{testData.test.type}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Simulation:</span>
-                      <span className="text-white font-medium text-sm">{testData.test.simulationName}</span>
+                      <span className="text-sm font-medium text-white">{testData.test.simulationName}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Environment:</span>
-                      <span className="text-white font-medium">{testData.environment || 'Not specified'}</span>
+                      <span className="font-medium text-white">{testData.environment || 'Not specified'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Branch:</span>
-                      <span className="text-white font-medium">{testData.branch || 'Not specified'}</span>
+                      <span className="font-medium text-white">{testData.branch || 'Not specified'}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Version Information */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+                  <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
                     <GitCommit className="w-5 h-5 text-green-400" />
                     Version Information
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-slate-400">Gatling Version:</span>
-                      <span className="text-white font-medium">{testData.gatlingVersion}</span>
+                      <span className="font-medium text-white">{testData.gatlingVersion}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Parser Version:</span>
-                      <span className="text-white font-medium">{testData.parserVersion}</span>
+                      <span className="font-medium text-white">{testData.parserVersion}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Severity Version:</span>
-                      <span className="text-white font-medium">{testData.severityVersion}</span>
+                      <span className="font-medium text-white">{testData.severityVersion}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Requirements Version:</span>
-                      <span className="text-white font-medium">{testData.requirementsVersion}</span>
+                      <span className="font-medium text-white">{testData.requirementsVersion}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* File Locations */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 lg:col-span-2">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700 lg:col-span-2">
+                  <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
                     <FileText className="w-5 h-5 text-purple-400" />
                     File Locations
                   </h3>
                   <div className="space-y-3">
                     <div>
-                      <span className="text-slate-400 text-sm">Gatling Report:</span>
-                      <p className="text-white font-mono text-sm mt-1 break-all">{testData.gatlingReportLocation}</p>
+                      <span className="text-sm text-slate-400">Gatling Report:</span>
+                      <p className="mt-1 font-mono text-sm text-white break-all">{testData.gatlingReportLocation}</p>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-sm">Gatling Log:</span>
-                      <p className="text-white font-mono text-sm mt-1 break-all">{testData.gatlingLogLocation}</p>
+                      <span className="text-sm text-slate-400">Gatling Log:</span>
+                      <p className="mt-1 font-mono text-sm text-white break-all">{testData.gatlingLogLocation}</p>
                     </div>
                     <div>
-                      <span className="text-slate-400 text-sm">Requirements File:</span>
-                      <p className="text-white font-mono text-sm mt-1 break-all">{testData.requirementsFileLocation}</p>
+                      <span className="text-sm text-slate-400">Requirements File:</span>
+                      <p className="mt-1 font-mono text-sm text-white break-all">{testData.requirementsFileLocation}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Git Information */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+                  <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
                     <GitBranch className="w-5 h-5 text-orange-400" />
                     Git Information
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-slate-400">Git Hash:</span>
-                      <span className="text-white font-medium font-mono text-sm">
+                      <span className="font-mono text-sm font-medium text-white">
                         {testData.gitHash ? testData.gitHash.substring(0, 8) : 'Not specified'}
                       </span>
                     </div>
@@ -298,19 +353,19 @@ function App() {
                 </div>
 
                 {/* Test Configuration */}
-                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+                  <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
                     <Settings className="w-5 h-5 text-cyan-400" />
                     Test Configuration
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-slate-400">Rate Granularity:</span>
-                      <span className="text-white font-medium">{testData.rateGranularity}</span>
+                      <span className="font-medium text-white">{testData.rateGranularity}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Created:</span>
-                      <span className="text-white font-medium">{formatDate(testData.createdTime)}</span>
+                      <span className="font-medium text-white">{formatDate(testData.createdTime)}</span>
                     </div>
                   </div>
                 </div>
@@ -320,7 +375,7 @@ function App() {
 
           {/* Footer */}
           <footer className="mt-12 text-center">
-            <p className="text-slate-500 text-sm">
+            <p className="text-sm text-slate-500">
               Generated with Gatling {testData.gatlingVersion} • Parser {testData.parserVersion}
             </p>
           </footer>
