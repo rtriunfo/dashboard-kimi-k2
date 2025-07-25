@@ -10,7 +10,7 @@ interface ResponseTimesDetailChartProps {
 }
 
 export const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ responseTimes }) => {
-  const [chartType, setChartType] = useState<'bar' | 'line'>('bar');
+  const [chartType, setChartType] = useState<'bar' | 'line'>('line');
   
   const percentileKeys = Object.keys(responseTimes.percentiles).sort((a, b) => parseFloat(a) - parseFloat(b));
   const percentileValues = percentileKeys.map(key => responseTimes.percentiles[key]);
