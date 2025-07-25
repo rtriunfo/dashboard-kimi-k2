@@ -66,7 +66,7 @@ function App() {
       
       <div className="relative z-10">
         {/* Header with compact metrics */}
-        <header className="border-b bg-slate-800/50 backdrop-blur-sm border-slate-700">
+        <header className="relative z-20 border-b bg-slate-800/50 backdrop-blur-sm border-slate-700">
           <div className="px-4 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
