@@ -10,9 +10,10 @@ import { AssertionStats } from './components/AssertionStats';
 import { SeverityStats } from './components/SeverityStats';
 import { CompactMetricCard } from './components/CompactMetricCard';
 import { getTestScenario, getAvailableScenarios } from './config/testReportAdapter';
+import { RequestsTable } from './components/RequestsTable';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes'>('summary');
+  const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes' | 'requests'>('summary');
   const [selectedScenario, setSelectedScenario] = useState<string>('test-report-data');
   const [isScenarioDropdownOpen, setIsScenarioDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -186,6 +187,16 @@ function App() {
                 >
                   Metadata
                 </button>
+                <button
+                  onClick={() => setActiveTab('requests')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'requests'
+                      ? 'border-blue-500 text-blue-400'
+                      : 'border-transparent text-slate-400 hover:text-slate-300'
+                  }`}
+                >
+                  Requests
+                </button>
               </nav>
             </div>
           </div>
@@ -244,6 +255,11 @@ function App() {
                   </div>
                 </div>
               </div>
+            </div>
+          ) : activeTab === 'requests' ? (
+            <div>
+              <h2 className="mb-6 text-2xl font-bold text-white">Request Results</h2>
+              <RequestsTable testData={testData} />
             </div>
           ) : (
             <div>

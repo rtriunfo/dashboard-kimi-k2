@@ -16,7 +16,10 @@ export const testScenarios: Record<string, TestScenario> = {
     id: 'test-report-data',
     name: reportData.testRun.test.description,
     description: `${reportData.testRun.test.type} test with detailed transaction data`,
-    data: reportData.testRun
+    data: {
+      ...reportData.testRun,
+      requestResults: reportData.requestResults
+    }
   }
 };
 
