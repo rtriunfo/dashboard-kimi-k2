@@ -9,11 +9,11 @@ import { RequestStats } from './components/RequestStats';
 import { AssertionStats } from './components/AssertionStats';
 import { SeverityStats } from './components/SeverityStats';
 import { CompactMetricCard } from './components/CompactMetricCard';
-import { getTestScenario, getAvailableScenarios } from './config/testScenarios';
+import { getTestScenario, getAvailableScenarios } from './config/testReportAdapter';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes'>('summary');
-  const [selectedScenario, setSelectedScenario] = useState<string>('baseline-performance');
+  const [selectedScenario, setSelectedScenario] = useState<string>('test-report-data');
   const [isScenarioDropdownOpen, setIsScenarioDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
