@@ -130,7 +130,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         className={`${className} cursor-pointer hover:bg-slate-700/30 transition-colors select-none`}
         onClick={() => handleSort(column)}
       >
-        <div className="flex items-center justify-center gap-1">
+        <div className={`flex items-center gap-1 ${column === 'name' ? 'justify-start' : 'justify-center'}`}>
           {children}
           {sortColumn === column && (
             <span className="text-xs">
