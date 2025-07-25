@@ -12,6 +12,8 @@ type SortDirection = 'asc' | 'desc';
 export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   try {
     const requestResults = testData?.requestResults || [];
 
@@ -71,10 +73,40 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       }
     };
 
-    const sortedResults = useMemo(() => {
+    // Get unique statuses for filter options
+    const availableStatuses = useMemo(() => {
+      if (!requestResults || requestResults.length === 0) return [];
+      const statuses = new Set(requestResults.map(result => result.status).filter(Boolean));
+      return Array.from(statuses).sort();
+    }, [requestResults]);
+
+    const handleStatusToggle = (status: string) => {
+      const newSelectedStatuses = new Set(selectedStatuses);
+      if (newSelectedStatuses.has(status)) {
+        newSelectedStatuses.delete(status);
+      } else {
+        newSelectedStatuses.add(status);
+      }
+      setSelectedStatuses(newSelectedStatuses);
+    };
+
+    const clearFilters = () => {
+      setSelectedStatuses(new Set());
+    };
+
+    const filteredAndSortedResults = useMemo(() => {
       if (!requestResults || requestResults.length === 0) return [];
       
-      return [...requestResults].sort((a, b) => {
+      // First filter by status
+      let filtered = requestResults;
+      if (selectedStatuses.size > 0) {
+        filtered = requestResults.filter(result => 
+          result.status && selectedStatuses.has(result.status)
+        );
+      }
+      
+      // Then sort
+      return [...filtered].sort((a, b) => {
         const aValue = getSortValue(a, sortColumn);
         const bValue = getSortValue(b, sortColumn);
         
@@ -87,7 +119,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         
         return sortDirection === 'asc' ? comparison : -comparison;
       });
-    }, [requestResults, sortColumn, sortDirection]);
+    }, [requestResults, sortColumn, sortDirection, selectedStatuses]);
 
     const SortableHeader: React.FC<{ column: SortColumn; children: React.ReactNode; className?: string }> = ({ 
       column, 
@@ -110,8 +142,56 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     );
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
+    <div className="space-y-4">
+      {/* Status Filter */}
+      {testData.testRequirements && availableStatuses.length > 0 && (
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-white">Filter by Status</h3>
+            <div className="flex items-center gap-2">
+              {selectedStatuses.size > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-slate-400 hover:text-white transition-colors"
+                >
+                  Clear ({selectedStatuses.size})
+                </button>
+              )}
+              <button
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                {isFilterOpen ? 'Hide' : 'Show'} Filters
+              </button>
+            </div>
+          </div>
+          
+          {isFilterOpen && (
+            <div className="flex flex-wrap gap-2">
+              {availableStatuses.map(status => (
+                <label
+                  key={status}
+                  className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg cursor-pointer hover:bg-slate-700 transition-colors"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedStatuses.has(status)}
+                    onChange={() => handleStatusToggle(status)}
+                    className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                  />
+                  <span className="text-sm text-white">{status}</span>
+                  <span className="text-xs text-slate-400">
+                    ({requestResults.filter(r => r.status === status).length})
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
         <thead>
           <tr className="border-b border-slate-700">
             <SortableHeader column="name" className="px-6 py-4 text-left text-sm font-semibold text-white">
@@ -142,7 +222,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
           </tr>
         </thead>
         <tbody>
-          {sortedResults.map((result, index) => {
+          {filteredAndSortedResults.map((result, index) => {
             // Add null checks to prevent runtime errors
             if (!result || !result.request || !result.responseTimes) {
               console.warn('Invalid result object:', result);
@@ -190,13 +270,20 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
             );
           })}
         </tbody>
-      </table>
-      
-      {requestResults.length === 0 && (
-        <div className="text-center py-8 text-slate-400">
-          No request data available
-        </div>
-      )}
+        </table>
+        
+        {filteredAndSortedResults.length === 0 && requestResults.length > 0 && (
+          <div className="text-center py-8 text-slate-400">
+            No requests match the selected filters
+          </div>
+        )}
+        
+        {requestResults.length === 0 && (
+          <div className="text-center py-8 text-slate-400">
+            No request data available
+          </div>
+        )}
+      </div>
     </div>
   );
   } catch (error) {
