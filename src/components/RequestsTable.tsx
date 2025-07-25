@@ -151,7 +151,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
             >
-              <span>Status Filter</span>
+              <span>Status</span>
               {selectedStatuses.size > 0 && (
                 <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
                   {selectedStatuses.size}
@@ -221,10 +221,10 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               Max
             </SortableHeader>
             <SortableHeader column="totalCount">
-              Total Count
+              Count
             </SortableHeader>
             <SortableHeader column="errorPercentage">
-              Error %
+              Errors
             </SortableHeader>
           </tr>
         </thead>
