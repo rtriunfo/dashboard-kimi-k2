@@ -533,15 +533,85 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                           {/* Response Times */}
                           <div className="bg-slate-800/50 rounded-lg p-4">
                             <h5 className="text-sm font-semibold text-slate-300 mb-2">Response Times (ms)</h5>
-                            <div className="space-y-2 text-sm">
-                              <div><span className="text-slate-400">Min:</span> <span className="text-white">{result.responseTimes?.min || 0}</span></div>
-                              <div><span className="text-slate-400">Max:</span> <span className="text-white">{result.responseTimes?.max || 0}</span></div>
-                              {result.responseTimes?.percentiles && Object.entries(result.responseTimes.percentiles).map(([percentile, value]) => (
-                                <div key={percentile}>
-                                  <span className="text-slate-400">{parseFloat(percentile) === 100 ? '100th' : `${parseFloat(percentile)}th`} Percentile:</span> 
-                                  <span className="text-white ml-1">{value}</span>
+                            <div className="space-y-3">
+                              <div className="flex justify-between text-sm">
+                                <div><span className="text-slate-400">Min:</span> <span className="text-white">{result.responseTimes?.min || 0}</span></div>
+                                <div><span className="text-slate-400">Max:</span> <span className="text-white">{result.responseTimes?.max || 0}</span></div>
+                              </div>
+                              
+                              {result.responseTimes?.percentiles && (
+                                <div className="relative h-32">
+                                  <svg className="w-full h-full" viewBox="0 0 300 120">
+                                    {/* Grid lines */}
+                                    <defs>
+                                      <pattern id="grid" width="30" height="12" patternUnits="userSpaceOnUse">
+                                        <path d="M 30 0 L 0 0 0 12" fill="none" stroke="#374151" strokeWidth="0.5" opacity="0.3"/>
+                                      </pattern>
+                                    </defs>
+                                    <rect width="100%" height="100%" fill="url(#grid)" />
+                                    
+                                    {(() => {
+                                      const percentiles = Object.entries(result.responseTimes.percentiles)
+                                        .map(([p, v]) => ({ percentile: parseFloat(p), value: v }))
+                                        .sort((a, b) => a.percentile - b.percentile);
+                                      
+                                      const maxValue = Math.max(...percentiles.map(p => p.value));
+                                      const minValue = Math.min(...percentiles.map(p => p.value));
+                                      const valueRange = maxValue - minValue || 1;
+                                      
+                                      const points = percentiles.map((p, i) => {
+                                        const x = (i / (percentiles.length - 1)) * 280 + 10;
+                                        const y = 110 - ((p.value - minValue) / valueRange) * 100;
+                                        return `${x},${y}`;
+                                      }).join(' ');
+                                      
+                                      return (
+                                        <>
+                                          {/* Line */}
+                                          <polyline
+                                            fill="none"
+                                            stroke="#3b82f6"
+                                            strokeWidth="2"
+                                            points={points}
+                                          />
+                                          {/* Points */}
+                                          {percentiles.map((p, i) => {
+                                            const x = (i / (percentiles.length - 1)) * 280 + 10;
+                                            const y = 110 - ((p.value - minValue) / valueRange) * 100;
+                                            return (
+                                              <g key={p.percentile}>
+                                                <circle
+                                                  cx={x}
+                                                  cy={y}
+                                                  r="3"
+                                                  fill="#3b82f6"
+                                                  stroke="#1e293b"
+                                                  strokeWidth="1"
+                                                />
+                                                {/* Percentile labels */}
+                                                <text
+                                                  x={x}
+                                                  y="115"
+                                                  textAnchor="middle"
+                                                  className="text-xs fill-slate-400"
+                                                  fontSize="10"
+                                                >
+                                                  {p.percentile === 100 ? '100' : p.percentile}
+                                                </text>
+                                                {/* Value labels on hover */}
+                                                <title>{`${p.percentile}th percentile: ${p.value}ms`}</title>
+                                              </g>
+                                            );
+                                          })}
+                                          {/* Y-axis labels */}
+                                          <text x="5" y="15" className="text-xs fill-slate-400" fontSize="9">{maxValue}</text>
+                                          <text x="5" y="115" className="text-xs fill-slate-400" fontSize="9">{minValue}</text>
+                                        </>
+                                      );
+                                    })()}
+                                  </svg>
                                 </div>
-                              ))}
+                              )}
                             </div>
                           </div>
 
