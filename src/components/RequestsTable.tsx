@@ -100,13 +100,11 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       >
         <div className="flex items-center justify-center gap-1">
           {children}
-          <span className="text-xs">
-            {sortColumn === column ? (
-              sortDirection === 'asc' ? '↑' : '↓'
-            ) : (
-              '↕'
-            )}
-          </span>
+          {sortColumn === column && (
+            <span className="text-xs">
+              {sortDirection === 'asc' ? '↑' : '↓'}
+            </span>
+          )}
         </div>
       </th>
     );
