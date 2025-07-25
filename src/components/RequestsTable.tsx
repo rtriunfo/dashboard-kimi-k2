@@ -15,6 +15,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedSeverities, setSelectedSeverities] = useState<Set<string>>(new Set());
+  const [isSeverityDropdownOpen, setIsSeverityDropdownOpen] = useState(false);
   try {
     const requestResults = testData?.requestResults || [];
 
@@ -83,6 +85,13 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       return Array.from(statuses).sort();
     }, [requestResults]);
 
+    // Get unique severities for filter options
+    const availableSeverities = useMemo(() => {
+      if (!requestResults || requestResults.length === 0) return [];
+      const severities = new Set(requestResults.map(result => result.severity).filter(Boolean));
+      return Array.from(severities).sort();
+    }, [requestResults]);
+
     const handleStatusToggle = (status: string) => {
       const newSelectedStatuses = new Set(selectedStatuses);
       if (newSelectedStatuses.has(status)) {
@@ -93,18 +102,34 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       setSelectedStatuses(newSelectedStatuses);
     };
 
+    const handleSeverityToggle = (severity: string) => {
+      const newSelectedSeverities = new Set(selectedSeverities);
+      if (newSelectedSeverities.has(severity)) {
+        newSelectedSeverities.delete(severity);
+      } else {
+        newSelectedSeverities.add(severity);
+      }
+      setSelectedSeverities(newSelectedSeverities);
+    };
+
     const clearFilters = () => {
       setSelectedStatuses(new Set());
+      setSelectedSeverities(new Set());
     };
 
     const filteredAndSortedResults = useMemo(() => {
       if (!requestResults || requestResults.length === 0) return [];
       
-      // First filter by status
+      // First filter by status and severity
       let filtered = requestResults;
       if (selectedStatuses.size > 0) {
-        filtered = requestResults.filter(result => 
+        filtered = filtered.filter(result => 
           result.status && selectedStatuses.has(result.status)
+        );
+      }
+      if (selectedSeverities.size > 0) {
+        filtered = filtered.filter(result => 
+          result.severity && selectedSeverities.has(result.severity)
         );
       }
       
@@ -122,7 +147,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         
         return sortDirection === 'asc' ? comparison : -comparison;
       });
-    }, [requestResults, sortColumn, sortDirection, selectedStatuses]);
+    }, [requestResults, sortColumn, sortDirection, selectedStatuses, selectedSeverities]);
 
     const SortableHeader: React.FC<{ column: SortColumn; children: React.ReactNode; className?: string }> = ({ 
       column, 
@@ -146,57 +171,112 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
   return (
     <div className="space-y-4">
-      {/* Status Filter Dropdown */}
-      {testData.testRequirements && availableStatuses.length > 0 && (
-        <div className="flex justify-start">
-          <div className="relative">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
-            >
-              <span>Status</span>
-              {selectedStatuses.size > 0 && (
-                <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
-                  {selectedStatuses.size}
+      {/* Filter Dropdowns */}
+      {((testData.testRequirements && availableStatuses.length > 0) || (testData.severityVersion && availableSeverities.length > 0)) && (
+        <div className="flex justify-start gap-3">
+          {/* Status Filter Dropdown */}
+          {testData.testRequirements && availableStatuses.length > 0 && (
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
+              >
+                <span>Status</span>
+                {selectedStatuses.size > 0 && (
+                  <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
+                    {selectedStatuses.size}
+                  </span>
+                )}
+                <span className="text-xs">
+                  {isDropdownOpen ? '▲' : '▼'}
                 </span>
-              )}
-              <span className="text-xs">
-                {isDropdownOpen ? '▲' : '▼'}
-              </span>
-            </button>
-            
-            {isDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto">
-                <div className="p-2">
-                  {selectedStatuses.size > 0 && (
-                    <button
-                      onClick={clearFilters}
-                      className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
-                    >
-                      Clear all filters
-                    </button>
-                  )}
-                  {availableStatuses.map(status => (
-                    <label
-                      key={status}
-                      className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={selectedStatuses.has(status)}
-                        onChange={() => handleStatusToggle(status)}
-                        className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
-                      />
-                      <span className="text-sm text-white flex-1">{status}</span>
-                      <span className="text-xs text-slate-400">
-                        {requestResults.filter(r => r.status === status).length}
-                      </span>
-                    </label>
-                  ))}
+              </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto">
+                  <div className="p-2">
+                    {(selectedStatuses.size > 0 || selectedSeverities.size > 0) && (
+                      <button
+                        onClick={clearFilters}
+                        className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
+                      >
+                        Clear all filters
+                      </button>
+                    )}
+                    {availableStatuses.map(status => (
+                      <label
+                        key={status}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedStatuses.has(status)}
+                          onChange={() => handleStatusToggle(status)}
+                          className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                        />
+                        <span className="text-sm text-white flex-1">{status}</span>
+                        <span className="text-xs text-slate-400">
+                          {requestResults.filter(r => r.status === status).length}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
+
+          {/* Severity Filter Dropdown */}
+          {testData.severityVersion && availableSeverities.length > 0 && (
+            <div className="relative">
+              <button
+                onClick={() => setIsSeverityDropdownOpen(!isSeverityDropdownOpen)}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
+              >
+                <span>Severity</span>
+                {selectedSeverities.size > 0 && (
+                  <span className="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
+                    {selectedSeverities.size}
+                  </span>
+                )}
+                <span className="text-xs">
+                  {isSeverityDropdownOpen ? '▲' : '▼'}
+                </span>
+              </button>
+              
+              {isSeverityDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto">
+                  <div className="p-2">
+                    {(selectedStatuses.size > 0 || selectedSeverities.size > 0) && (
+                      <button
+                        onClick={clearFilters}
+                        className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
+                      >
+                        Clear all filters
+                      </button>
+                    )}
+                    {availableSeverities.map(severity => (
+                      <label
+                        key={severity}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSeverities.has(severity)}
+                          onChange={() => handleSeverityToggle(severity)}
+                          className="rounded border-slate-600 bg-slate-700 text-orange-500 focus:ring-orange-500 focus:ring-offset-0"
+                        />
+                        <span className="text-sm text-white flex-1">{severity}</span>
+                        <span className="text-xs text-slate-400">
+                          {requestResults.filter(r => r.severity === severity).length}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
