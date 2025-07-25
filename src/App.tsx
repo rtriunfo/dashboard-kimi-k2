@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch, Calendar, Timer, BarChart3, Percent, Info, FileText, GitCommit, Settings, ChevronDown } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch, Calendar, Timer, BarChart3, Percent, Info, FileText, GitCommit, Settings, ChevronDown, XCircle } from 'lucide-react';
 import { TestResults } from './types';
 import { MetricCard } from './components/MetricCard';
 import { ResponseTimeChart } from './components/ResponseTimeChart';
@@ -112,7 +112,7 @@ function App() {
                   )}
                 </div>
                 
-                <StatusBadge status={testData.status} />
+                <StatusBadge status={testData.status} size="lg" showIcon={true} />
               </div>
             </div>
             
