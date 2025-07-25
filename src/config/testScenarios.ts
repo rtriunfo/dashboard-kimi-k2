@@ -139,11 +139,11 @@ export const testScenarios: Record<string, TestScenario> = {
   },
 
     'stress-test2': {
-    id: 'stress-test',
-    name: 'Stress Test',
+    id: 'stress-test-2',
+    name: 'Stress Test 2',
     description: 'High-intensity stress test with extreme load',
     data: {
-      id: 2,
+      id: 5,
       test: {
         id: 2,
         description: "Extreme Stress Test",
