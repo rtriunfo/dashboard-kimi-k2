@@ -13,7 +13,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   try {
     const requestResults = testData?.requestResults || [];
 
@@ -143,50 +143,57 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
   return (
     <div className="space-y-4">
-      {/* Status Filter */}
+      {/* Status Filter Dropdown */}
       {testData.testRequirements && availableStatuses.length > 0 && (
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-white">Filter by Status</h3>
-            <div className="flex items-center gap-2">
+        <div className="flex justify-start">
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
+            >
+              <span>Status Filter</span>
               {selectedStatuses.size > 0 && (
-                <button
-                  onClick={clearFilters}
-                  className="text-xs text-slate-400 hover:text-white transition-colors"
-                >
-                  Clear ({selectedStatuses.size})
-                </button>
+                <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
+                  {selectedStatuses.size}
+                </span>
               )}
-              <button
-                onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                {isFilterOpen ? 'Hide' : 'Show'} Filters
-              </button>
-            </div>
+              <span className="text-xs">
+                {isDropdownOpen ? '▲' : '▼'}
+              </span>
+            </button>
+            
+            {isDropdownOpen && (
+              <div className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto">
+                <div className="p-2">
+                  {selectedStatuses.size > 0 && (
+                    <button
+                      onClick={clearFilters}
+                      className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
+                    >
+                      Clear all filters
+                    </button>
+                  )}
+                  {availableStatuses.map(status => (
+                    <label
+                      key={status}
+                      className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedStatuses.has(status)}
+                        onChange={() => handleStatusToggle(status)}
+                        className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                      />
+                      <span className="text-sm text-white flex-1">{status}</span>
+                      <span className="text-xs text-slate-400">
+                        {requestResults.filter(r => r.status === status).length}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-          
-          {isFilterOpen && (
-            <div className="flex flex-wrap gap-2">
-              {availableStatuses.map(status => (
-                <label
-                  key={status}
-                  className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 rounded-lg cursor-pointer hover:bg-slate-700 transition-colors"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedStatuses.has(status)}
-                    onChange={() => handleStatusToggle(status)}
-                    className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
-                  />
-                  <span className="text-sm text-white">{status}</span>
-                  <span className="text-xs text-slate-400">
-                    ({requestResults.filter(r => r.status === status).length})
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
         </div>
       )}
 
