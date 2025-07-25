@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { TestResults, RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
 
@@ -6,7 +6,12 @@ interface RequestsTableProps {
   testData: TestResults;
 }
 
+type SortColumn = 'name' | 'status' | 'min' | 'max' | 'totalCount' | 'errorPercentage' | string;
+type SortDirection = 'asc' | 'desc';
+
 export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
+  const [sortColumn, setSortColumn] = useState<SortColumn>('name');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   try {
     const requestResults = testData?.requestResults || [];
 
@@ -37,28 +42,109 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       ? Object.keys(requestResults[0].responseTimes.percentiles).sort((a, b) => parseFloat(a) - parseFloat(b))
       : [];
 
+    const handleSort = (column: SortColumn) => {
+      if (sortColumn === column) {
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      } else {
+        setSortColumn(column);
+        setSortDirection('asc');
+      }
+    };
+
+    const getSortValue = (result: RequestResult, column: SortColumn): number | string => {
+      switch (column) {
+        case 'name':
+          return result.request?.requestName || '';
+        case 'status':
+          return result.status || '';
+        case 'min':
+          return result.responseTimes?.min || 0;
+        case 'max':
+          return result.responseTimes?.max || 0;
+        case 'totalCount':
+          return result.totalCount || 0;
+        case 'errorPercentage':
+          return Number(result.errorPercentage || 0);
+        default:
+          // Handle percentiles (column will be the percentile value like "50", "95", etc.)
+          return result.responseTimes?.percentiles?.[column] || 0;
+      }
+    };
+
+    const sortedResults = useMemo(() => {
+      if (!requestResults || requestResults.length === 0) return [];
+      
+      return [...requestResults].sort((a, b) => {
+        const aValue = getSortValue(a, sortColumn);
+        const bValue = getSortValue(b, sortColumn);
+        
+        let comparison = 0;
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          comparison = aValue.localeCompare(bValue);
+        } else {
+          comparison = Number(aValue) - Number(bValue);
+        }
+        
+        return sortDirection === 'asc' ? comparison : -comparison;
+      });
+    }, [requestResults, sortColumn, sortDirection]);
+
+    const SortableHeader: React.FC<{ column: SortColumn; children: React.ReactNode; className?: string }> = ({ 
+      column, 
+      children, 
+      className = "px-6 py-4 text-center text-sm font-semibold text-white" 
+    }) => (
+      <th 
+        className={`${className} cursor-pointer hover:bg-slate-700/30 transition-colors select-none`}
+        onClick={() => handleSort(column)}
+      >
+        <div className="flex items-center justify-center gap-1">
+          {children}
+          <span className="text-xs">
+            {sortColumn === column ? (
+              sortDirection === 'asc' ? '↑' : '↓'
+            ) : (
+              '↕'
+            )}
+          </span>
+        </div>
+      </th>
+    );
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
         <thead>
           <tr className="border-b border-slate-700">
-            <th className="px-6 py-4 text-left text-sm font-semibold text-white">Name</th>
+            <SortableHeader column="name" className="px-6 py-4 text-left text-sm font-semibold text-white">
+              Name
+            </SortableHeader>
             {testData.testRequirements && (
-              <th className="px-6 py-4 text-center text-sm font-semibold text-white">Status</th>
+              <SortableHeader column="status">
+                Status
+              </SortableHeader>
             )}
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">Min</th>
+            <SortableHeader column="min">
+              Min
+            </SortableHeader>
             {availablePercentiles.map(percentile => (
-              <th key={percentile} className="px-6 py-4 text-center text-sm font-semibold text-white">
+              <SortableHeader key={percentile} column={percentile}>
                 {parseFloat(percentile) === 100 ? '100' : `${parseFloat(percentile)}`}
-              </th>
+              </SortableHeader>
             ))}
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">Max</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">Total Count</th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-white">Error %</th>
+            <SortableHeader column="max">
+              Max
+            </SortableHeader>
+            <SortableHeader column="totalCount">
+              Total Count
+            </SortableHeader>
+            <SortableHeader column="errorPercentage">
+              Error %
+            </SortableHeader>
           </tr>
         </thead>
         <tbody>
-          {requestResults.map((result, index) => {
+          {sortedResults.map((result, index) => {
             // Add null checks to prevent runtime errors
             if (!result || !result.request || !result.responseTimes) {
               console.warn('Invalid result object:', result);
