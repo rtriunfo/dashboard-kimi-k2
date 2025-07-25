@@ -594,7 +594,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                                   y="115"
                                                   textAnchor="middle"
                                                   className="text-xs fill-slate-400"
-                                                  fontSize="10"
+                                                  fontSize="9"
                                                 >
                                                   {p.percentile === 100 ? '100' : p.percentile}
                                                 </text>
@@ -604,8 +604,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                             );
                                           })}
                                           {/* Y-axis labels */}
-                                          <text x="5" y="15" className="text-xs fill-slate-400" fontSize="9">{maxValue}</text>
-                                          <text x="5" y="115" className="text-xs fill-slate-400" fontSize="9">{minValue}</text>
+                                          <text x="2" y="12" className="text-xs fill-slate-400" fontSize="8">{maxValue}</text>
+                                          <text x="2" y="118" className="text-xs fill-slate-400" fontSize="8">{minValue}</text>
                                         </>
                                       );
                                     })()}
