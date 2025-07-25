@@ -555,31 +555,63 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                         .map(([p, v]) => ({ percentile: parseFloat(p), value: v }))
                                         .sort((a, b) => a.percentile - b.percentile);
                                       
-                                      const maxValue = Math.max(...percentiles.map(p => p.value));
-                                      const minValue = Math.min(...percentiles.map(p => p.value));
+                                      // Get requirements data if available
+                                      const requirements = result.requirements?.percentiles || [];
+                                      const requirementValues = requirements.map(req => ({
+                                        percentile: req.percentile,
+                                        value: req.value
+                                      })).sort((a, b) => a.percentile - b.percentile);
+                                      
+                                      // Calculate scale including both actual and requirement values
+                                      const allValues = [
+                                        ...percentiles.map(p => p.value),
+                                        ...requirementValues.map(r => r.value)
+                                      ];
+                                      const maxValue = Math.max(...allValues);
+                                      const minValue = Math.min(...allValues);
                                       const valueRange = maxValue - minValue || 1;
                                       
-                                      const points = percentiles.map((p, i) => {
+                                      const actualPoints = percentiles.map((p, i) => {
                                         const x = (i / (percentiles.length - 1)) * 260 + 40;
                                         const y = 100 - ((p.value - minValue) / valueRange) * 80 + 10;
                                         return `${x},${y}`;
                                       }).join(' ');
                                       
+                                      // Create requirement points if available
+                                      const requirementPoints = requirementValues.length > 0 ? 
+                                        requirementValues.map((r, i) => {
+                                          const x = (i / (requirementValues.length - 1)) * 260 + 40;
+                                          const y = 100 - ((r.value - minValue) / valueRange) * 80 + 10;
+                                          return `${x},${y}`;
+                                        }).join(' ') : '';
+                                      
                                       return (
                                         <>
-                                          {/* Line */}
+                                          {/* Actual performance line */}
                                           <polyline
                                             fill="none"
                                             stroke="#3b82f6"
                                             strokeWidth="2"
-                                            points={points}
+                                            points={actualPoints}
                                           />
-                                          {/* Points */}
+                                          
+                                          {/* Requirements line */}
+                                          {requirementPoints && (
+                                            <polyline
+                                              fill="none"
+                                              stroke="#ef4444"
+                                              strokeWidth="2"
+                                              strokeDasharray="4,2"
+                                              points={requirementPoints}
+                                            />
+                                          )}
+                                          
+                                          {/* Actual performance points */}
                                           {percentiles.map((p, i) => {
                                             const x = (i / (percentiles.length - 1)) * 260 + 40;
                                             const y = 100 - ((p.value - minValue) / valueRange) * 80 + 10;
                                             return (
-                                              <g key={p.percentile}>
+                                              <g key={`actual-${p.percentile}`}>
                                                 <circle
                                                   cx={x}
                                                   cy={y}
@@ -599,10 +631,31 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                                   {p.percentile === 100 ? '100' : p.percentile}
                                                 </text>
                                                 {/* Value labels on hover */}
-                                                <title>{`${p.percentile}th percentile: ${p.value}ms`}</title>
+                                                <title>{`${p.percentile}th percentile: ${p.value}ms (actual)`}</title>
                                               </g>
                                             );
                                           })}
+                                          
+                                          {/* Requirement points */}
+                                          {requirementValues.map((r, i) => {
+                                            const x = (i / (requirementValues.length - 1)) * 260 + 40;
+                                            const y = 100 - ((r.value - minValue) / valueRange) * 80 + 10;
+                                            return (
+                                              <g key={`req-${r.percentile}`}>
+                                                <circle
+                                                  cx={x}
+                                                  cy={y}
+                                                  r="2"
+                                                  fill="#ef4444"
+                                                  stroke="#1e293b"
+                                                  strokeWidth="1"
+                                                />
+                                                {/* Value labels on hover */}
+                                                <title>{`${r.percentile}th percentile: ${r.value}ms (requirement)`}</title>
+                                              </g>
+                                            );
+                                          })}
+                                          
                                           {/* Y-axis labels */}
                                           <text x="5" y="15" className="text-xs fill-slate-400" fontSize="8">{maxValue}</text>
                                           <text x="5" y="105" className="text-xs fill-slate-400" fontSize="8">{minValue}</text>
