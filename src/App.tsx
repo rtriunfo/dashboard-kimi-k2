@@ -231,7 +231,6 @@ function App() {
             <div className="mt-4 p-3 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700">
               <div className="flex items-center gap-3 mb-2">
                 <Clock className="w-4 h-4 text-blue-400" />
-                <span className="text-sm font-medium text-white">Response Times</span>
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center">
                 <div>
