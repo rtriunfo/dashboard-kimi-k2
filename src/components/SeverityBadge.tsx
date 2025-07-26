@@ -8,15 +8,15 @@ export const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity }) => {
   const getSeverityColor = (severity: string) => {
     switch (severity?.toUpperCase()) {
       case 'BLOCKER':
-        return 'bg-red-600 text-white';
+        return 'bg-[#ef4444] text-white';
       case 'CRITICAL':
-        return 'bg-red-500 text-white';
+        return 'bg-[#f97316] text-white';
       case 'MAJOR':
-        return 'bg-orange-500 text-white';
+        return 'bg-[#eab308] text-white';
       case 'MINOR':
-        return 'bg-yellow-500 text-black';
+        return 'bg-[#3b82f6] text-white';
       case 'NONE':
-        return 'bg-gray-500 text-white';
+        return 'bg-[#10b981] text-white';
       default:
         return 'bg-gray-400 text-white';
     }
