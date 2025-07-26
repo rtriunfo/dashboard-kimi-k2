@@ -156,30 +156,33 @@ function App() {
                 <Clock className="w-5 h-5 text-blue-400" />
                 <h3 className="text-sm font-semibold text-white">Response Times Overview</h3>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-auto gap-4 text-center">
+                {/* Always show min and max */}
                 <div>
                   <div className="text-lg font-bold text-blue-400">{testData.responseTimes.min}<span className="ml-1 text-xs">ms</span></div>
                   <div className="text-xs text-slate-400">Min</div>
                 </div>
+                
+                {/* Dynamically add all percentiles except 100th */}
+                {Object.entries(testData.responseTimes.percentiles)
+                  .filter(([percentile]) => parseFloat(percentile) !== 100)
+                  .map(([percentile, value]) => {
+                    const colors = ['text-green-400', 'text-yellow-400', 'text-orange-400', 'text-red-400', 'text-purple-400'];
+                    const colorIndex = Math.min(parseInt(percentile) / 20, colors.length - 1);
+                    const color = colors[Math.floor(colorIndex)];
+                    
+                    return (
+                      <div key={percentile}>
+                        <div className={`text-lg font-bold ${color}`}>{value}<span className="ml-1 text-xs">ms</span></div>
+                        <div className="text-xs text-slate-400">P{parseFloat(percentile)}</div>
+                      </div>
+                    );
+                  })}
+                
+                {/* Always show max */}
                 <div>
-                  <div className="text-lg font-bold text-green-400">{testData.responseTimes.percentiles["50.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P50</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-yellow-400">{testData.responseTimes.percentiles["75.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P75</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-orange-400">{testData.responseTimes.percentiles["90.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P90</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-red-400">{testData.responseTimes.percentiles["95.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P95</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-purple-400">{testData.responseTimes.percentiles["99.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P99</div>
+                  <div className="text-lg font-bold text-purple-400">{testData.responseTimes.max}<span className="ml-1 text-xs">ms</span></div>
+                  <div className="text-xs text-slate-400">Max</div>
                 </div>
               </div>
             </div>
