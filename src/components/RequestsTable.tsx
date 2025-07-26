@@ -248,7 +248,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     <div className="space-y-4">
       {/* Filter Dropdowns */}
       {((testData.testRequirements && availableStatuses.length > 0) || (testData.severityVersion && availableSeverities.length > 0) || numericFields.length > 0) && (
-        <div className="flex justify-start gap-3 flex-wrap">
+        <div className="flex justify-start gap-3 flex-wrap items-start">
           {/* Status Filter Dropdown */}
           {testData.testRequirements && availableStatuses.length > 0 && (
             <div className="relative" ref={statusDropdownRef}>
@@ -435,17 +435,15 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
             </div>
           )}
         </div>
-      )}
-      
-      {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
-        <div className="flex justify-start mt-2">
-          <button
-            onClick={clearFilters}
-            className="flex items-center gap-2 px-3 py-1.5 text-xs bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-md border border-slate-600 transition-colors"
-          >
-            <XCircle className="w-3 h-3" />
-            Clear all filters
-          </button>
+          {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
+            <button
+              onClick={clearFilters}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-md border border-slate-600 transition-colors self-end"
+            >
+              <XCircle className="w-3 h-3" />
+              Clear all filters
+            </button>
+          )}
         </div>
       )}
 
