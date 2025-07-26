@@ -85,13 +85,21 @@ function App() {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
+    const date = new Date(dateString);
+    const timeStr = date.toLocaleString('en-US', {
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
+      hour12: true
     });
+    
+    // Format date as "Wed 23 Feb 2022" without commas
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    const day = date.toLocaleDateString('en-US', { day: '2-digit' });
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.toLocaleDateString('en-US', { year: 'numeric' });
+    const dateStr = `${weekday} ${day} ${month} ${year}`;
+    
+    return { timeStr, dateStr };
   };
 
   const formatFileSize = (bytes: number) => {
@@ -185,7 +193,12 @@ function App() {
               <CompactMetricCard
                 icon={Calendar}
                 label="Start Time"
-                value={formatDate(testData.startTime)}
+                value={(
+                  <div className="flex items-center gap-2">
+                    <span>{formatDate(testData.startTime).timeStr}</span>
+                    <span className="text-xs text-slate-400">{formatDate(testData.startTime).dateStr}</span>
+                  </div>
+                )}
                 color="text-blue-400"
               />
               <CompactMetricCard
@@ -465,7 +478,10 @@ function App() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Created:</span>
-                      <span className="font-medium text-white">{formatDate(testData.createdTime)}</span>
+                      <span className="font-medium text-white">
+                        <div>{formatDate(testData.createdTime).timeStr}</div>
+                        <div className="text-sm text-slate-400">{formatDate(testData.createdTime).dateStr}</div>
+                      </span>
                     </div>
                   </div>
                 </div>
