@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { TestResults, RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
 import { SeverityBadge } from './SeverityBadge';
+import { XCircle } from 'lucide-react';
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -22,6 +23,31 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [numericValue, setNumericValue] = useState<string>('');
   const [isNumericDropdownOpen, setIsNumericDropdownOpen] = useState(false);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+  
+  // Refs for dropdowns to handle click outside
+  const statusDropdownRef = useRef<HTMLDivElement>(null);
+  const severityDropdownRef = useRef<HTMLDivElement>(null);
+  const numericDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Handle click outside to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+      if (severityDropdownRef.current && !severityDropdownRef.current.contains(event.target as Node)) {
+        setIsSeverityDropdownOpen(false);
+      }
+      if (numericDropdownRef.current && !numericDropdownRef.current.contains(event.target as Node)) {
+        setIsNumericDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   try {
     const requestResults = testData?.requestResults || [];
 
@@ -225,7 +251,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         <div className="flex justify-start gap-3 flex-wrap">
           {/* Status Filter Dropdown */}
           {testData.testRequirements && availableStatuses.length > 0 && (
-            <div className="relative">
+            <div className="relative" ref={statusDropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
@@ -277,7 +303,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
           {/* Severity Filter Dropdown */}
           {testData.severityVersion && availableSeverities.length > 0 && (
-            <div className="relative">
+            <div className="relative" ref={severityDropdownRef}>
               <button
                 onClick={() => setIsSeverityDropdownOpen(!isSeverityDropdownOpen)}
                 className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
@@ -329,7 +355,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
           {/* Numeric Filter Dropdown */}
           {numericFields.length > 0 && (
-            <div className="relative">
+            <div className="relative" ref={numericDropdownRef}>
               <button
                 onClick={() => setIsNumericDropdownOpen(!isNumericDropdownOpen)}
                 className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
@@ -408,6 +434,18 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               )}
             </div>
           )}
+        </div>
+      )}
+      
+      {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
+        <div className="flex justify-start mt-2">
+          <button
+            onClick={clearFilters}
+            className="flex items-center gap-2 px-3 py-1.5 text-xs bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-md border border-slate-600 transition-colors"
+          >
+            <XCircle className="w-3 h-3" />
+            Clear all filters
+          </button>
         </div>
       )}
 
