@@ -72,7 +72,7 @@ function App() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h1 className="mb-1 text-3xl font-bold text-white">
-                  Performance Report Dashboard
+                  Performance Report
                 </h1>
                 <p className="flex items-center gap-2 text-slate-400">
                   <Activity className="w-4 h-4" />
