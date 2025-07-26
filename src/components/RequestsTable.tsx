@@ -434,7 +434,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               )}
             </div>
           )}
-        </div>
           {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
             <button
               onClick={clearFilters}
