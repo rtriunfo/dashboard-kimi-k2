@@ -1,0 +1,4638 @@
+{
+  "testRun": {
+    "id": 7,
+    "test": {
+      "id": 1,
+      "description": "Peak Hour Load Test",
+      "type": "LOAD",
+      "simulationName": "underwriteme.teamA.simulation.loadtest"
+    },
+    "status": "FAIL",
+    "startTime": "2022-02-23T16:54:21.420+00:00",
+    "duration": 4201,
+    "branch": null,
+    "gatlingVersion": "3.7.3",
+    "parserVersion": "3.6.1",
+    "environment": null,
+    "gitHash": null,
+    "totalRequests": 310985,
+    "errorRate": 0.01286235670530733,
+    "rate": 4441.585336824565,
+    "rateGranularity": "PER_MINUTE",
+    "responseTimes": {
+      "min": 4,
+      "max": 7152,
+      "percentiles": {
+        "50.0": 29,
+        "90.0": 586,
+        "95.0": 779,
+        "99.0": 1445,
+        "99.9": 2624,
+        "100.0": 7152
+      }
+    },
+    "requestStats": {
+      "total": 75,
+      "passed": 60,
+      "failed": 14,
+      "unavailable": 1
+    },
+    "assertionStats": {
+      "total": 225,
+      "passed": 204,
+      "failed": 18,
+      "unavailable": 3
+    },
+    "severityStats": {
+      "blocker": 1,
+      "critical": 4,
+      "major": 1,
+      "minor": 8,
+      "none": 61
+    },
+    "gatlingReportLocation": "1/1/20250726080042e93680bf56/GATLING_REPORT",
+    "gatlingLogLocation": "1/1/20250726080042e93680bf56/GATLING_LOG/simulationV373_23022022.log.gz",
+    "testRequirements": true,
+    "requirementsFileLocation": "1/1/20250726080042e93680bf56/REQUIREMENTS/requirementsV1_AllPassing.csv",
+    "createdTime": "2025-07-26T08:00:42.862+00:00",
+    "severityVersion": "V1",
+    "requirementsVersion": "V1"
+  },
+  "requestResults": [
+    {
+      "id": 451,
+      "request": {
+        "id": 1,
+        "requestName": "DELETE /proxy/api/application",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.886+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 5,
+      "passCount": 5,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 0.08578781812982557,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 1888,
+        "max": 3828,
+        "percentiles": {
+          "50.0": 2273,
+          "90.0": 3828,
+          "95.0": 3828,
+          "99.0": 3828,
+          "99.9": 3828,
+          "100.0": 3828
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 2500.0,
+            "difference": -227.0,
+            "percentageDifference": -9.08
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 5000.0,
+            "difference": -1172.0,
+            "percentageDifference": -23.44
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -1172.0,
+            "percentageDifference": -23.44
+          }
+        ]
+      }
+    },
+    {
+      "id": 452,
+      "request": {
+        "id": 2,
+        "requestName": "DELETE api/application/basket/item",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.899+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 207,
+      "passCount": 207,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 2.9720028715003592,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 320,
+        "max": 988,
+        "percentiles": {
+          "50.0": 501,
+          "90.0": 709,
+          "95.0": 784,
+          "99.0": 967,
+          "99.9": 988,
+          "100.0": 988
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 750.0,
+            "difference": -249.0,
+            "percentageDifference": -33.2
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1000.0,
+            "difference": -216.0,
+            "percentageDifference": -21.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -1012.0,
+            "percentageDifference": -50.6
+          }
+        ]
+      }
+    },
+    {
+      "id": 453,
+      "request": {
+        "id": 3,
+        "requestName": "GET /api/application/payment/restriction",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.903+00:00"
+      },
+      "severity": "CRITICAL",
+      "totalCount": 439,
+      "passCount": 439,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.287896872761996,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 59,
+        "max": 1240,
+        "percentiles": {
+          "50.0": 90,
+          "90.0": 120,
+          "95.0": 137,
+          "99.0": 208,
+          "99.9": 1240,
+          "100.0": 1240
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 150.0,
+            "difference": -60.0,
+            "percentageDifference": -40.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -113.0,
+            "percentageDifference": -45.2
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": 240.0,
+            "percentageDifference": 24.0
+          }
+        ]
+      }
+    },
+    {
+      "id": 454,
+      "request": {
+        "id": 4,
+        "requestName": "GET /message/all",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.907+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 2272,
+      "passCount": 2272,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 32.48808388941849,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 15,
+        "max": 676,
+        "percentiles": {
+          "50.0": 21,
+          "90.0": 39,
+          "95.0": 55,
+          "99.0": 107,
+          "99.9": 214,
+          "100.0": 676
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -479.0,
+            "percentageDifference": -95.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 500.0,
+            "difference": -445.0,
+            "percentageDifference": -89.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -324.0,
+            "percentageDifference": -32.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 455,
+      "request": {
+        "id": 5,
+        "requestName": "GET /pp/api/application/{applicationId}/state",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.910+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 13206,
+      "passCount": 13206,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 188.65714285714284,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 63,
+        "max": 3678,
+        "percentiles": {
+          "50.0": 508,
+          "90.0": 755,
+          "95.0": 804,
+          "99.0": 920,
+          "99.9": 1357,
+          "100.0": 3678
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 800.0,
+            "difference": -292.0,
+            "percentageDifference": -36.5
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1000.0,
+            "difference": -196.0,
+            "percentageDifference": -19.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 12000.0,
+            "difference": -8322.0,
+            "percentageDifference": -69.35
+          }
+        ]
+      }
+    },
+    {
+      "id": 456,
+      "request": {
+        "id": 6,
+        "requestName": "GET /pp/api/security/csrf-token",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.914+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 239,
+      "passCount": 239,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.4183551847437426,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 209,
+        "max": 498,
+        "percentiles": {
+          "50.0": 223,
+          "90.0": 271,
+          "95.0": 279,
+          "99.0": 309,
+          "99.9": 498,
+          "100.0": 498
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 250.0,
+            "difference": -27.0,
+            "percentageDifference": -10.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 350.0,
+            "difference": -71.0,
+            "percentageDifference": -20.285714285714285
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": -2.0,
+            "percentageDifference": -0.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 457,
+      "request": {
+        "id": 7,
+        "requestName": "GET /proxy/api/application",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.917+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 303,
+      "passCount": 303,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 4.340974212034384,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 71,
+        "max": 494,
+        "percentiles": {
+          "50.0": 203,
+          "90.0": 329,
+          "95.0": 354,
+          "99.0": 444,
+          "99.9": 494,
+          "100.0": 494
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 250.0,
+            "difference": -47.0,
+            "percentageDifference": -18.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 400.0,
+            "difference": -46.0,
+            "percentageDifference": -11.5
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 750.0,
+            "difference": -256.0,
+            "percentageDifference": -34.13333333333333
+          }
+        ]
+      }
+    },
+    {
+      "id": 458,
+      "request": {
+        "id": 8,
+        "requestName": "GET /proxy/api/enquiry/question",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.920+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 8914,
+      "passCount": 8914,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 127.34285714285716,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 9,
+        "max": 544,
+        "percentiles": {
+          "50.0": 13,
+          "90.0": 24,
+          "95.0": 36,
+          "99.0": 91,
+          "99.9": 254,
+          "100.0": 544
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 50.0,
+            "difference": -37.0,
+            "percentageDifference": -74.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 100.0,
+            "difference": -64.0,
+            "percentageDifference": -64.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -1456.0,
+            "percentageDifference": -72.8
+          }
+        ]
+      }
+    },
+    {
+      "id": 459,
+      "request": {
+        "id": 9,
+        "requestName": "GET /proxy/api/enquiry/question-option-list",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.924+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 4845,
+      "passCount": 4845,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 69.21428571428571,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 10,
+        "max": 488,
+        "percentiles": {
+          "50.0": 13,
+          "90.0": 23,
+          "95.0": 31,
+          "99.0": 90,
+          "99.9": 249,
+          "100.0": 488
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 30.0,
+            "difference": -17.0,
+            "percentageDifference": -56.666666666666664
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 50.0,
+            "difference": -19.0,
+            "percentageDifference": -38.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -512.0,
+            "percentageDifference": -51.2
+          }
+        ]
+      }
+    },
+    {
+      "id": 460,
+      "request": {
+        "id": 10,
+        "requestName": "GET /proxy/api/enquiry/question-option-lookup",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.927+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1160,
+      "passCount": 1160,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 16.58327376697641,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 11,
+        "max": 326,
+        "percentiles": {
+          "50.0": 15,
+          "90.0": 35,
+          "95.0": 44,
+          "99.0": 100,
+          "99.9": 281,
+          "100.0": 326
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 50.0,
+            "difference": -35.0,
+            "percentageDifference": -70.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 100.0,
+            "difference": -56.0,
+            "percentageDifference": -56.00000000000001
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -674.0,
+            "percentageDifference": -67.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 461,
+      "request": {
+        "id": 11,
+        "requestName": "GET /proxy/api/wobo/adviser/$user",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.930+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 558,
+      "passCount": 558,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 7.977126518942102,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 10,
+        "max": 400,
+        "percentiles": {
+          "50.0": 14,
+          "90.0": 35,
+          "95.0": 87,
+          "99.0": 156,
+          "99.9": 400,
+          "100.0": 400
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 100.0,
+            "difference": -86.0,
+            "percentageDifference": -86.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 150.0,
+            "difference": -63.0,
+            "percentageDifference": -42.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": -100.0,
+            "percentageDifference": -20.0
+          }
+        ]
+      }
+    },
+    {
+      "id": 462,
+      "request": {
+        "id": 12,
+        "requestName": "GET activation/activate",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.935+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0528846153846154,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 2062,
+        "max": 7152,
+        "percentiles": {
+          "50.0": 2496,
+          "90.0": 6768,
+          "95.0": 7040,
+          "99.0": 7152,
+          "99.9": 7152,
+          "100.0": 7152
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 5000.0,
+            "difference": -2504.0,
+            "percentageDifference": -50.080000000000005
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 10000.0,
+            "difference": -2960.0,
+            "percentageDifference": -29.599999999999998
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 10000.0,
+            "difference": -2848.0,
+            "percentageDifference": -28.48
+          }
+        ]
+      }
+    },
+    {
+      "id": 463,
+      "request": {
+        "id": 13,
+        "requestName": "GET activation/activationStatuses",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.938+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 77,
+      "passCount": 77,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.110310021629416,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 316,
+        "max": 1363,
+        "percentiles": {
+          "50.0": 409,
+          "90.0": 1099,
+          "95.0": 1192,
+          "99.0": 1363,
+          "99.9": 1363,
+          "100.0": 1363
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -91.0,
+            "percentageDifference": -18.2
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1200.0,
+            "difference": -8.0,
+            "percentageDifference": -0.6666666666666667
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1500.0,
+            "difference": -137.0,
+            "percentageDifference": -9.133333333333333
+          }
+        ]
+      }
+    },
+    {
+      "id": 464,
+      "request": {
+        "id": 14,
+        "requestName": "GET addressLookup/lookup",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.941+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 241,
+      "passCount": 241,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.4469606674612634,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 7,
+        "max": 63,
+        "percentiles": {
+          "50.0": 9,
+          "90.0": 13,
+          "95.0": 17,
+          "99.0": 31,
+          "99.9": 63,
+          "100.0": 63
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -491.0,
+            "percentageDifference": -98.2
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 500.0,
+            "difference": -483.0,
+            "percentageDifference": -96.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": -437.0,
+            "percentageDifference": -87.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 465,
+      "request": {
+        "id": 15,
+        "requestName": "GET angularEnquiry/postDeclaration",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.945+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 178,
+      "passCount": 178,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 2.5477099236641223,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 288,
+        "max": 1693,
+        "percentiles": {
+          "50.0": 498,
+          "90.0": 1465,
+          "95.0": 1553,
+          "99.0": 1667,
+          "99.9": 1693,
+          "100.0": 1693
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -2.0,
+            "percentageDifference": -0.4
+          },
+          {
+            "status": "FAIL",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": 53.0,
+            "percentageDifference": 3.5333333333333337
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -2307.0,
+            "percentageDifference": -57.675
+          }
+        ]
+      }
+    },
+    {
+      "id": 466,
+      "request": {
+        "id": 16,
+        "requestName": "GET api/application",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.948+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 259,
+      "passCount": 222,
+      "failCount": 37,
+      "errorPercentage": 14.285714285714285,
+      "rate": 3.7061769616026714,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 4,
+        "max": 533,
+        "percentiles": {
+          "50.0": 221,
+          "90.0": 325,
+          "95.0": 353,
+          "99.0": 449,
+          "99.9": 533,
+          "100.0": 533
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 250.0,
+            "difference": -29.0,
+            "percentageDifference": -11.600000000000001
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 400.0,
+            "difference": -47.0,
+            "percentageDifference": -11.75
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 750.0,
+            "difference": -217.0,
+            "percentageDifference": -28.933333333333334
+          }
+        ]
+      }
+    },
+    {
+      "id": 467,
+      "request": {
+        "id": 17,
+        "requestName": "GET api/application/activation",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.953+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 2057,
+      "passCount": 2057,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 29.51219512195122,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 127,
+        "max": 617,
+        "percentiles": {
+          "50.0": 183,
+          "90.0": 232,
+          "95.0": 260,
+          "99.0": 318,
+          "99.9": 452,
+          "100.0": 617
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 400.0,
+            "difference": -217.0,
+            "percentageDifference": -54.25
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 600.0,
+            "difference": -340.0,
+            "percentageDifference": -56.666666666666664
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -383.0,
+            "percentageDifference": -38.3
+          }
+        ]
+      }
+    },
+    {
+      "id": 468,
+      "request": {
+        "id": 18,
+        "requestName": "GET api/application/basket",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.956+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1503,
+      "passCount": 1503,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 21.47142857142857,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 180,
+        "max": 1091,
+        "percentiles": {
+          "50.0": 245,
+          "90.0": 357,
+          "95.0": 382,
+          "99.0": 457,
+          "99.9": 968,
+          "100.0": 1091
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 300.0,
+            "difference": -55.0,
+            "percentageDifference": -18.333333333333332
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 500.0,
+            "difference": -118.0,
+            "percentageDifference": -23.599999999999998
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -909.0,
+            "percentageDifference": -45.45
+          }
+        ]
+      }
+    },
+    {
+      "id": 469,
+      "request": {
+        "id": 19,
+        "requestName": "GET api/application/comparison",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.960+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1804,
+      "passCount": 1804,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 25.795996186844615,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 376,
+        "max": 2922,
+        "percentiles": {
+          "50.0": 1135,
+          "90.0": 1470,
+          "95.0": 1628,
+          "99.0": 2008,
+          "99.9": 2500,
+          "100.0": 2922
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1200.0,
+            "difference": -65.0,
+            "percentageDifference": -5.416666666666667
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -372.0,
+            "percentageDifference": -18.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -78.0,
+            "percentageDifference": -2.6
+          }
+        ]
+      }
+    },
+    {
+      "id": 470,
+      "request": {
+        "id": 20,
+        "requestName": "GET api/application/comparison/bundle",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.963+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1417,
+      "passCount": 1417,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 20.262154432793135,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 530,
+        "max": 1470,
+        "percentiles": {
+          "50.0": 713,
+          "90.0": 862,
+          "95.0": 930,
+          "99.0": 1089,
+          "99.9": 1417,
+          "100.0": 1470
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 750.0,
+            "difference": -37.0,
+            "percentageDifference": -4.933333333333334
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1000.0,
+            "difference": -70.0,
+            "percentageDifference": -7.000000000000001
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3500.0,
+            "difference": -2030.0,
+            "percentageDifference": -57.99999999999999
+          }
+        ]
+      }
+    },
+    {
+      "id": 471,
+      "request": {
+        "id": 21,
+        "requestName": "GET api/enquiry/question",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.966+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 56308,
+      "passCount": 56308,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 804.2085217805285,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 20,
+        "max": 1052,
+        "percentiles": {
+          "50.0": 29,
+          "90.0": 49,
+          "95.0": 65,
+          "99.0": 121,
+          "99.9": 385,
+          "100.0": 1052
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 50.0,
+            "difference": -21.0,
+            "percentageDifference": -42.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -185.0,
+            "percentageDifference": -74.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 11000.0,
+            "difference": -9948.0,
+            "percentageDifference": -90.43636363636364
+          }
+        ]
+      }
+    },
+    {
+      "id": 472,
+      "request": {
+        "id": 22,
+        "requestName": "GET api/enquiry/question-option-list",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.969+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 56308,
+      "passCount": 56308,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 804.2085217805285,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 4,
+        "max": 832,
+        "percentiles": {
+          "50.0": 7,
+          "90.0": 12,
+          "95.0": 19,
+          "99.0": 83,
+          "99.9": 245,
+          "100.0": 832
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 25.0,
+            "difference": -18.0,
+            "percentageDifference": -72.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 50.0,
+            "difference": -31.0,
+            "percentageDifference": -62.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -168.0,
+            "percentageDifference": -16.8
+          }
+        ]
+      }
+    },
+    {
+      "id": 473,
+      "request": {
+        "id": 23,
+        "requestName": "GET api/enquiry/question-option-lookup",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.972+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 56308,
+      "passCount": 56308,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 804.2085217805285,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 5,
+        "max": 695,
+        "percentiles": {
+          "50.0": 8,
+          "90.0": 14,
+          "95.0": 21,
+          "99.0": 81,
+          "99.9": 183,
+          "100.0": 695
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 25.0,
+            "difference": -17.0,
+            "percentageDifference": -68.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 50.0,
+            "difference": -29.0,
+            "percentageDifference": -57.99999999999999
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1500.0,
+            "difference": -805.0,
+            "percentageDifference": -53.666666666666664
+          }
+        ]
+      }
+    },
+    {
+      "id": 474,
+      "request": {
+        "id": 24,
+        "requestName": "GET api/v2/application/basket?include=restrictions",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.975+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 439,
+      "passCount": 439,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.287896872761996,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 187,
+        "max": 639,
+        "percentiles": {
+          "50.0": 253,
+          "90.0": 377,
+          "95.0": 406,
+          "99.0": 496,
+          "99.9": 639,
+          "100.0": 639
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 300.0,
+            "difference": -47.0,
+            "percentageDifference": -15.666666666666668
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 500.0,
+            "difference": -94.0,
+            "percentageDifference": -18.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -1361.0,
+            "percentageDifference": -68.05
+          }
+        ]
+      }
+    },
+    {
+      "id": 475,
+      "request": {
+        "id": 25,
+        "requestName": "GET application/enquiry",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.978+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 365,
+      "passCount": 365,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 5.218012866333096,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 59,
+        "max": 323,
+        "percentiles": {
+          "50.0": 128,
+          "90.0": 184,
+          "95.0": 210,
+          "99.0": 271,
+          "99.9": 323,
+          "100.0": 323
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 200.0,
+            "difference": -72.0,
+            "percentageDifference": -36.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -40.0,
+            "percentageDifference": -16.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": -177.0,
+            "percentageDifference": -35.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 476,
+      "request": {
+        "id": 26,
+        "requestName": "GET application/product",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.981+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 13532,
+      "passCount": 13532,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 193.31428571428572,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 26,
+        "max": 714,
+        "percentiles": {
+          "50.0": 48,
+          "90.0": 71,
+          "95.0": 89,
+          "99.0": 141,
+          "99.9": 355,
+          "100.0": 714
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 100.0,
+            "difference": -52.0,
+            "percentageDifference": -52.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -161.0,
+            "percentageDifference": -64.4
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -1286.0,
+            "percentageDifference": -64.3
+          }
+        ]
+      }
+    },
+    {
+      "id": 477,
+      "request": {
+        "id": 27,
+        "requestName": "GET application/start",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.984+00:00"
+      },
+      "severity": "BLOCKER",
+      "totalCount": 279,
+      "passCount": 279,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.988563259471051,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 12,
+        "max": 439,
+        "percentiles": {
+          "50.0": 15,
+          "90.0": 28,
+          "95.0": 53,
+          "99.0": 309,
+          "99.9": 439,
+          "100.0": 439
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 50.0,
+            "difference": -35.0,
+            "percentageDifference": -70.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 150.0,
+            "difference": -97.0,
+            "percentageDifference": -64.66666666666666
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 200.0,
+            "difference": 239.0,
+            "percentageDifference": 119.5
+          }
+        ]
+      }
+    },
+    {
+      "id": 478,
+      "request": {
+        "id": 28,
+        "requestName": "GET confirm/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.986+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0566948130277443,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 594,
+        "max": 2324,
+        "percentiles": {
+          "50.0": 802,
+          "90.0": 1935,
+          "95.0": 2126,
+          "99.0": 2324,
+          "99.9": 2324,
+          "100.0": 2324
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -198.0,
+            "percentageDifference": -19.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2500.0,
+            "difference": -374.0,
+            "percentageDifference": -14.96
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -676.0,
+            "percentageDifference": -22.53333333333333
+          }
+        ]
+      }
+    },
+    {
+      "id": 479,
+      "request": {
+        "id": 29,
+        "requestName": "GET contactDetails/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.990+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 241,
+      "passCount": 241,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.447782546494993,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 434,
+        "max": 1756,
+        "percentiles": {
+          "50.0": 752,
+          "90.0": 1026,
+          "95.0": 1073,
+          "99.0": 1158,
+          "99.9": 1756,
+          "100.0": 1756
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "FAIL",
+            "percentile": 50.0,
+            "value": 750.0,
+            "difference": 2.0,
+            "percentageDifference": 0.26666666666666666
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -427.0,
+            "percentageDifference": -28.46666666666667
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -1244.0,
+            "percentageDifference": -41.46666666666667
+          }
+        ]
+      }
+    },
+    {
+      "id": 480,
+      "request": {
+        "id": 30,
+        "requestName": "GET customer/first?newApplication=true",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.993+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 279,
+      "passCount": 279,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.988563259471051,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 269,
+        "max": 918,
+        "percentiles": {
+          "50.0": 315,
+          "90.0": 374,
+          "95.0": 409,
+          "99.0": 462,
+          "99.9": 918,
+          "100.0": 918
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -185.0,
+            "percentageDifference": -37.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 700.0,
+            "difference": -291.0,
+            "percentageDifference": -41.57142857142857
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -82.0,
+            "percentageDifference": -8.200000000000001
+          }
+        ]
+      }
+    },
+    {
+      "id": 481,
+      "request": {
+        "id": 31,
+        "requestName": "GET customer/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.996+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 0,
+      "passCount": 0,
+      "failCount": 0,
+      "errorPercentage": "NaN",
+      "rate": "NaN",
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 0,
+        "max": 0,
+        "percentiles": {
+          "50.0": 0,
+          "90.0": 0,
+          "95.0": 0,
+          "99.0": 0,
+          "99.9": 0,
+          "100.0": 0
+        }
+      },
+      "status": "NA",
+      "testRequirements": true,
+      "statistics": false,
+      "requirements": {
+        "status": "NA",
+        "passed": 0,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "NA",
+            "percentile": 50.0,
+            "value": 25.0,
+            "difference": null,
+            "percentageDifference": null
+          },
+          {
+            "status": "NA",
+            "percentile": 95.0,
+            "value": 50.0,
+            "difference": null,
+            "percentageDifference": null
+          },
+          {
+            "status": "NA",
+            "percentile": 100.0,
+            "value": 100.0,
+            "difference": null,
+            "percentageDifference": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 482,
+      "request": {
+        "id": 32,
+        "requestName": "GET customer/second",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:21:59.998+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 175,
+      "passCount": 175,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 2.514367816091954,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 325,
+        "max": 653,
+        "percentiles": {
+          "50.0": 402,
+          "90.0": 462,
+          "95.0": 473,
+          "99.0": 551,
+          "99.9": 653,
+          "100.0": 653
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -98.0,
+            "percentageDifference": -19.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 700.0,
+            "difference": -227.0,
+            "percentageDifference": -32.42857142857143
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -347.0,
+            "percentageDifference": -34.699999999999996
+          }
+        ]
+      }
+    },
+    {
+      "id": 483,
+      "request": {
+        "id": 33,
+        "requestName": "GET dashboard/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.001+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 280,
+      "passCount": 280,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 4.003813155386082,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 56,
+        "max": 465,
+        "percentiles": {
+          "50.0": 91,
+          "90.0": 133,
+          "95.0": 168,
+          "99.0": 293,
+          "99.9": 465,
+          "100.0": 465
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 200.0,
+            "difference": -109.0,
+            "percentageDifference": -54.50000000000001
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 350.0,
+            "difference": -182.0,
+            "percentageDifference": -52.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 750.0,
+            "difference": -285.0,
+            "percentageDifference": -38.0
+          }
+        ]
+      }
+    },
+    {
+      "id": 484,
+      "request": {
+        "id": 34,
+        "requestName": "GET drDetails/show",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.004+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 26,
+      "passCount": 26,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 0.37799854615943784,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 313,
+        "max": 512,
+        "percentiles": {
+          "50.0": 377,
+          "90.0": 454,
+          "95.0": 466,
+          "99.0": 512,
+          "99.9": 512,
+          "100.0": 512
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 400.0,
+            "difference": -23.0,
+            "percentageDifference": -5.75
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 500.0,
+            "difference": -34.0,
+            "percentageDifference": -6.800000000000001
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": 12.0,
+            "percentageDifference": 2.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 485,
+      "request": {
+        "id": 35,
+        "requestName": "GET enquiry/handleSatisfied",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.007+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 178,
+      "passCount": 178,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 2.548317823908375,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 187,
+        "max": 1342,
+        "percentiles": {
+          "50.0": 347,
+          "90.0": 1130,
+          "95.0": 1228,
+          "99.0": 1323,
+          "99.9": 1342,
+          "100.0": 1342
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -153.0,
+            "percentageDifference": -30.599999999999998
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -272.0,
+            "percentageDifference": -18.133333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -658.0,
+            "percentageDifference": -32.9
+          }
+        ]
+      }
+    },
+    {
+      "id": 486,
+      "request": {
+        "id": 36,
+        "requestName": "GET enquiry/openFirstUnsatisfied",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.010+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 240,
+      "passCount": 240,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.4383954154727796,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 196,
+        "max": 1621,
+        "percentiles": {
+          "50.0": 550,
+          "90.0": 1185,
+          "95.0": 1239,
+          "99.0": 1300,
+          "99.9": 1621,
+          "100.0": 1621
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 600.0,
+            "difference": -50.0,
+            "percentageDifference": -8.333333333333332
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -261.0,
+            "percentageDifference": -17.4
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -379.0,
+            "percentageDifference": -18.95
+          }
+        ]
+      }
+    },
+    {
+      "id": 487,
+      "request": {
+        "id": 37,
+        "requestName": "GET enquiry/preDeclaration",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.014+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 367,
+      "passCount": 367,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 5.249106078665077,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 277,
+        "max": 2426,
+        "percentiles": {
+          "50.0": 695,
+          "90.0": 1350,
+          "95.0": 1415,
+          "99.0": 1568,
+          "99.9": 2426,
+          "100.0": 2426
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -305.0,
+            "percentageDifference": -30.5
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -85.0,
+            "percentageDifference": -5.666666666666666
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -574.0,
+            "percentageDifference": -19.133333333333333
+          }
+        ]
+      }
+    },
+    {
+      "id": 488,
+      "request": {
+        "id": 38,
+        "requestName": "GET enquiry/show",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.018+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 732,
+      "passCount": 732,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 10.467111534795043,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 183,
+        "max": 1523,
+        "percentiles": {
+          "50.0": 604,
+          "90.0": 1232,
+          "95.0": 1311,
+          "99.0": 1429,
+          "99.9": 1523,
+          "100.0": 1523
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -396.0,
+            "percentageDifference": -39.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -689.0,
+            "percentageDifference": -34.449999999999996
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -2477.0,
+            "percentageDifference": -61.925
+          }
+        ]
+      }
+    },
+    {
+      "id": 489,
+      "request": {
+        "id": 39,
+        "requestName": "GET landing",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.021+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 280,
+      "passCount": 280,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 4.003813155386082,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 7,
+        "max": 203,
+        "percentiles": {
+          "50.0": 10,
+          "90.0": 15,
+          "95.0": 20,
+          "99.0": 38,
+          "99.9": 203,
+          "100.0": 203
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 2000.0,
+            "difference": -1990.0,
+            "percentageDifference": -99.5
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -2980.0,
+            "percentageDifference": -99.33333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -4797.0,
+            "percentageDifference": -95.94
+          }
+        ]
+      }
+    },
+    {
+      "id": 490,
+      "request": {
+        "id": 40,
+        "requestName": "GET login",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.026+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 280,
+      "passCount": 280,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 4.003813155386082,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 7,
+        "max": 164,
+        "percentiles": {
+          "50.0": 29,
+          "90.0": 48,
+          "95.0": 69,
+          "99.0": 146,
+          "99.9": 164,
+          "100.0": 164
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 100.0,
+            "difference": -71.0,
+            "percentageDifference": -71.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -181.0,
+            "percentageDifference": -72.39999999999999
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": -336.0,
+            "percentageDifference": -67.2
+          }
+        ]
+      }
+    },
+    {
+      "id": 491,
+      "request": {
+        "id": 41,
+        "requestName": "GET paymentDetails/show",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.029+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0592503022974606,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 445,
+        "max": 1939,
+        "percentiles": {
+          "50.0": 613,
+          "90.0": 1489,
+          "95.0": 1527,
+          "99.0": 1939,
+          "99.9": 1939,
+          "100.0": 1939
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -387.0,
+            "percentageDifference": -38.7
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -473.0,
+            "percentageDifference": -23.65
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -61.0,
+            "percentageDifference": -3.05
+          }
+        ]
+      }
+    },
+    {
+      "id": 492,
+      "request": {
+        "id": 42,
+        "requestName": "GET product/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.032+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 234,
+      "passCount": 234,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.361264065118506,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 427,
+        "max": 2167,
+        "percentiles": {
+          "50.0": 1340,
+          "90.0": 1581,
+          "95.0": 1659,
+          "99.0": 1751,
+          "99.9": 2167,
+          "100.0": 2167
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 1,
+        "failed": 2,
+        "percentiles": [
+          {
+            "status": "FAIL",
+            "percentile": 50.0,
+            "value": 1250.0,
+            "difference": 90.0,
+            "percentageDifference": 7.199999999999999
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -341.0,
+            "percentageDifference": -17.05
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": 167.0,
+            "percentageDifference": 8.35
+          }
+        ]
+      }
+    },
+    {
+      "id": 493,
+      "request": {
+        "id": 43,
+        "requestName": "GET quote/comparison",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.035+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 213,
+      "passCount": 213,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.051575931232092,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 245,
+        "max": 1584,
+        "percentiles": {
+          "50.0": 581,
+          "90.0": 1201,
+          "95.0": 1282,
+          "99.0": 1350,
+          "99.9": 1584,
+          "100.0": 1584
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 600.0,
+            "difference": -19.0,
+            "percentageDifference": -3.166666666666667
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -218.0,
+            "percentageDifference": -14.533333333333335
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -1416.0,
+            "percentageDifference": -47.199999999999996
+          }
+        ]
+      }
+    },
+    {
+      "id": 494,
+      "request": {
+        "id": 44,
+        "requestName": "GET quote/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.038+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 213,
+      "passCount": 213,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.051575931232092,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 363,
+        "max": 2293,
+        "percentiles": {
+          "50.0": 1102,
+          "90.0": 2000,
+          "95.0": 2054,
+          "99.0": 2196,
+          "99.9": 2293,
+          "100.0": 2293
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1250.0,
+            "difference": -148.0,
+            "percentageDifference": -11.84
+          },
+          {
+            "status": "FAIL",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": 54.0,
+            "percentageDifference": 2.7
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -707.0,
+            "percentageDifference": -23.566666666666666
+          }
+        ]
+      }
+    },
+    {
+      "id": 495,
+      "request": {
+        "id": 45,
+        "requestName": "GET quote/proceed",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.041+00:00"
+      },
+      "severity": "CRITICAL",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0602759622367466,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 274,
+        "max": 2522,
+        "percentiles": {
+          "50.0": 372,
+          "90.0": 1402,
+          "95.0": 1501,
+          "99.0": 2522,
+          "99.9": 2522,
+          "100.0": 2522
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -128.0,
+            "percentageDifference": -25.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1750.0,
+            "difference": -249.0,
+            "percentageDifference": -14.22857142857143
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": 522.0,
+            "percentageDifference": 26.1
+          }
+        ]
+      }
+    },
+    {
+      "id": 496,
+      "request": {
+        "id": 46,
+        "requestName": "GET review/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.044+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.053897978825794,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 720,
+        "max": 4751,
+        "percentiles": {
+          "50.0": 1006,
+          "90.0": 2549,
+          "95.0": 2689,
+          "99.0": 4751,
+          "99.9": 4751,
+          "100.0": 4751
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1500.0,
+            "difference": -494.0,
+            "percentageDifference": -32.93333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -311.0,
+            "percentageDifference": -10.366666666666667
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -249.0,
+            "percentageDifference": -4.9799999999999995
+          }
+        ]
+      }
+    },
+    {
+      "id": 497,
+      "request": {
+        "id": 47,
+        "requestName": "GET v2/application/basket",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.046+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 312,
+      "passCount": 312,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 4.46139180171592,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 76,
+        "max": 825,
+        "percentiles": {
+          "50.0": 224,
+          "90.0": 413,
+          "95.0": 483,
+          "99.0": 614,
+          "99.9": 825,
+          "100.0": 825
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 300.0,
+            "difference": -76.0,
+            "percentageDifference": -25.333333333333336
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 750.0,
+            "difference": -267.0,
+            "percentageDifference": -35.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -175.0,
+            "percentageDifference": -17.5
+          }
+        ]
+      }
+    },
+    {
+      "id": 498,
+      "request": {
+        "id": 48,
+        "requestName": "GET v2/application/comparison",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.049+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 299,
+      "passCount": 299,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 4.282645022678444,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 346,
+        "max": 3967,
+        "percentiles": {
+          "50.0": 931,
+          "90.0": 2003,
+          "95.0": 2511,
+          "99.0": 2977,
+          "99.9": 3967,
+          "100.0": 3967
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1500.0,
+            "difference": -569.0,
+            "percentageDifference": -37.93333333333334
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 4000.0,
+            "difference": -1489.0,
+            "percentageDifference": -37.225
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 6000.0,
+            "difference": -2033.0,
+            "percentageDifference": -33.88333333333333
+          }
+        ]
+      }
+    },
+    {
+      "id": 499,
+      "request": {
+        "id": 49,
+        "requestName": "POST /proxy/api/search",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.052+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 279,
+      "passCount": 279,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.988563259471051,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 629,
+        "max": 1477,
+        "percentiles": {
+          "50.0": 878,
+          "90.0": 1055,
+          "95.0": 1111,
+          "99.0": 1286,
+          "99.9": 1477,
+          "100.0": 1477
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 7500.0,
+            "difference": -6622.0,
+            "percentageDifference": -88.29333333333334
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 10000.0,
+            "difference": -8889.0,
+            "percentageDifference": -88.89
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 15000.0,
+            "difference": -13523.0,
+            "percentageDifference": -90.15333333333334
+          }
+        ]
+      }
+    },
+    {
+      "id": 500,
+      "request": {
+        "id": 50,
+        "requestName": "POST angularEnquiry/confirmPostDeclaration",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.055+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 272,
+      "passCount": 272,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.896848137535817,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 201,
+        "max": 3147,
+        "percentiles": {
+          "50.0": 613,
+          "90.0": 2122,
+          "95.0": 2301,
+          "99.0": 2698,
+          "99.9": 3147,
+          "100.0": 3147
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -387.0,
+            "percentageDifference": -38.7
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -699.0,
+            "percentageDifference": -23.3
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -853.0,
+            "percentageDifference": -21.325
+          }
+        ]
+      }
+    },
+    {
+      "id": 501,
+      "request": {
+        "id": 51,
+        "requestName": "POST api/application",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.059+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 1544,
+      "passCount": 1544,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 22.06239580852584,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 521,
+        "max": 2810,
+        "percentiles": {
+          "50.0": 1019,
+          "90.0": 1697,
+          "95.0": 1837,
+          "99.0": 2154,
+          "99.9": 2549,
+          "100.0": 2810
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "FAIL",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": 19.0,
+            "percentageDifference": 1.9
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -163.0,
+            "percentageDifference": -8.15
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3500.0,
+            "difference": -690.0,
+            "percentageDifference": -19.714285714285715
+          }
+        ]
+      }
+    },
+    {
+      "id": 502,
+      "request": {
+        "id": 52,
+        "requestName": "POST api/application/basket/document",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.064+00:00"
+      },
+      "severity": "CRITICAL",
+      "totalCount": 853,
+      "passCount": 853,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 12.206057715239686,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 222,
+        "max": 1289,
+        "percentiles": {
+          "50.0": 319,
+          "90.0": 465,
+          "95.0": 512,
+          "99.0": 642,
+          "99.9": 1289,
+          "100.0": 1289
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 1,
+        "failed": 2,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 400.0,
+            "difference": -81.0,
+            "percentageDifference": -20.25
+          },
+          {
+            "status": "FAIL",
+            "percentile": 95.0,
+            "value": 500.0,
+            "difference": 12.0,
+            "percentageDifference": 2.4
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": 289.0,
+            "percentageDifference": 28.9
+          }
+        ]
+      }
+    },
+    {
+      "id": 503,
+      "request": {
+        "id": 53,
+        "requestName": "POST api/application/basket/item",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.067+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1506,
+      "passCount": 1505,
+      "failCount": 1,
+      "errorPercentage": 0.06640106241699867,
+      "rate": 21.51940938318647,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 253,
+        "max": 1760,
+        "percentiles": {
+          "50.0": 646,
+          "90.0": 951,
+          "95.0": 1076,
+          "99.0": 1406,
+          "99.9": 1732,
+          "100.0": 1760
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 750.0,
+            "difference": -104.0,
+            "percentageDifference": -13.866666666666665
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -424.0,
+            "percentageDifference": -28.26666666666667
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -2240.0,
+            "percentageDifference": -56.00000000000001
+          }
+        ]
+      }
+    },
+    {
+      "id": 504,
+      "request": {
+        "id": 54,
+        "requestName": "POST confirm/legals",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.071+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0541516245487363,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 672,
+        "max": 3639,
+        "percentiles": {
+          "50.0": 1038,
+          "90.0": 2486,
+          "95.0": 2662,
+          "99.0": 3639,
+          "99.9": 3639,
+          "100.0": 3639
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1500.0,
+            "difference": -462.0,
+            "percentageDifference": -30.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -338.0,
+            "percentageDifference": -11.266666666666666
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -361.0,
+            "percentageDifference": -9.025
+          }
+        ]
+      }
+    },
+    {
+      "id": 505,
+      "request": {
+        "id": 55,
+        "requestName": "POST contactDetails/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.074+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 240,
+      "passCount": 240,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.4392166228803442,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 810,
+        "max": 2893,
+        "percentiles": {
+          "50.0": 1697,
+          "90.0": 2324,
+          "95.0": 2381,
+          "99.0": 2752,
+          "99.9": 2893,
+          "100.0": 2893
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1750.0,
+            "difference": -53.0,
+            "percentageDifference": -3.028571428571429
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -619.0,
+            "percentageDifference": -20.633333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -1107.0,
+            "percentageDifference": -27.675
+          }
+        ]
+      }
+    },
+    {
+      "id": 506,
+      "request": {
+        "id": 56,
+        "requestName": "POST customer/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.077+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 453,
+      "passCount": 453,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.494623655913978,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 767,
+        "max": 2120,
+        "percentiles": {
+          "50.0": 1062,
+          "90.0": 1336,
+          "95.0": 1434,
+          "99.0": 1727,
+          "99.9": 2120,
+          "100.0": 2120
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1500.0,
+            "difference": -438.0,
+            "percentageDifference": -29.2
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -566.0,
+            "percentageDifference": -28.299999999999997
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -2880.0,
+            "percentageDifference": -57.599999999999994
+          }
+        ]
+      }
+    },
+    {
+      "id": 507,
+      "request": {
+        "id": 57,
+        "requestName": "POST drDetails/show",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.079+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 26,
+      "passCount": 26,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 0.37790697674418605,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 259,
+        "max": 501,
+        "percentiles": {
+          "50.0": 330,
+          "90.0": 445,
+          "95.0": 455,
+          "99.0": 501,
+          "99.9": 501,
+          "100.0": 501
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 400.0,
+            "difference": -70.0,
+            "percentageDifference": -17.5
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 600.0,
+            "difference": -145.0,
+            "percentageDifference": -24.166666666666668
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 600.0,
+            "difference": -99.0,
+            "percentageDifference": -16.5
+          }
+        ]
+      }
+    },
+    {
+      "id": 508,
+      "request": {
+        "id": 58,
+        "requestName": "POST enquiry",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.082+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 366,
+      "passCount": 366,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 5.236051502145923,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 295,
+        "max": 1993,
+        "percentiles": {
+          "50.0": 803,
+          "90.0": 1577,
+          "95.0": 1647,
+          "99.0": 1802,
+          "99.9": 1993,
+          "100.0": 1993
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -197.0,
+            "percentageDifference": -19.7
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2000.0,
+            "difference": -353.0,
+            "percentageDifference": -17.65
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -3007.0,
+            "percentageDifference": -60.14000000000001
+          }
+        ]
+      }
+    },
+    {
+      "id": 509,
+      "request": {
+        "id": 59,
+        "requestName": "POST paymentDetails/show",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.084+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0566948130277443,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 762,
+        "max": 3562,
+        "percentiles": {
+          "50.0": 1012,
+          "90.0": 2508,
+          "95.0": 2710,
+          "99.0": 3562,
+          "99.9": 3562,
+          "100.0": 3562
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1500.0,
+            "difference": -488.0,
+            "percentageDifference": -32.53333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -290.0,
+            "percentageDifference": -9.666666666666666
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -1438.0,
+            "percentageDifference": -28.76
+          }
+        ]
+      }
+    },
+    {
+      "id": 510,
+      "request": {
+        "id": 60,
+        "requestName": "POST product/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.088+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 456,
+      "passCount": 456,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.525160982590031,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 501,
+        "max": 3542,
+        "percentiles": {
+          "50.0": 1646,
+          "90.0": 2435,
+          "95.0": 2687,
+          "99.0": 3120,
+          "99.9": 3542,
+          "100.0": 3542
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1750.0,
+            "difference": -104.0,
+            "percentageDifference": -5.942857142857143
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3000.0,
+            "difference": -313.0,
+            "percentageDifference": -10.433333333333334
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -1458.0,
+            "percentageDifference": -29.160000000000004
+          }
+        ]
+      }
+    },
+    {
+      "id": 511,
+      "request": {
+        "id": 61,
+        "requestName": "POST review/index",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.091+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 73,
+      "passCount": 73,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.0533910533910533,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 224,
+        "max": 1040,
+        "percentiles": {
+          "50.0": 316,
+          "90.0": 884,
+          "95.0": 924,
+          "99.0": 1040,
+          "99.9": 1040,
+          "100.0": 1040
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 500.0,
+            "difference": -184.0,
+            "percentageDifference": -36.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1000.0,
+            "difference": -76.0,
+            "percentageDifference": -7.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1500.0,
+            "difference": -460.0,
+            "percentageDifference": -30.666666666666664
+          }
+        ]
+      }
+    },
+    {
+      "id": 512,
+      "request": {
+        "id": 62,
+        "requestName": "POST v2/application/basket/item",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.094+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 86,
+      "passCount": 86,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 1.2524271844660193,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 257,
+        "max": 1722,
+        "percentiles": {
+          "50.0": 594,
+          "90.0": 1257,
+          "95.0": 1387,
+          "99.0": 1722,
+          "99.9": 1722,
+          "100.0": 1722
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -406.0,
+            "percentageDifference": -40.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -113.0,
+            "percentageDifference": -7.533333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -278.0,
+            "percentageDifference": -13.900000000000002
+          }
+        ]
+      }
+    },
+    {
+      "id": 513,
+      "request": {
+        "id": 63,
+        "requestName": "PUT api/application/activation",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.099+00:00"
+      },
+      "severity": "MAJOR",
+      "totalCount": 435,
+      "passCount": 435,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.24103299856528,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 1107,
+        "max": 4569,
+        "percentiles": {
+          "50.0": 2004,
+          "90.0": 3245,
+          "95.0": 3558,
+          "99.0": 4003,
+          "99.9": 4569,
+          "100.0": 4569
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 0,
+        "failed": 3,
+        "percentiles": [
+          {
+            "status": "FAIL",
+            "percentile": 50.0,
+            "value": 2000.0,
+            "difference": 4.0,
+            "percentageDifference": 0.2
+          },
+          {
+            "status": "FAIL",
+            "percentile": 95.0,
+            "value": 3500.0,
+            "difference": 58.0,
+            "percentageDifference": 1.657142857142857
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": 569.0,
+            "percentageDifference": 14.224999999999998
+          }
+        ]
+      }
+    },
+    {
+      "id": 514,
+      "request": {
+        "id": 64,
+        "requestName": "PUT api/application/comparison",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.103+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 1417,
+      "passCount": 1417,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 20.286327845382964,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 1014,
+        "max": 3244,
+        "percentiles": {
+          "50.0": 1590,
+          "90.0": 2171,
+          "95.0": 2348,
+          "99.0": 2736,
+          "99.9": 3187,
+          "100.0": 3244
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "FAIL",
+            "percentile": 50.0,
+            "value": 1500.0,
+            "difference": 90.0,
+            "percentageDifference": 6.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 2500.0,
+            "difference": -152.0,
+            "percentageDifference": -6.08
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4000.0,
+            "difference": -756.0,
+            "percentageDifference": -18.9
+          }
+        ]
+      }
+    },
+    {
+      "id": 515,
+      "request": {
+        "id": 65,
+        "requestName": "PUT api/application/comparison/bundle",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.107+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1417,
+      "passCount": 1417,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 20.28148854961832,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 620,
+        "max": 2465,
+        "percentiles": {
+          "50.0": 842,
+          "90.0": 1099,
+          "95.0": 1193,
+          "99.0": 1415,
+          "99.9": 1870,
+          "100.0": 2465
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 1000.0,
+            "difference": -158.0,
+            "percentageDifference": -15.8
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -307.0,
+            "percentageDifference": -20.466666666666665
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 3000.0,
+            "difference": -535.0,
+            "percentageDifference": -17.833333333333336
+          }
+        ]
+      }
+    },
+    {
+      "id": 516,
+      "request": {
+        "id": 66,
+        "requestName": "PUT api/application/customer/marketing-preference/insurer",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.110+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 547,
+      "passCount": 547,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 7.879951980792316,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 60,
+        "max": 585,
+        "percentiles": {
+          "50.0": 100,
+          "90.0": 180,
+          "95.0": 202,
+          "99.0": 265,
+          "99.9": 585,
+          "100.0": 585
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 150.0,
+            "difference": -50.0,
+            "percentageDifference": -33.33333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -48.0,
+            "percentageDifference": -19.2
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1500.0,
+            "difference": -915.0,
+            "percentageDifference": -61.0
+          }
+        ]
+      }
+    },
+    {
+      "id": 517,
+      "request": {
+        "id": 67,
+        "requestName": "PUT api/application/customer/marketing-preference/third-party",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.113+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 547,
+      "passCount": 547,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 7.864845434938893,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 58,
+        "max": 697,
+        "percentiles": {
+          "50.0": 100,
+          "90.0": 180,
+          "95.0": 210,
+          "99.0": 314,
+          "99.9": 697,
+          "100.0": 697
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 150.0,
+            "difference": -50.0,
+            "percentageDifference": -33.33333333333333
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -40.0,
+            "percentageDifference": -16.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 1000.0,
+            "difference": -303.0,
+            "percentageDifference": -30.3
+          }
+        ]
+      }
+    },
+    {
+      "id": 518,
+      "request": {
+        "id": 68,
+        "requestName": "PUT api/application/declaration/advised-sale",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.115+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 436,
+      "passCount": 436,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.2464183381088825,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 61,
+        "max": 376,
+        "percentiles": {
+          "50.0": 103,
+          "90.0": 179,
+          "95.0": 214,
+          "99.0": 296,
+          "99.9": 376,
+          "100.0": 376
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 150.0,
+            "difference": -47.0,
+            "percentageDifference": -31.333333333333336
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 300.0,
+            "difference": -86.0,
+            "percentageDifference": -28.666666666666668
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 750.0,
+            "difference": -374.0,
+            "percentageDifference": -49.86666666666667
+          }
+        ]
+      }
+    },
+    {
+      "id": 519,
+      "request": {
+        "id": 69,
+        "requestName": "PUT api/application/declaration/money-laundering-checked",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.118+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 436,
+      "passCount": 436,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 6.2345090562440415,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 62,
+        "max": 323,
+        "percentiles": {
+          "50.0": 101,
+          "90.0": 181,
+          "95.0": 217,
+          "99.0": 267,
+          "99.9": 323,
+          "100.0": 323
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 150.0,
+            "difference": -49.0,
+            "percentageDifference": -32.666666666666664
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 250.0,
+            "difference": -33.0,
+            "percentageDifference": -13.200000000000001
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 500.0,
+            "difference": -177.0,
+            "percentageDifference": -35.4
+          }
+        ]
+      }
+    },
+    {
+      "id": 520,
+      "request": {
+        "id": 70,
+        "requestName": "PUT api/application/enquiry",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.121+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 56420,
+      "passCount": 56420,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 805.8081409188288,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 148,
+        "max": 2174,
+        "percentiles": {
+          "50.0": 315,
+          "90.0": 490,
+          "95.0": 558,
+          "99.0": 744,
+          "99.9": 1168,
+          "100.0": 2174
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 400.0,
+            "difference": -85.0,
+            "percentageDifference": -21.25
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 750.0,
+            "difference": -192.0,
+            "percentageDifference": -25.6
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -2826.0,
+            "percentageDifference": -56.52
+          }
+        ]
+      }
+    },
+    {
+      "id": 521,
+      "request": {
+        "id": 71,
+        "requestName": "PUT api/application/enquiry/pre-declaration",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.124+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1949,
+      "passCount": 1949,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 27.849487973326983,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 123,
+        "max": 1226,
+        "percentiles": {
+          "50.0": 232,
+          "90.0": 326,
+          "95.0": 364,
+          "99.0": 441,
+          "99.9": 1209,
+          "100.0": 1226
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 300.0,
+            "difference": -68.0,
+            "percentageDifference": -22.666666666666664
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 400.0,
+            "difference": -36.0,
+            "percentageDifference": -9.0
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 2000.0,
+            "difference": -774.0,
+            "percentageDifference": -38.7
+          }
+        ]
+      }
+    },
+    {
+      "id": 522,
+      "request": {
+        "id": 72,
+        "requestName": "PUT api/application/payment",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.126+00:00"
+      },
+      "severity": "CRITICAL",
+      "totalCount": 439,
+      "passCount": 437,
+      "failCount": 2,
+      "errorPercentage": 0.45558086560364464,
+      "rate": 6.2759113652609,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 74,
+        "max": 760,
+        "percentiles": {
+          "50.0": 127,
+          "90.0": 218,
+          "95.0": 256,
+          "99.0": 338,
+          "99.9": 760,
+          "100.0": 760
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 200.0,
+            "difference": -73.0,
+            "percentageDifference": -36.5
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 300.0,
+            "difference": -44.0,
+            "percentageDifference": -14.666666666666666
+          },
+          {
+            "status": "FAIL",
+            "percentile": 100.0,
+            "value": 600.0,
+            "difference": 160.0,
+            "percentageDifference": 26.666666666666668
+          }
+        ]
+      }
+    },
+    {
+      "id": 523,
+      "request": {
+        "id": 73,
+        "requestName": "PUT api/application/post-declaration",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.129+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 1417,
+      "passCount": 1417,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 20.296013368345665,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 329,
+        "max": 2072,
+        "percentiles": {
+          "50.0": 597,
+          "90.0": 1117,
+          "95.0": 1225,
+          "99.0": 1442,
+          "99.9": 1931,
+          "100.0": 2072
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 750.0,
+            "difference": -153.0,
+            "percentageDifference": -20.4
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1500.0,
+            "difference": -275.0,
+            "percentageDifference": -18.333333333333332
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 5000.0,
+            "difference": -2928.0,
+            "percentageDifference": -58.56
+          }
+        ]
+      }
+    },
+    {
+      "id": 524,
+      "request": {
+        "id": 74,
+        "requestName": "PUT application/enquiry",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.131+00:00"
+      },
+      "severity": "NONE",
+      "totalCount": 11075,
+      "passCount": 11075,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 158.17662461318733,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 526,
+        "max": 2619,
+        "percentiles": {
+          "50.0": 732,
+          "90.0": 910,
+          "95.0": 977,
+          "99.0": 1146,
+          "99.9": 1500,
+          "100.0": 2619
+        }
+      },
+      "status": "PASS",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "PASS",
+        "passed": 3,
+        "failed": 0,
+        "percentiles": [
+          {
+            "status": "PASS",
+            "percentile": 50.0,
+            "value": 900.0,
+            "difference": -168.0,
+            "percentageDifference": -18.666666666666668
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 1000.0,
+            "difference": -23.0,
+            "percentageDifference": -2.3
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 6500.0,
+            "difference": -3881.0,
+            "percentageDifference": -59.707692307692305
+          }
+        ]
+      }
+    },
+    {
+      "id": 525,
+      "request": {
+        "id": 75,
+        "requestName": "PUT v2/application/comparison",
+        "requestDescription": null,
+        "requestPriority": null,
+        "tags": null,
+        "createdTime": "2025-07-18T19:22:00.135+00:00"
+      },
+      "severity": "MINOR",
+      "totalCount": 213,
+      "passCount": 213,
+      "failCount": 0,
+      "errorPercentage": 0.0,
+      "rate": 3.049391553328561,
+      "rateGranularity": "PER_MINUTE",
+      "responseTimes": {
+        "min": 596,
+        "max": 4317,
+        "percentiles": {
+          "50.0": 1914,
+          "90.0": 3146,
+          "95.0": 3424,
+          "99.0": 4132,
+          "99.9": 4317,
+          "100.0": 4317
+        }
+      },
+      "status": "FAIL",
+      "testRequirements": true,
+      "statistics": true,
+      "requirements": {
+        "status": "FAIL",
+        "passed": 2,
+        "failed": 1,
+        "percentiles": [
+          {
+            "status": "FAIL",
+            "percentile": 50.0,
+            "value": 1750.0,
+            "difference": 164.0,
+            "percentageDifference": 9.37142857142857
+          },
+          {
+            "status": "PASS",
+            "percentile": 95.0,
+            "value": 3500.0,
+            "difference": -76.0,
+            "percentageDifference": -2.1714285714285713
+          },
+          {
+            "status": "PASS",
+            "percentile": 100.0,
+            "value": 4500.0,
+            "difference": -183.0,
+            "percentageDifference": -4.066666666666666
+          }
+        ]
+      }
+    }
+  ]
+}
