@@ -48,8 +48,8 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  try {
-    const requestResults = testData?.requestResults || [];
+  
+  const requestResults = testData?.requestResults || [];
 
     const formatResponseTime = (time: number) => {
       return `${time}`;
@@ -809,14 +809,4 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       </div>
     </div>
   );
-  } catch (error) {
-    console.error('Error in RequestsTable:', error);
-    console.error('testData:', testData);
-    console.error('requestResults:', testData?.requestResults);
-    return (
-      <div className="text-center py-8 text-red-400">
-        Error loading request data: {error instanceof Error ? error.message : 'Unknown error'}
-      </div>
-    );
-  }
 };

@@ -20,7 +20,7 @@
     "rate": 4441.585336824565,
     "rateGranularity": "PER_MINUTE",
     "responseTimes": {
-      "min": 4,
+      "min": 2,
       "max": 7152,
       "percentiles": {
         "50.0": 29,
@@ -28,7 +28,7 @@
         "95.0": 779,
         "99.0": 1445,
         "99.9": 2624,
-        "100.0": 7152
+        "100.0": 7000
       }
     },
     "requestStats": {
@@ -47,7 +47,7 @@
       "blocker": 1,
       "critical": 4,
       "major": 1,
-      "minor": 8,
+      "minor": 80,
       "none": 61
     },
     "gatlingReportLocation": "1/1/20250726080042e93680bf56/GATLING_REPORT",

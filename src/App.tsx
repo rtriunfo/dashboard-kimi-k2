@@ -9,7 +9,7 @@ import { RequestStats } from './components/RequestStats';
 import { AssertionStats } from './components/AssertionStats';
 import { SeverityStats } from './components/SeverityStats';
 import { CompactMetricCard } from './components/CompactMetricCard';
-import { getTestScenario, getAvailableScenarios } from './config/testReportAdapter';
+import { getTestScenario, getAvailableScenarios, TestScenario } from './config/testReportAdapter';
 import { RequestsTable } from './components/RequestsTable';
 
 function App() {
@@ -23,11 +23,14 @@ function App() {
 
   useEffect(() => {
     const loadScenarios = async () => {
+      console.log('Loading scenario:', selectedScenario);
       setIsLoading(true);
       try {
         const scenarios = await getAvailableScenarios();
+        console.log('Available scenarios:', scenarios.map(s => s.id));
         setAvailableScenarios(scenarios);
         const scenario = await getTestScenario(selectedScenario);
+        console.log('Loaded scenario:', scenario?.name, 'with data:', !!scenario?.data);
         setCurrentScenario(scenario);
       } catch (error) {
         console.error('Failed to load scenarios:', error);
@@ -40,6 +43,20 @@ function App() {
   }, [selectedScenario]);
 
   const testData = currentScenario?.data;
+
+  // Debug: Log when testData changes
+  useEffect(() => {
+    if (testData) {
+      console.log('🔄 Header cards re-rendering with scenario:', selectedScenario);
+      console.log('📊 Current data metrics:', {
+        totalRequests: testData.totalRequests,
+        duration: testData.duration,
+        errorRate: testData.errorRate,
+        rate: testData.rate,
+        severityMinor: testData.severityStats?.minor
+      });
+    }
+  }, [testData, selectedScenario]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -56,9 +73,14 @@ function App() {
   }, []);
 
   const formatDuration = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
+    const days = Math.floor(seconds / 86400); // 86400 seconds in a day
+    const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
+    
+    if (days > 0) {
+      return `${days}d ${hours}h ${minutes}m ${secs}s`;
+    }
     return `${hours}h ${minutes}m ${secs}s`;
   };
 
@@ -80,6 +102,18 @@ function App() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
+  // Show loading state
+  if (isLoading || !testData) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2260%22%20height=%2260%22%20viewBox=%220%200%2060%2060%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg%20fill=%22none%22%20fill-rule=%22evenodd%22%3E%3Cg%20fill=%22%239C92AC%22%20fill-opacity=%220.05%22%3E%3Cpath%20d=%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
@@ -96,6 +130,9 @@ function App() {
                 <p className="flex items-center gap-2 text-slate-400">
                   <Activity className="w-4 h-4" />
                   {testData.test.description}
+                  <span className="ml-2 px-2 py-1 text-xs bg-slate-700 rounded text-slate-300">
+                    Scenario: {selectedScenario}
+                  </span>
                 </p>
               </div>
               
@@ -123,6 +160,7 @@ function App() {
                         <button
                           key={scenario.id}
                           onClick={() => {
+                            console.log('Selecting scenario:', scenario.id, scenario.name);
                             setSelectedScenario(scenario.id);
                             setIsScenarioDropdownOpen(false);
                           }}

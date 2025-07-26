@@ -1,6 +1,6 @@
 {
   "testRun": {
-    "id": 7,
+    "id": 8,
     "test": {
       "id": 1,
       "description": "Peak Hour Load Test",
@@ -20,15 +20,15 @@
     "rate": 4441.585336824565,
     "rateGranularity": "PER_MINUTE",
     "responseTimes": {
-      "min": 4,
+      "min": 1,
       "max": 7152,
       "percentiles": {
-        "50.0": 29,
+        "50.0": 290,
         "90.0": 586,
         "95.0": 779,
         "99.0": 1445,
-        "99.9": 2624,
-        "100.0": 7152
+        "99.9": 26249,
+        "100.0": 6000
       }
     },
     "requestStats": {

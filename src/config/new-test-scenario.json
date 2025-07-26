@@ -1,6 +1,6 @@
 {
   "testRun": {
-    "id": 7,
+    "id": 9,
     "test": {
       "id": 1,
       "description": "Peak Hour Load Test",
@@ -9,7 +9,7 @@
     },
     "status": "FAIL",
     "startTime": "2022-02-23T16:54:21.420+00:00",
-    "duration": 4201,
+    "duration": 92010,
     "branch": null,
     "gatlingVersion": "3.7.3",
     "parserVersion": "3.6.1",
@@ -20,15 +20,15 @@
     "rate": 4441.585336824565,
     "rateGranularity": "PER_MINUTE",
     "responseTimes": {
-      "min": 4,
-      "max": 7152,
+      "min": 3,
+      "max": 5000,
       "percentiles": {
         "50.0": 29,
         "90.0": 586,
         "95.0": 779,
         "99.0": 1445,
         "99.9": 2624,
-        "100.0": 7152
+        "100.0": 5000
       }
     },
     "requestStats": {
