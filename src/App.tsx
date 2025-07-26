@@ -151,38 +151,21 @@ function App() {
             </div>
             
             {/* Single Response Times Card */}
-            <div className="mt-4 p-4 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700">
-              <div className="flex items-center gap-2 mb-3">
-                <Clock className="w-5 h-5 text-blue-400" />
-                <h3 className="text-sm font-semibold text-white">Response Times Overview</h3>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-auto gap-4 text-center">
-                {/* Always show min and max */}
-                <div>
-                  <div className="text-lg font-bold text-blue-400">{testData.responseTimes.min}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">Min</div>
-                </div>
-                
-                {/* Dynamically add all percentiles except 100th */}
-                {Object.entries(testData.responseTimes.percentiles)
-                  .filter(([percentile]) => parseFloat(percentile) !== 100)
-                  .map(([percentile, value]) => {
-                    const colors = ['text-green-400', 'text-yellow-400', 'text-orange-400', 'text-red-400', 'text-purple-400'];
-                    const colorIndex = Math.min(parseInt(percentile) / 20, colors.length - 1);
-                    const color = colors[Math.floor(colorIndex)];
-                    
-                    return (
-                      <div key={percentile}>
-                        <div className={`text-lg font-bold ${color}`}>{value}<span className="ml-1 text-xs">ms</span></div>
-                        <div className="text-xs text-slate-400">P{parseFloat(percentile)}</div>
-                      </div>
-                    );
-                  })}
-                
-                {/* Always show max */}
-                <div>
-                  <div className="text-lg font-bold text-purple-400">{testData.responseTimes.max}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">Max</div>
+            <div className="mt-4 p-3 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700">
+              <div className="flex items-center gap-3">
+                <Clock className="w-4 h-4 text-blue-400" />
+                <span className="text-sm font-medium text-white whitespace-nowrap">Response Times:</span>
+                <div className="flex items-center gap-4 text-sm">
+                  <span className="text-slate-300"><span className="text-slate-400">Min:</span> {testData.responseTimes.min}ms</span>
+                  {Object.entries(testData.responseTimes.percentiles)
+                    .filter(([percentile]) => parseFloat(percentile) !== 100)
+                    .sort(([a], [b]) => parseFloat(a) - parseFloat(b))
+                    .map(([percentile, value]) => (
+                      <span key={percentile} className="text-slate-300">
+                        <span className="text-slate-400">P{parseFloat(percentile)}:</span> {value}ms
+                      </span>
+                    ))}
+                  <span className="text-slate-300"><span className="text-slate-400">Max:</span> {testData.responseTimes.max}ms</span>
                 </div>
               </div>
             </div>
