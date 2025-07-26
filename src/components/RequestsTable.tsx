@@ -613,12 +613,23 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                         return `${x},${y}`;
                                       }).join(' ');
                                       
-                                      // Create requirement points if available
+                                      // Create stepped requirement points
                                       const requirementPoints = requirementValues.length > 0 ? 
-                                        requirementValues.map((r, i) => {
+                                        requirementValues.flatMap((r, i) => {
                                           const x = (i / (requirementValues.length - 1)) * 260 + 40;
                                           const y = 100 - ((r.value - minValue) / valueRange) * 80 + 10;
-                                          return `${x},${y}`;
+                                          
+                                          // Create stepped points: horizontal line from previous point, then vertical step
+                                          if (i === 0) {
+                                            return [`${x},${y}`];
+                                          } else {
+                                            const prevX = ((i - 1) / (requirementValues.length - 1)) * 260 + 40;
+                                            const prevY = 100 - ((requirementValues[i - 1].value - minValue) / valueRange) * 80 + 10;
+                                            return [
+                                              `${prevX},${y}`,  // horizontal from previous x to current y
+                                              `${x},${y}`       // vertical step to current point
+                                            ];
+                                          }
                                         }).join(' ') : '';
                                       
                                       return (
@@ -631,7 +642,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                             points={actualPoints}
                                           />
                                           
-                                          {/* Requirements line */}
+                                          {/* Requirements line - stepped */}
                                           {requirementPoints && (
                                             <polyline
                                               fill="none"
