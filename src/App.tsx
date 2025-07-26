@@ -16,11 +16,30 @@ function App() {
   const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes' | 'requests'>('summary');
   const [selectedScenario, setSelectedScenario] = useState<string>('test-report-data');
   const [isScenarioDropdownOpen, setIsScenarioDropdownOpen] = useState(false);
+  const [currentScenario, setCurrentScenario] = useState<TestScenario | null>(null);
+  const [availableScenarios, setAvailableScenarios] = useState<TestScenario[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
-  const currentScenario = getTestScenario(selectedScenario);
-  const testData = currentScenario.data;
-  const availableScenarios = getAvailableScenarios();
+
+  useEffect(() => {
+    const loadScenarios = async () => {
+      setIsLoading(true);
+      try {
+        const scenarios = await getAvailableScenarios();
+        setAvailableScenarios(scenarios);
+        const scenario = await getTestScenario(selectedScenario);
+        setCurrentScenario(scenario);
+      } catch (error) {
+        console.error('Failed to load scenarios:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadScenarios();
+  }, [selectedScenario]);
+
+  const testData = currentScenario?.data;
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -85,13 +104,20 @@ function App() {
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setIsScenarioDropdownOpen(!isScenarioDropdownOpen)}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors border rounded-lg bg-slate-700/50 border-slate-600 hover:bg-slate-600/50"
+                    disabled={isLoading}
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors border rounded-lg bg-slate-700/50 border-slate-600 hover:bg-slate-600/50 disabled:opacity-50"
                   >
-                    <span>{currentScenario.name}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${isScenarioDropdownOpen ? 'rotate-180' : ''}`} />
+                    {isLoading ? (
+                      <span>Loading...</span>
+                    ) : (
+                      <>
+                        <span>{currentScenario?.name || 'Select Scenario'}</span>
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isScenarioDropdownOpen ? 'rotate-180' : ''}`} />
+                      </>
+                    )}
                   </button>
                   
-                  {isScenarioDropdownOpen && (
+                  {!isLoading && isScenarioDropdownOpen && (
                     <div className="absolute right-0 z-50 mt-2 overflow-hidden border rounded-lg shadow-lg bg-slate-800 border-slate-600 min-w-64">
                       {availableScenarios.map((scenario) => (
                         <button

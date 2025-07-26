@@ -1,5 +1,4 @@
 import { TestResults } from '../types';
-import testReportData from './testReport.json';
 
 export interface TestScenario {
   id: string;
@@ -8,30 +7,49 @@ export interface TestScenario {
   data: TestResults;
 }
 
-// Convert the testReport.json data structure to match the expected TestScenario format
-const reportData = testReportData as any;
+// Cache for loaded scenarios
+let cachedScenarios: TestScenario[] | null = null;
 
-export const testScenarios: Record<string, TestScenario> = {
-  'test-report-data': {
-    id: 'test-report-data',
-    name: reportData.testRun.test.description,
-    description: `${reportData.testRun.test.type} test with detailed transaction data`,
-    data: {
-      ...reportData.testRun,
-      requestResults: reportData.requestResults
-    }
+// Function to dynamically load all JSON files from config folder
+async function loadAllScenarios(): Promise<TestScenario[]> {
+  if (cachedScenarios) return cachedScenarios;
+
+  const modules = import.meta.glob('./*.json', { eager: true });
+  const scenarios: TestScenario[] = [];
+
+  for (const [path, module] of Object.entries(modules)) {
+    const fileName = path.split('/').pop()?.replace('.json', '') || 'unnamed';
+    const data = (module as any).testRun || (module as any);
+    
+    scenarios.push({
+      id: fileName,
+      name: data.test?.description || fileName
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '),
+      description: `${data.test?.type || 'Test'} configuration from ${fileName}.json`,
+      data: {
+        ...data,
+        requestResults: (module as any).requestResults || []
+      }
+    });
   }
+
+  cachedScenarios = scenarios;
+  return scenarios;
+}
+
+export const getTestScenario = async (scenarioId: string = 'test-report-data'): Promise<TestScenario> => {
+  const scenarios = await loadAllScenarios();
+  return scenarios.find(s => s.id === scenarioId) || scenarios[0];
 };
 
-export const getTestScenario = (scenarioId: string = 'test-report-data'): TestScenario => {
-  return testScenarios[scenarioId] || testScenarios['test-report-data'];
-};
-
-export const getAvailableScenarios = (): TestScenario[] => {
-  return Object.values(testScenarios);
+export const getAvailableScenarios = async (): Promise<TestScenario[]> => {
+  return await loadAllScenarios();
 };
 
 // Export the detailed request results for components that might need them
-export const getRequestResults = () => {
-  return reportData.requestResults;
+export const getRequestResults = async (scenarioId: string = 'test-report-data') => {
+  const scenario = await getTestScenario(scenarioId);
+  return scenario.data.requestResults || [];
 };
