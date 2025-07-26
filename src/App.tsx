@@ -152,14 +152,14 @@ function App() {
             
             {/* Single Response Times Card */}
             <div className="mt-4 p-3 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700">
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-2">
                 <Clock className="w-4 h-4 text-blue-400" />
                 <span className="text-sm font-medium text-white">Response Times</span>
               </div>
-              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 text-center">
+              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center">
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Min</div>
-                  <div className="text-lg font-bold text-slate-300">{testData.responseTimes.min}<span className="ml-1 text-xs">ms</span></div>
+                  <div className="text-base font-bold text-slate-300">{testData.responseTimes.min}<span className="ml-1 text-xs">ms</span></div>
                 </div>
                 {Object.entries(testData.responseTimes.percentiles)
                   .filter(([percentile]) => parseFloat(percentile) !== 100)
@@ -167,12 +167,12 @@ function App() {
                   .map(([percentile, value]) => (
                     <div key={percentile}>
                       <div className="text-xs text-slate-400 mb-1">P{parseFloat(percentile)}</div>
-                      <div className="text-lg font-bold text-slate-300">{value}<span className="ml-1 text-xs">ms</span></div>
+                      <div className="text-base font-bold text-slate-300">{value}<span className="ml-1 text-xs">ms</span></div>
                     </div>
                   ))}
                 <div>
                   <div className="text-xs text-slate-400 mb-1">Max</div>
-                  <div className="text-lg font-bold text-slate-300">{testData.responseTimes.max}<span className="ml-1 text-xs">ms</span></div>
+                  <div className="text-base font-bold text-slate-300">{testData.responseTimes.max}<span className="ml-1 text-xs">ms</span></div>
                 </div>
               </div>
             </div>
