@@ -150,38 +150,44 @@ function App() {
               />
             </div>
             
-            {/* Response Times Quick Card */}
-            <div className="mt-4 p-4 border-t border-slate-700">
-              <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-blue-400" />
-                <h3 className="text-sm font-medium text-white">Response Times Overview</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-4 mt-3 sm:grid-cols-4 lg:grid-cols-6">
-                <div>
-                  <div className="text-lg font-bold text-white">{testData.responseTimes.min}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">Min</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-white">{testData.responseTimes.percentiles["50.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P50</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-white">{testData.responseTimes.percentiles["90.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P90</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-white">{testData.responseTimes.percentiles["95.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P95</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-white">{testData.responseTimes.percentiles["99.0"]}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">P99</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-white">{testData.responseTimes.max}<span className="ml-1 text-xs">ms</span></div>
-                  <div className="text-xs text-slate-400">Max</div>
-                </div>
-              </div>
+            {/* Compact Response Times Cards */}
+            <div className="grid grid-cols-2 gap-3 mt-4 sm:grid-cols-3 lg:grid-cols-6">
+              <CompactMetricCard
+                icon={Clock}
+                label="Min"
+                value={`${testData.responseTimes.min}ms`}
+                color="text-blue-400"
+              />
+              <CompactMetricCard
+                icon={Clock}
+                label="P50"
+                value={`${testData.responseTimes.percentiles["50.0"]}ms`}
+                color="text-green-400"
+              />
+              <CompactMetricCard
+                icon={Clock}
+                label="P90"
+                value={`${testData.responseTimes.percentiles["90.0"]}ms`}
+                color="text-yellow-400"
+              />
+              <CompactMetricCard
+                icon={Clock}
+                label="P95"
+                value={`${testData.responseTimes.percentiles["95.0"]}ms`}
+                color="text-orange-400"
+              />
+              <CompactMetricCard
+                icon={Clock}
+                label="P99"
+                value={`${testData.responseTimes.percentiles["99.0"]}ms`}
+                color="text-red-400"
+              />
+              <CompactMetricCard
+                icon={Clock}
+                label="Max"
+                value={`${testData.responseTimes.max}ms`}
+                color="text-purple-400"
+              />
             </div>
           </div>
         </header>
