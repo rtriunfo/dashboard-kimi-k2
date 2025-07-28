@@ -73,10 +73,20 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       );
     }
 
-    // Get available percentiles dynamically from the first result
-    const availablePercentiles = requestResults.length > 0 && requestResults[0]?.responseTimes?.percentiles 
-      ? Object.keys(requestResults[0].responseTimes.percentiles).sort((a, b) => parseFloat(a) - parseFloat(b))
-      : [];
+    // Get available percentiles dynamically from the first result and exclude 100% if it equals MAX
+    const availablePercentiles = useMemo(() => {
+      if (!requestResults.length || !requestResults[0]?.responseTimes?.percentiles) {
+        return [];
+      }
+      
+      // Get all percentiles and sort them
+      const allPercentiles = Object.keys(requestResults[0].responseTimes.percentiles)
+        .sort((a, b) => parseFloat(a) - parseFloat(b));
+      
+      // Always exclude 100% percentile since MAX column already shows this value
+      return allPercentiles.filter(p => p !== '100.0' && p !== '100');
+      
+    }, [requestResults]);
 
     const handleSort = (column: SortColumn) => {
       if (sortColumn === column) {
