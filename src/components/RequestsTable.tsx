@@ -23,6 +23,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [numericValue, setNumericValue] = useState<string>('');
   const [isNumericDropdownOpen, setIsNumericDropdownOpen] = useState(false);
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+  const [isAllExpanded, setIsAllExpanded] = useState(false);
   
   // Refs for dropdowns to handle click outside
   const statusDropdownRef = useRef<HTMLDivElement>(null);
@@ -177,7 +178,15 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         newExpandedRows.add(resultId);
       }
       setExpandedRows(newExpandedRows);
+      // Update the all-expanded state if needed
+      if (newExpandedRows.size === 0) {
+        setIsAllExpanded(false);
+      } else if (newExpandedRows.size === filteredAndSortedResults.length) {
+        setIsAllExpanded(true);
+      }
     };
+
+  
 
     const getNumericFieldValue = (result: RequestResult, field: string): number => {
       switch (field) {
@@ -233,6 +242,18 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         return sortDirection === 'asc' ? comparison : -comparison;
       });
     }, [requestResults, sortColumn, sortDirection, selectedStatuses, selectedSeverities, numericField, numericOperator, numericValue]);
+
+    const toggleExpandAll = () => {
+      if (isAllExpanded) {
+        // Collapse all
+        setExpandedRows(new Set());
+      } else {
+        // Expand all - use the same key format as in the row rendering
+        const allIds = filteredAndSortedResults.map((result, index) => result.id || index);
+        setExpandedRows(new Set(allIds));
+      }
+      setIsAllExpanded(!isAllExpanded);
+    };
 
     const SortableHeader: React.FC<{ column: SortColumn; children: React.ReactNode; className?: string }> = ({ 
       column, 
@@ -444,15 +465,40 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               )}
             </div>
           )}
-          {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
+          <div className="flex gap-2">
             <button
-              onClick={clearFilters}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-md border border-slate-600 transition-colors self-end"
+              onClick={toggleExpandAll}
+              className={`flex items-center gap-2 px-3 py-1.5 text-xs ${
+                isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-slate-700/50 border-slate-600'
+              } text-white rounded-md border hover:bg-slate-600/50 transition-colors self-end`}
             >
-              <XCircle className="w-3 h-3" />
-              Clear all filters
+              {isAllExpanded ? (
+                <>
+                  <span>Collapse All</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                  </svg>
+                </>
+              ) : (
+                <>
+                  <span>Expand All</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </>
+              )}
             </button>
-          )}
+            
+            {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center gap-2 px-3 py-1.5 text-xs bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-md border border-slate-600 transition-colors self-end"
+              >
+                <XCircle className="w-3 h-3" />
+                Clear all filters
+              </button>
+            )}
+          </div>
         </div>
       )}
 
