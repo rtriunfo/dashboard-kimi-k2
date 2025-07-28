@@ -465,12 +465,12 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
               )}
             </div>
           )}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <button
               onClick={toggleExpandAll}
-              className={`flex items-center gap-2 px-3 py-1.5 text-xs ${
-                isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-slate-700/50 border-slate-600'
-              } text-white rounded-md border hover:bg-slate-600/50 transition-colors self-end`}
+              className={`flex items-center gap-2 px-4 py-2 text-sm ${
+                isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-slate-800/50 border-slate-700'
+              } text-white rounded-lg border hover:bg-slate-700/50 transition-colors backdrop-blur-sm`}
             >
               {isAllExpanded ? (
                 <>
@@ -492,7 +492,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
             {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs bg-slate-700/50 hover:bg-slate-600/50 text-white rounded-md border border-slate-600 transition-colors self-end"
+                className="flex items-center gap-2 px-4 py-2 text-sm bg-slate-800/50 hover:bg-slate-700/50 text-white rounded-lg border border-slate-700 transition-colors backdrop-blur-sm"
               >
                 <XCircle className="w-3 h-3" />
                 Clear all filters
