@@ -210,6 +210,11 @@
     border-top-color: theme('colors.slate.900');
   }
 
+  /* Ensure chart container has relative positioning for tooltips */
+  .chart-container {
+    @apply relative;
+  }
+
   /* Loading and error states */
   .chart-loading {
     @apply flex items-center justify-center h-64 text-slate-400;
