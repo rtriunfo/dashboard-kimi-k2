@@ -417,8 +417,8 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
       <div className="chart-legend">
         <div className="legend-item">
           <div className="flex items-center gap-2">
-            <div className="legend-line bg-primary-600 dark:bg-primary-400" />
-            <div className="legend-point bg-primary-600 dark:bg-primary-400" />
+            <div className="legend-line bg-blue-500" />
+            <div className="legend-point bg-blue-500" />
           </div>
           <span>Response Times</span>
         </div>
@@ -430,13 +430,13 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
               <div className="flex items-center gap-2">
                 <div className={`legend-line ${
                   chartData?.requirementLineStatus === 'pass' 
-                    ? 'bg-success-600 dark:bg-success-400' 
-                    : 'bg-error-600 dark:bg-error-400'
+                    ? 'bg-green-500' 
+                    : 'bg-red-500'
                 }`} />
                 <div className={`legend-point ${
                   chartData?.requirementLineStatus === 'pass' 
-                    ? 'bg-success-600 dark:bg-success-400' 
-                    : 'bg-error-600 dark:bg-error-400'
+                    ? 'bg-green-500' 
+                    : 'bg-red-500'
                 }`} />
               </div>
               <span>Requirements</span>
@@ -444,11 +444,11 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
             
             <div className="flex items-center gap-4">
               <div className="legend-item">
-                <div className="legend-point bg-success-600 dark:bg-success-400" />
+                <div className="legend-point bg-green-500" />
                 <span className="text-xs">PASS</span>
               </div>
               <div className="legend-item">
-                <div className="legend-point bg-error-600 dark:bg-error-400" />
+                <div className="legend-point bg-red-500" />
                 <span className="text-xs">FAIL</span>
               </div>
             </div>

@@ -4,6 +4,7 @@ import { TestResults, RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
 import { SeverityBadge } from './SeverityBadge';
 import { XCircle } from 'lucide-react';
+import LineGraph from './LineGraph';
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -723,169 +724,24 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                           ) : null}
 
                           {/* Response Times */}
-                          <div className="bg-slate-800/50 rounded-lg p-4">
-                            <h5 className="text-sm font-semibold text-slate-300 mb-2">Response Times (ms)</h5>
-                            <div className="space-y-3">
-                              <div className="flex justify-between text-sm">
-                                <div><span className="text-slate-400">Min:</span> <span className="text-white">{result.responseTimes?.min || 0}</span></div>
-                                <div><span className="text-slate-400">Max:</span> <span className="text-white">{result.responseTimes?.max || 0}</span></div>
-                              </div>
-                              
-                              {result.responseTimes?.percentiles && (
-                                <div className="space-y-2">
-                                  <div className="relative h-32">
-                                    <svg className="w-full h-full" viewBox="0 0 320 140">
-                                    {/* Grid lines */}
-                                    <defs>
-                                      <pattern id="grid" width="30" height="12" patternUnits="userSpaceOnUse">
-                                        <path d="M 30 0 L 0 0 0 12" fill="none" stroke="#374151" strokeWidth="0.5" opacity="0.3"/>
-                                      </pattern>
-                                    </defs>
-                                    <rect x="30" y="10" width="280" height="100" fill="url(#grid)" />
-                                    
-                                    {(() => {
-                                      const percentiles = Object.entries(result.responseTimes.percentiles)
-                                        .map(([p, v]) => ({ percentile: parseFloat(p), value: v }))
-                                        .sort((a, b) => a.percentile - b.percentile);
-                                      
-                                      // Get requirements data if available
-                                      const requirements = result.requirements?.percentiles || [];
-                                      const requirementValues = requirements.map(req => ({
-                                        percentile: req.percentile,
-                                        value: req.value
-                                      })).sort((a, b) => a.percentile - b.percentile);
-                                      
-                                      // Calculate scale including both actual and requirement values
-                                      const allValues = [
-                                        ...percentiles.map(p => p.value),
-                                        ...requirementValues.map(r => r.value)
-                                      ];
-                                      const maxValue = Math.max(...allValues);
-                                      const minValue = Math.min(...allValues);
-                                      const valueRange = maxValue - minValue || 1;
-                                      
-                                      const actualPoints = percentiles.map((p, i) => {
-                                        const x = (i / (percentiles.length - 1)) * 260 + 40;
-                                        const y = 100 - ((p.value - minValue) / valueRange) * 80 + 10;
-                                        return `${x},${y}`;
-                                      }).join(' ');
-                                      
-                                      // Create stepped requirement points
-                                      const requirementPoints = requirementValues.length > 0 ? 
-                                        requirementValues.flatMap((r, i) => {
-                                          const x = (i / (requirementValues.length - 1)) * 260 + 40;
-                                          const y = 100 - ((r.value - minValue) / valueRange) * 80 + 10;
-                                          
-                                          // Create stepped points: horizontal line from previous point, then vertical step
-                                          if (i === 0) {
-                                            return [`${x},${y}`];
-                                          } else {
-                                            const prevX = ((i - 1) / (requirementValues.length - 1)) * 260 + 40;
-                                            // Use prevX for horizontal line and current y
-                                            return [
-                                              `${prevX},${y}`,  // horizontal from previous x to current y
-                                              `${x},${y}`       // vertical step to current point
-                                            ];
-                                          }
-                                        }).join(' ') : '';
-                                      
-                                      return (
-                                        <>
-                                          {/* Actual performance line */}
-                                          <polyline
-                                            fill="none"
-                                            stroke="#3b82f6"
-                                            strokeWidth="2"
-                                            points={actualPoints}
-                                          />
-                                          
-                                          {/* Requirements line - stepped */}
-                                          {requirementPoints && (
-                                            <polyline
-                                              fill="none"
-                                              stroke="#ef4444"
-                                              strokeWidth="2"
-                                              strokeDasharray="4,2"
-                                              points={requirementPoints}
-                                            />
-                                          )}
-                                          
-                                          {/* Actual performance points */}
-                                          {percentiles.map((p, i) => {
-                                            const x = (i / (percentiles.length - 1)) * 260 + 40;
-                                            const y = 100 - ((p.value - minValue) / valueRange) * 80 + 10;
-                                            return (
-                                              <g key={`actual-${p.percentile}`}>
-                                                <circle
-                                                  cx={x}
-                                                  cy={y}
-                                                  r="3"
-                                                  fill="#3b82f6"
-                                                  stroke="#1e293b"
-                                                  strokeWidth="1"
-                                                />
-                                                {/* Percentile labels */}
-                                                <text
-                                                  x={x}
-                                                  y="125"
-                                                  textAnchor="middle"
-                                                  className="text-xs fill-slate-400"
-                                                  fontSize="9"
-                                                >
-                                                  {p.percentile === 100 ? '100' : p.percentile}
-                                                </text>
-                                                {/* Value labels on hover */}
-                                                <title>{`${p.percentile}th percentile: ${p.value}ms (actual)`}</title>
-                                              </g>
-                                            );
-                                          })}
-                                          
-                                          {/* Requirement points */}
-                                          {requirementValues.map((r, i) => {
-                                            const x = (i / (requirementValues.length - 1)) * 260 + 40;
-                                            const y = 100 - ((r.value - minValue) / valueRange) * 80 + 10;
-                                            return (
-                                              <g key={`req-${r.percentile}`}>
-                                                <circle
-                                                  cx={x}
-                                                  cy={y}
-                                                  r="2"
-                                                  fill="#ef4444"
-                                                  stroke="#1e293b"
-                                                  strokeWidth="1"
-                                                />
-                                                {/* Value labels on hover */}
-                                                <title>{`${r.percentile}th percentile: ${r.value}ms (requirement)`}</title>
-                                              </g>
-                                            );
-                                          })}
-                                          
-                                          {/* Y-axis labels */}
-                                          <text x="5" y="15" className="text-xs fill-slate-400" fontSize="8">{maxValue}</text>
-                                          <text x="5" y="105" className="text-xs fill-slate-400" fontSize="8">{minValue}</text>
-                                        </>
-                                      );
-                                    })()}
-                                    </svg>
-                                  </div>
-                                  
-                                  {/* Legend */}
-                                  <div className="flex items-center justify-center gap-4 text-xs">
-                                    <div className="flex items-center gap-1">
-                                      <div className="w-3 h-0.5 bg-blue-500"></div>
-                                      <span className="text-slate-400">Actual</span>
-                                    </div>
-                                    {result.requirements?.percentiles && result.requirements.percentiles.length > 0 && (
-                                      <div className="flex items-center gap-1">
-                                        <div className="w-3 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(to right, #ef4444 0, #ef4444 2px, transparent 2px, transparent 4px)'}}></div>
-                                        <span className="text-slate-400">Requirements</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
+                          {result.responseTimes?.percentiles && (
+                            <LineGraph
+                              responseTimes={{
+                                min: result.responseTimes?.min || 0,
+                                max: result.responseTimes?.max || 0,
+                                percentiles: result.responseTimes?.percentiles || {}
+                              }}
+                              requirements={result.requirements?.percentiles?.map(req => ({
+                                percentile: req.percentile,
+                                value: req.value,
+                                status: req.status as 'PASS' | 'FAIL',
+                                difference: req.difference || 0,
+                                percentageDifference: req.percentageDifference || 0
+                              })) || []}
+                              title='Response Times'
+                              className="animate-slide-up bg-slate-800/50 rounded-lg"
+                            />
+                          )}
 
                           {/* Requirements (if available and has data) */}
                           {result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0) && (
