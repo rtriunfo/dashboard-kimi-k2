@@ -46,11 +46,13 @@
   /* Responsive chart wrapper */
   .chart-wrapper {
     @apply relative w-full;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 20px;
+    padding: 0;
+    max-width: 100%;
+    overflow: visible;
   }
 
   @media (max-width: 640px) {
@@ -87,7 +89,7 @@
   .chart-axis-label {
     @apply text-sm font-medium fill-slate-300;
     font-family: Inter, system-ui, sans-serif;
-    font-weight: 500;
+    font-weight: 800;
   }
 
   .chart-axis-title {
@@ -159,7 +161,7 @@
 
   /* Legend styles */
   .chart-legend {
-    @apply flex flex-wrap items-center justify-center gap-6 px-4 pt-6 pb-4 bg-slate-800;
+    @apply flex flex-wrap items-center justify-center gap-6 px-0 pt-6 pb-4 bg-slate-800;
   }
 
   .legend-item {
@@ -167,7 +169,7 @@
   }
 
   .legend-line {
-    @apply w-8 h-2 rounded-sm;
+    @apply w-4 h-2 rounded-sm;
   }
 
   .legend-point {

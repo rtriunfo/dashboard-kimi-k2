@@ -32,8 +32,8 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
   const { theme } = useTheme();
   const { containerRef, dimensions, innerWidth, innerHeight, isMobile } = useResponsiveChart({
     aspectRatio: 16/10,
-    minWidth: 320,
-    minHeight: 200,
+    minWidth: 500,  // Increased from 320
+    minHeight: 280, // Increased from 200
   });
 
   const accessibility = useAccessibility({
@@ -230,7 +230,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
           role="img"
           aria-labelledby="chart-title"
           aria-describedby="chart-desc"
-          style={{ margin: '0 auto', display: 'block' }}
+          style={{ margin: '0 auto', display: 'block', width: '100%', height: 'auto' }}
         >
           <title id="chart-title">{title}</title>
           <desc id="chart-desc">{accessibleSummary}</desc>
@@ -350,7 +350,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
               fontSize={isMobile ? '11' : '13'}
               fill="currentColor"
             >
-              milliseconds
+            
             </text>
           </g>
 
