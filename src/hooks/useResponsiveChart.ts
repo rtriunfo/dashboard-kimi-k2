@@ -38,12 +38,12 @@ export const useResponsiveChart = (config: ResponsiveChartConfig = {}) => {
     const isMobile = containerWidth < 640;
     const isTablet = containerWidth >= 640 && containerWidth < 1024;
     
-    let margin = { top: 40, right: 80, bottom: 80, left: 80 };
+    let margin = { top: 40, right: 40, bottom: 80, left: 40 };
     
     if (isMobile) {
-      margin = { top: 20, right: 50, bottom: 60, left: 50 };
+      margin = { top: 20, right: 30, bottom: 60, left: 30 };
     } else if (isTablet) {
-      margin = { top: 30, right: 65, bottom: 70, left: 65 };
+      margin = { top: 30, right: 35, bottom: 70, left: 35 };
     }
 
     // Calculate responsive dimensions
@@ -55,8 +55,9 @@ export const useResponsiveChart = (config: ResponsiveChartConfig = {}) => {
       maxHeight = 800
     } = config;
 
-    const width = Math.max(minWidth, Math.min(maxWidth, containerWidth));
-    let height = Math.max(minHeight, Math.min(maxHeight, containerHeight));
+    // Use more horizontal space by using almost full container width
+    let width = Math.max(minWidth, Math.min(containerWidth - 20, maxWidth));
+    let height = Math.max(minHeight, Math.min(width / aspectRatio, maxHeight));
 
     // Maintain aspect ratio if container height is auto
     if (containerHeight === 0 || !containerHeight) {

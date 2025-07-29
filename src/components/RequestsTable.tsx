@@ -727,7 +727,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                           {result.responseTimes?.percentiles && (
                             <div className="bg-slate-800/50 rounded-lg p-4">
                               <h5 className="text-sm font-semibold text-slate-300 mb-2">Response Times</h5>
-                              <div className="h-48">
+                              <div className="h-auto">
                                 <LineGraph
                                   responseTimes={{
                                     min: result.responseTimes?.min || 0,
@@ -742,7 +742,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                     percentageDifference: req.percentageDifference || 0
                                   })) || []}
                                   title=''
-                                  className="w-full h-full"
+                                  className="w-full"
                                 />
                               </div>
                             </div>
