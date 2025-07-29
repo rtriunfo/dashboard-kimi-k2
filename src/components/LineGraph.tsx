@@ -413,6 +413,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
         y={interactions.state.tooltip.y}
         content={interactions.state.tooltip.content}
         visible={interactions.state.tooltip.visible}
+        containerRef={containerRef}
       />
 
       {/* Legend */}
