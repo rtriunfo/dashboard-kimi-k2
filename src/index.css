@@ -27,12 +27,22 @@
 @layer components {
   /* Chart container styles */
   .chart-container {
-    @apply relative w-full overflow-hidden bg-slate-800 border border-slate-700 rounded-xl;
+    @apply relative w-full overflow-hidden;
     container-type: inline-size;
+  }
+  
+  /* Default chart container with background and border */
+  .chart-container:not(.embedded) {
+    @apply bg-slate-800 border border-slate-700 rounded-xl;
   }
 
   .chart-header {
-    @apply px-6 py-4 bg-slate-800;
+    @apply px-6 py-4;
+  }
+  
+  /* Only add background for non-embedded charts */
+  .chart-container:not(.embedded) .chart-header {
+    @apply bg-slate-800;
   }
 
   .chart-title {
@@ -161,7 +171,12 @@
 
   /* Legend styles */
   .chart-legend {
-    @apply flex flex-wrap items-center justify-center gap-6 px-0 pt-6 pb-4 bg-slate-800;
+    @apply flex flex-wrap items-center justify-center gap-6 px-0 pt-6 pb-4;
+  }
+  
+  /* Only add background for non-embedded charts */
+  .chart-container:not(.embedded) .chart-legend {
+    @apply bg-slate-800;
   }
 
   .legend-item {

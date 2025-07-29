@@ -204,17 +204,19 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
   const { responsePath, requirementPath } = paths;
 
   return (
-    <div className={`chart-container ${className}`} ref={containerRef}>
+    <div className={`chart-container ${!title ? 'embedded' : ''} ${className}`} ref={containerRef}>
       {/* Accessibility announcements */}
       <div ref={accessibility.announcementRef} className="sr-only" aria-live="polite" />
       
       {/* Header */}
-      <div className="chart-header">
-        <div>
-          <h2 className="chart-title">{title}</h2>
-          {subtitle && <p className="chart-subtitle">{subtitle}</p>}
+      {title && (
+        <div className="chart-header">
+          <div>
+            <h2 className="chart-title">{title}</h2>
+            {subtitle && <p className="chart-subtitle">{subtitle}</p>}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Accessible summary */}
       <div className="sr-only" aria-label="Chart summary">
