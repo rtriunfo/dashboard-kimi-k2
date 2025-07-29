@@ -241,7 +241,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
           <rect
             width={dimensions.width}
             height={dimensions.height}
-            fill={theme.colors.background}
+            fill="transparent"
             className="transition-colors duration-200"
           />
           

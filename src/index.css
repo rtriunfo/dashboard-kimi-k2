@@ -97,13 +97,13 @@
   }
 
   .chart-axis-label {
-    @apply text-sm font-medium fill-slate-300;
+    @apply text-lg font-medium fill-slate-300;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 800;
   }
 
   .chart-axis-title {
-    @apply text-base font-semibold fill-slate-200;
+    @apply text-xl font-semibold fill-slate-200;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 600;
   }
@@ -176,7 +176,7 @@
   
   /* Only add background for non-embedded charts */
   .chart-container:not(.embedded) .chart-legend {
-    @apply bg-slate-800 pt-6 pb-4;
+    @apply bg-transparent pt-6 pb-4;
   }
   
   /* Ensure legend is visible in embedded charts */

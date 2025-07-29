@@ -8,7 +8,10 @@ interface UseChartInteractionsOptions {
   tooltipDelay?: number;
 }
 
-export const useChartInteractions = (options: UseChartInteractionsOptions = {}) => {
+export const useChartInteractions = (
+  options: UseChartInteractionsOptions = {},
+  containerRef: React.RefObject<HTMLElement>
+) => {
   const {
     enableTooltips = true,
     enableHover = true,
@@ -47,6 +50,7 @@ export const useChartInteractions = (options: UseChartInteractionsOptions = {}) 
 
     if (enableTooltips) {
       const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+      const containerRect = containerRef.current?.getBoundingClientRect();
       const tooltipContent = generateTooltipContent(point);
 
       if (tooltipTimeoutRef.current) {
@@ -57,15 +61,15 @@ export const useChartInteractions = (options: UseChartInteractionsOptions = {}) 
         setState(prev => ({
           ...prev,
           tooltip: {
-            x: rect.left + rect.width / 2,
-            y: rect.top,
+            x: (rect.left + rect.width / 2) - (containerRect?.left || 0),
+            y: rect.top - (containerRect?.top || 0),
             content: tooltipContent,
             visible: true
           }
         }));
       }, tooltipDelay);
     }
-  }, [enableHover, enableTooltips, tooltipDelay]);
+  }, [enableHover, enableTooltips, tooltipDelay, containerRef]);
 
   // Handle mouse leave on chart elements
   const handleMouseLeave = useCallback(() => {
@@ -103,19 +107,20 @@ export const useChartInteractions = (options: UseChartInteractionsOptions = {}) 
 
     if (enableTooltips) {
       const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+      const containerRect = containerRef.current?.getBoundingClientRect();
       const tooltipContent = generateTooltipContent(point);
 
       setState(prev => ({
         ...prev,
         tooltip: {
-          x: rect.left + rect.width / 2,
-          y: rect.top,
+          x: (rect.left + rect.width / 2) - (containerRect?.left || 0),
+          y: rect.top - (containerRect?.top || 0),
           content: tooltipContent,
           visible: true
         }
       }));
     }
-  }, [enableFocus, enableTooltips]);
+  }, [enableFocus, enableTooltips, containerRef]);
 
   // Handle blur on chart elements
   const handleBlur = useCallback(() => {
@@ -136,10 +141,13 @@ export const useChartInteractions = (options: UseChartInteractionsOptions = {}) 
   const generateTooltipContent = useCallback((point: ChartPoint): string => {
     if (point.status) {
       // Requirement point
-      return `Percentile: ${point.percentile}%\nRequirement: ${point.value}ms\nStatus: ${point.status}`;
+      return `Percentile: ${point.percentile}%
+Requirement: ${point.value}ms
+Status: ${point.status}`;
     } else {
       // Response time point
-      return `Percentile: ${point.percentile}%\nResponse Time: ${point.value}ms`;
+      return `Percentile: ${point.percentile}%
+Response Time: ${point.value}ms`;
     }
   }, []);
 
@@ -193,33 +201,35 @@ export const useChartInteractions = (options: UseChartInteractionsOptions = {}) 
   // Update tooltip position on scroll/resize
   useEffect(() => {
     const updateTooltipPosition = () => {
-      if (!state.tooltip.visible || !state.hoveredElement) return;
+      if (!state.tooltip.visible || (!state.hoveredElement && !state.focusedElement)) return;
 
+      const activeElementId = state.hoveredElement || state.focusedElement;
       const element = document.querySelector(
-        `[data-chart-element="${state.hoveredElement}"]`
+        `[data-chart-element="${activeElementId}"]`
       ) as HTMLElement;
 
       if (element) {
         const rect = element.getBoundingClientRect();
+        const containerRect = containerRef.current?.getBoundingClientRect();
         setState(prev => ({
           ...prev,
           tooltip: {
             ...prev.tooltip,
-            x: rect.left + rect.width / 2,
-            y: rect.top
+            x: (rect.left + rect.width / 2) - (containerRect?.left || 0),
+            y: rect.top - (containerRect?.top || 0)
           }
         }));
       }
     };
 
-    window.addEventListener('scroll', updateTooltipPosition);
+    window.addEventListener('scroll', updateTooltipPosition, true);
     window.addEventListener('resize', updateTooltipPosition);
 
     return () => {
-      window.removeEventListener('scroll', updateTooltipPosition);
+      window.removeEventListener('scroll', updateTooltipPosition, true);
       window.removeEventListener('resize', updateTooltipPosition);
     };
-  }, [state.tooltip.visible, state.hoveredElement]);
+  }, [state.tooltip.visible, state.hoveredElement, state.focusedElement, containerRef]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -272,4 +282,12 @@ export const useChartInteractions = (options: UseChartInteractionsOptions = {}) 
     handleBlur,
     handleKeyDown,
   };
+};
+
+// Helper to format tooltip content
+export const formatTooltipContent = (data: TooltipData): string => {
+  if (!data) return '';
+  return Object.entries(data)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join('\n');
 };
