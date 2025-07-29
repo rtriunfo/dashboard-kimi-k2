@@ -47,7 +47,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
     enableHover: true,
     enableFocus: true,
     tooltipDelay: 200,
-  });
+  }, containerRef);
 
 
   // Process and memoize chart data
@@ -405,15 +405,15 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
             ))}
           </g>
         </svg>
-        
-        {/* Tooltip */}
-        <Tooltip
-          x={interactions.state.tooltip.x}
-          y={interactions.state.tooltip.y}
-          content={interactions.state.tooltip.content}
-          visible={interactions.state.tooltip.visible}
-        />
       </div>
+
+      {/* Tooltip */}
+      <Tooltip
+        x={interactions.state.tooltip.x}
+        y={interactions.state.tooltip.y}
+        content={interactions.state.tooltip.content}
+        visible={interactions.state.tooltip.visible}
+      />
 
       {/* Legend */}
       <div className="chart-legend">
