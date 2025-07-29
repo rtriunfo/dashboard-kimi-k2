@@ -725,22 +725,24 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
                           {/* Response Times */}
                           {result.responseTimes?.percentiles && (
-                            <LineGraph
-                              responseTimes={{
-                                min: result.responseTimes?.min || 0,
-                                max: result.responseTimes?.max || 0,
-                                percentiles: result.responseTimes?.percentiles || {}
-                              }}
-                              requirements={result.requirements?.percentiles?.map(req => ({
-                                percentile: req.percentile,
-                                value: req.value,
-                                status: req.status as 'PASS' | 'FAIL',
-                                difference: req.difference || 0,
-                                percentageDifference: req.percentageDifference || 0
-                              })) || []}
-                              title='Response Times'
-                              className="animate-slide-up bg-slate-800/50 rounded-lg"
-                            />
+                            <div className="w-full px-4 py-2">
+                              <LineGraph
+                                responseTimes={{
+                                  min: result.responseTimes?.min || 0,
+                                  max: result.responseTimes?.max || 0,
+                                  percentiles: result.responseTimes?.percentiles || {}
+                                }}
+                                requirements={result.requirements?.percentiles?.map(req => ({
+                                  percentile: req.percentile,
+                                  value: req.value,
+                                  status: req.status as 'PASS' | 'FAIL',
+                                  difference: req.difference || 0,
+                                  percentageDifference: req.percentageDifference || 0
+                                })) || []}
+                                title='Response Times'
+                                className="animate-slide-up bg-slate-800/50 rounded-lg w-full"
+                              />
+                            </div>
                           )}
 
                           {/* Requirements (if available and has data) */}
