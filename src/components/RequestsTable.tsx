@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
+import * as echarts from 'echarts';
 import { TestResults, RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
 import { SeverityBadge } from './SeverityBadge';
@@ -245,12 +246,18 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
     const toggleExpandAll = () => {
       if (isAllExpanded) {
-        // Collapse all
         setExpandedRows(new Set());
       } else {
-        // Expand all - use the same key format as in the row rendering
-        const allIds = filteredAndSortedResults.map((result, index) => result.id || index);
-        setExpandedRows(new Set(allIds));
+        // Only expand rows that have data
+        const rowsWithData = filteredAndSortedResults
+          .filter((result, index) => {
+            return result.passCount || 
+                   result.failCount || 
+                   (result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0));
+          })
+          .map((result, index) => result.id || index);
+        
+        setExpandedRows(new Set(rowsWithData));
       }
       setIsAllExpanded(!isAllExpanded);
     };
@@ -556,15 +563,20 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                   }`}
                 >
                   <td className="px-2 py-4 text-sm text-white font-medium">
-                    <button
-                      onClick={() => toggleRowExpansion(result.id || index)}
-                      className="flex items-center gap-2 text-left hover:text-blue-400 transition-colors"
-                    >
-                      <span className="text-xs">
-                        {isExpanded ? '▼' : '▶'}
-                      </span>
-                      {result.request?.requestName || 'Unknown Request'}
-                    </button>
+                    {/* Only show accordion if there's data to display */}
+                    {(result.passCount || result.failCount || (result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0))) ? (
+                      <button
+                        onClick={() => toggleRowExpansion(result.id || index)}
+                        className="flex items-center gap-2 text-left hover:text-blue-400 transition-colors"
+                      >
+                        <span className="text-xs">
+                          {isExpanded ? '▼' : '▶'}
+                        </span>
+                        {result.request?.requestName || 'Unknown Request'}
+                      </button>
+                    ) : (
+                      <span className="pl-4">{result.request?.requestName || 'Unknown Request'}</span>
+                    )}
                   </td>
                 {testData.testRequirements && (
                   <td className="px-2 py-4 text-center">
@@ -607,19 +619,108 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                         <h4 className="text-lg font-semibold text-white mb-3">Request Details</h4>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {/* Basic Information */}
-                          <div className="bg-slate-800/50 rounded-lg p-4">
-                            <h5 className="text-sm font-semibold text-slate-300 mb-2">Basic Information</h5>
-                            <div className="space-y-2 text-sm">
-                              <div><span className="text-slate-400">ID:</span> <span className="text-white">{result.id}</span></div>
-                              <div><span className="text-slate-400">Name:</span> <span className="text-white">{result.request?.requestName}</span></div>
-                              <div><span className="text-slate-400">Total Count:</span> <span className="text-white">{(result.totalCount || 0).toLocaleString()}</span></div>
-                              <div><span className="text-slate-400">Pass Count:</span> <span className="text-green-400">{(result.passCount || 0).toLocaleString()}</span></div>
-                              <div><span className="text-slate-400">Fail Count:</span> <span className="text-red-400">{(result.failCount || 0).toLocaleString()}</span></div>
-                              <div><span className="text-slate-400">Error Rate:</span> <span className="text-white">{Number(result.errorPercentage || 0).toFixed(2)}%</span></div>
-                              <div><span className="text-slate-400">Rate:</span> <span className="text-white">{Number(result.rate || 0).toFixed(2)} {result.rateGranularity}</span></div>
+                          {/* Pass/Fail Chart - Only show if there's data */}
+                          {(result.passCount || result.failCount) ? (
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                              <h5 className="text-sm font-semibold text-slate-300 mb-2">Pass/Fail Distribution</h5>
+                              <div className="text-sm">
+                                {/* Pass/Fail Chart */}
+                                <div>
+                                  <div id={`pass-fail-chart-${result.id || index}`} className="w-full h-28" ref={el => {
+                                  if (el) {
+                                    // Initialize chart with transparent background to match parent div
+                                    const chart = echarts.init(el, null, {
+                                      renderer: 'canvas'
+                                    });
+                                    
+                                    // Set background color through setOption instead
+                                    chart.setOption({
+                                      backgroundColor: 'transparent'
+                                    });
+                                    
+                                    // Calculate pass/fail counts
+                                    const passCount = result.passCount || 0;
+                                    const failCount = result.failCount || 0;
+                                    
+                                    // Chart options
+                                    const option = {
+                                      tooltip: {
+                                        trigger: 'item',
+                                        formatter: '{b}: {c} ({d}%)'
+                                      },
+                                      legend: {
+                                        bottom: 18,
+                                        left: 'center',
+                                        textStyle: {
+                                          color: '#94a3b8',
+                                          fontSize: 10
+                                        },
+                                        itemWidth: 12,
+                                        itemHeight: 12,
+                                        itemGap: 15,
+                                        padding: 6,
+                                        selectedMode: false,
+                                      },
+                                      series: [
+                                        {
+                                          name: 'Requests',
+                                          type: 'pie',
+                                          radius: ['50%', '90%'],
+                                          center: ['50%', '50%'],
+                                          startAngle: 180,
+                                          endAngle: 360,
+                                          itemStyle: {
+                                            borderRadius: 4,
+                                            borderWidth: 2,
+                                            borderColor: '#0f172a'
+                                          },
+                                          label: {
+                                            show:false
+                                          },
+                                          data: [
+                                            ...(failCount > 0 ? [{ 
+                                              value: failCount, 
+                                              name: 'FAIL', 
+                                              itemStyle: { color: '#ef4444' }
+                                            }] : []),
+                                            { 
+                                              value: passCount, 
+                                              name: 'PASS', 
+                                              itemStyle: { color: '#10b981' }
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      grid: {
+                                        bottom: 0
+                                      }
+                                    };
+                                    
+                                    // Apply options
+                                    chart.setOption(option);
+                                    
+                                    // Handle resize
+                                    const resizeObserver = new ResizeObserver(() => {
+                                      chart.resize();
+                                    });
+                                    resizeObserver.observe(el);
+                                    
+                                    // Clean up on unmount
+                                    return () => {
+                                      chart.dispose();
+                                      resizeObserver.disconnect();
+                                    };
+                                  }
+                                }} />
+                              </div>
+                              
+                              <div className="flex justify-between mt-2">
+                                <div><span className="text-slate-400">Total:</span> <span className="text-white">{(result.totalCount || 0).toLocaleString()}</span></div>
+                                <div><span className="text-slate-400">Rate:</span> <span className="text-white">{Number(result.rate || 0).toFixed(2)} {result.rateGranularity}</span></div>
+                              </div>
                             </div>
                           </div>
+                          ) : null}
 
                           {/* Response Times */}
                           <div className="bg-slate-800/50 rounded-lg p-4">
@@ -680,7 +781,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                             return [`${x},${y}`];
                                           } else {
                                             const prevX = ((i - 1) / (requirementValues.length - 1)) * 260 + 40;
-                                            const prevY = 100 - ((requirementValues[i - 1].value - minValue) / valueRange) * 80 + 10;
+                                            // Use prevX for horizontal line and current y
                                             return [
                                               `${prevX},${y}`,  // horizontal from previous x to current y
                                               `${x},${y}`       // vertical step to current point
@@ -786,14 +887,100 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                             </div>
                           </div>
 
-                          {/* Requirements (if available) */}
-                          {result.requirements && (
+                          {/* Requirements (if available and has data) */}
+                          {result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0) && (
                             <div className="bg-slate-800/50 rounded-lg p-4">
                               <h5 className="text-sm font-semibold text-slate-300 mb-2">Requirements</h5>
-                              <div className="space-y-2 text-sm">
-                                <div><span className="text-slate-400">Status:</span> <StatusBadge status={result.requirements.status} /></div>
-                                <div><span className="text-slate-400">Passed:</span> <span className="text-green-400">{result.requirements.passed}</span></div>
-                                <div><span className="text-slate-400">Failed:</span> <span className="text-red-400">{result.requirements.failed}</span></div>
+                              <div className="text-sm">
+                                {/* Requirements Chart */}
+                                <div>
+                                  <div id={`chart-${result.id || index}`} className="w-full h-28" ref={el => {
+                                    if (el) {
+                                      // Initialize chart with transparent background to match parent div
+                                      const chart = echarts.init(el, null, {
+                                        renderer: 'canvas'
+                                      });
+                                      
+                                      // Set background color through setOption instead
+                                      chart.setOption({
+                                        backgroundColor: 'transparent'
+                                      });
+                                      
+                                      // Calculate pass/fail ratio
+                                      const passed = result.requirements.passed || 0;
+                                      const failed = result.requirements.failed || 0;
+                                      
+                                      // Chart options
+                                      const option = {
+                                        tooltip: {
+                                          trigger: 'item',
+                                          formatter: '{b}: {c}'
+                                        },
+                                        legend: {
+                                          bottom:18, //Reduce gap between chart and legend
+                                          left: 'center',
+                                          textStyle: {
+                                            color: '#94a3b8',
+                                            fontSize: 10
+                                          },
+                                          selectedMode: false,
+                                          itemWidth: 12,
+                                          itemHeight: 12,
+                                          itemGap: 15, // Reduce gap between legend items
+                                          padding: 6,
+                                          },
+                                        series: [
+                                          {
+                                            name: 'Requirements',
+                                            type: 'pie',
+                                            radius: ['50%', '90%'], // Make the chart bigger
+                                            center: ['50%', '50%'], // Center the chart
+                                            startAngle: 180,
+                                            endAngle: 360,
+                                            itemStyle: {
+                                              borderRadius: 4,
+                                              borderWidth: 2,
+                                              borderColor: '#0f172a'
+                                            },
+                                            label: {
+                                              show: false // Remove percentage labels
+                                            },
+                                            data: [
+                                              ...(failed > 0 ? [{ 
+                                                value: failed, 
+                                                name: 'FAIL', 
+                                                itemStyle: { color: '#ef4444' }
+                                              }] : []),
+                                              { 
+                                                value: passed, 
+                                                name: 'PASS', 
+                                                itemStyle: { color: '#10b981' } // Green from your design system
+                                              }
+                                            ]
+                                          }
+                                        ],
+                                        grid: {
+                                          bottom: 0
+                                        }
+                                      };
+                                      
+                                      // Apply options
+                                      chart.setOption(option);
+                                      
+                                      // Handle resize
+                                      const resizeObserver = new ResizeObserver(() => {
+                                        chart.resize();
+                                      });
+                                      resizeObserver.observe(el);
+                                      
+                                      // Clean up on unmount
+                                      return () => {
+                                        chart.dispose();
+                                        resizeObserver.disconnect();
+                                      };
+                                    }
+                                  }} />
+                                </div>
                                 
                                 {result.requirements.percentiles && result.requirements.percentiles.length > 0 && (
                                   <div className="mt-3">
