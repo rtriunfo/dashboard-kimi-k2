@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TooltipProps {
   x: number;
@@ -6,6 +6,7 @@ interface TooltipProps {
   content: string;
   visible: boolean;
   className?: string;
+  containerRef?: React.RefObject<HTMLElement>;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({
@@ -13,16 +14,32 @@ export const Tooltip: React.FC<TooltipProps> = ({
   y,
   content,
   visible,
-  className = ''
+  className = '',
+  containerRef
 }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (!visible || !containerRef?.current) return;
+
+    const container = containerRef.current;
+    const rect = container.getBoundingClientRect();
+    
+    // Calculate position relative to viewport
+    const screenX = rect.left + x;
+    const screenY = rect.top + y;
+    
+    setPosition({ x: screenX, y: screenY });
+  }, [x, y, visible, containerRef]);
+
   if (!visible || !content) return null;
 
   return (
     <div
       className={`fixed z-[1000] px-3 py-2 text-sm text-white bg-slate-900 rounded-lg pointer-events-none shadow-xl ${className}`}
       style={{
-        left: x,
-        top: y,
+        left: position.x,
+        top: position.y,
         transform: 'translate(-50%, -100%)',
         marginTop: -8,
       }}
