@@ -19,12 +19,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <div
-      className={`chart-tooltip ${className}`}
+      className={`fixed z-[1000] px-3 py-2 text-sm text-white bg-slate-900 rounded-lg pointer-events-none shadow-xl ${className}`}
       style={{
         left: x,
         top: y,
-        position: 'fixed',
-        zIndex: 1000,
+        transform: 'translate(-50%, -100%)',
+        marginTop: -8,
       }}
       role="tooltip"
       aria-live="polite"
@@ -34,6 +34,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
           {line}
         </div>
       ))}
+      <div
+        className="absolute border-4 border-transparent top-full left-1/2 transform -translate-x-1/2"
+        style={{ borderTopColor: '#0f172a' }}
+      />
     </div>
   );
 };
