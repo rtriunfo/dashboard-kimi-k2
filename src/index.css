@@ -49,6 +49,15 @@
     @apply text-sm font-semibold text-slate-300 mb-2;
   }
 
+  /* Chart error boundary styles */
+  .chart-error-boundary {
+    @apply w-full min-h-[200px] flex items-center justify-center;
+  }
+
+  .chart-error-boundary .error-fallback {
+    @apply text-center py-4 text-slate-400 border border-slate-600 rounded;
+  }
+
   .chart-subtitle {
     @apply mt-1 text-sm text-slate-400;
   }

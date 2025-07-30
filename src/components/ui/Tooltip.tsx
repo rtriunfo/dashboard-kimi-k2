@@ -10,6 +10,42 @@ interface TooltipProps {
   containerRef?: React.RefObject<HTMLElement>;
 }
 
+// Global portal container management to prevent race conditions
+let globalPortalContainer: HTMLElement | null = null;
+let portalRefCount = 0;
+
+const getPortalContainer = (): HTMLElement => {
+  if (!globalPortalContainer || !document.body.contains(globalPortalContainer)) {
+    globalPortalContainer = document.createElement('div');
+    globalPortalContainer.id = 'tooltip-portal';
+    globalPortalContainer.style.position = 'fixed';
+    globalPortalContainer.style.top = '0';
+    globalPortalContainer.style.left = '0';
+    globalPortalContainer.style.pointerEvents = 'none';
+    globalPortalContainer.style.zIndex = '9999';
+    document.body.appendChild(globalPortalContainer);
+  }
+  return globalPortalContainer;
+};
+
+const incrementPortalRef = () => {
+  portalRefCount++;
+};
+
+const decrementPortalRef = () => {
+  portalRefCount--;
+  if (portalRefCount <= 0 && globalPortalContainer && document.body.contains(globalPortalContainer)) {
+    try {
+      document.body.removeChild(globalPortalContainer);
+      globalPortalContainer = null;
+      portalRefCount = 0;
+    } catch (error) {
+      // Ignore cleanup errors
+      console.debug('Tooltip portal cleanup: already removed', error);
+    }
+  }
+};
+
 export const Tooltip: React.FC<TooltipProps> = ({
   x,
   y,
@@ -21,29 +57,17 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    // Create or get the portal container
-    let container = document.getElementById('tooltip-portal');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'tooltip-portal';
-      container.style.position = 'fixed';
-      container.style.top = '0';
-      container.style.left = '0';
-      container.style.pointerEvents = 'none';
-      container.style.zIndex = '9999';
-      document.body.appendChild(container);
-    }
-    setPortalContainer(container);
+    if (visible) {
+      const container = getPortalContainer();
+      setPortalContainer(container);
+      incrementPortalRef();
 
-    return () => {
-      // Clean up if no tooltips are using it
-      if (container && !visible) {
-        const tooltips = container.querySelectorAll('[role="tooltip"]');
-        if (tooltips.length === 0) {
-          document.body.removeChild(container);
-        }
-      }
-    };
+      return () => {
+        decrementPortalRef();
+      };
+    } else {
+      setPortalContainer(null);
+    }
   }, [visible]);
 
   const [screenPosition, setScreenPosition] = useState({ x: 0, y: 0 });

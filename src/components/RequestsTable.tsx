@@ -173,18 +173,35 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     };
 
     const toggleRowExpansion = (resultId: number) => {
-      const newExpandedRows = new Set(expandedRows);
-      if (newExpandedRows.has(resultId)) {
-        newExpandedRows.delete(resultId);
-      } else {
-        newExpandedRows.add(resultId);
-      }
-      setExpandedRows(newExpandedRows);
-      // Update the all-expanded state if needed
-      if (newExpandedRows.size === 0) {
+      try {
+        const newExpandedRows = new Set(expandedRows);
+        if (newExpandedRows.has(resultId)) {
+          newExpandedRows.delete(resultId);
+        } else {
+          newExpandedRows.add(resultId);
+        }
+        setExpandedRows(newExpandedRows);
+        
+        // Update the all-expanded state based on available rows with data
+        const rowsWithData = filteredAndSortedResults.filter((result) => {
+          return result.passCount || 
+                 result.failCount || 
+                 (result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0)) ||
+                 (result.responseTimes?.percentiles && Object.keys(result.responseTimes.percentiles).length > 0);
+        });
+        
+        if (newExpandedRows.size === 0) {
+          setIsAllExpanded(false);
+        } else if (newExpandedRows.size >= rowsWithData.length) {
+          setIsAllExpanded(true);
+        } else {
+          setIsAllExpanded(false);
+        }
+      } catch (error) {
+        console.error('Error toggling row expansion:', error);
+        // Reset to safe state on error
+        setExpandedRows(new Set());
         setIsAllExpanded(false);
-      } else if (newExpandedRows.size === filteredAndSortedResults.length) {
-        setIsAllExpanded(true);
       }
     };
 
@@ -246,21 +263,45 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     }, [requestResults, sortColumn, sortDirection, selectedStatuses, selectedSeverities, numericField, numericOperator, numericValue]);
 
     const toggleExpandAll = () => {
-      if (isAllExpanded) {
+      try {
+        if (isAllExpanded) {
+          // Collapse all rows
+          setExpandedRows(new Set());
+          setIsAllExpanded(false);
+        } else {
+          // Only expand rows that have data to display
+          const rowsWithData: number[] = [];
+          
+          filteredAndSortedResults.forEach((result, index) => {
+            const hasData = result.passCount || 
+                           result.failCount || 
+                           (result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0)) ||
+                           (result.responseTimes?.percentiles && Object.keys(result.responseTimes.percentiles).length > 0);
+            
+            const rowId = result.id || index;
+            
+            if (hasData) {
+              // Use the same ID logic as in the table rendering
+              rowsWithData.push(rowId);
+            }
+          });
+          
+          if (rowsWithData.length > 0) {
+            setExpandedRows(new Set(rowsWithData));
+            setIsAllExpanded(true);
+          } else {
+            // No rows have data to expand
+            setExpandedRows(new Set());
+            setIsAllExpanded(false);
+            console.warn('No rows have data available for expansion');
+          }
+        }
+      } catch (error) {
+        console.error('Error in toggleExpandAll:', error);
+        // Reset to safe state on error
         setExpandedRows(new Set());
-      } else {
-        // Only expand rows that have data
-        const rowsWithData = filteredAndSortedResults
-          .filter((result, index) => {
-            return result.passCount || 
-                   result.failCount || 
-                   (result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0));
-          })
-          .map((result, index) => result.id || index);
-        
-        setExpandedRows(new Set(rowsWithData));
+        setIsAllExpanded(false);
       }
-      setIsAllExpanded(!isAllExpanded);
     };
 
     const SortableHeader: React.FC<{ column: SortColumn; children: React.ReactNode; className?: string }> = ({ 
@@ -728,22 +769,59 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                             <div className="bg-slate-800/50 rounded-lg p-4">
                               <h5 className="text-sm font-semibold text-slate-300 mb-2">Response Times</h5>
                               <div className="h-auto">
-                                <LineGraph
-                                  responseTimes={{
-                                    min: result.responseTimes?.min || 0,
-                                    max: result.responseTimes?.max || 0,
-                                    percentiles: result.responseTimes?.percentiles || {}
-                                  }}
-                                  requirements={result.requirements?.percentiles?.map(req => ({
-                                    percentile: req.percentile,
-                                    value: req.value,
-                                    status: req.status as 'PASS' | 'FAIL',
-                                    difference: req.difference || 0,
-                                    percentageDifference: req.percentageDifference || 0
-                                  })) || []}
-                                  title=''
-                                  className="w-full"
-                                />
+                                <div className="chart-error-boundary">
+                                  {(() => {
+                                    try {
+                                      // Safely map requirements data with proper error handling
+                                      const requirements = result.requirements?.percentiles?.filter(req => {
+                                        return req && typeof req.percentile === 'number' && typeof req.value === 'number';
+                                      }).map(req => ({
+                                        percentile: req.percentile,
+                                        value: req.value,
+                                        status: (req.status === 'PASS' || req.status === 'FAIL') ? req.status as 'PASS' | 'FAIL' : 'FAIL',
+                                        difference: typeof req.difference === 'number' ? req.difference : 0,
+                                        percentageDifference: typeof req.percentageDifference === 'number' ? req.percentageDifference : 0
+                                      })) || [];
+
+                                      // Validate response times data
+                                      const responseTimesData = {
+                                        min: typeof result.responseTimes?.min === 'number' ? result.responseTimes.min : 0,
+                                        max: typeof result.responseTimes?.max === 'number' ? result.responseTimes.max : 0,
+                                        percentiles: result.responseTimes?.percentiles || {}
+                                      };
+
+                                      // Validate percentiles object
+                                      const validPercentiles = Object.entries(responseTimesData.percentiles)
+                                        .filter(([key, value]) => !isNaN(parseFloat(key)) && typeof value === 'number')
+                                        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+
+                                      if (Object.keys(validPercentiles).length === 0) {
+                                        throw new Error('No valid percentile data available');
+                                      }
+
+                                      return (
+                                        <LineGraph
+                                          responseTimes={{
+                                            ...responseTimesData,
+                                            percentiles: validPercentiles
+                                          }}
+                                          requirements={requirements}
+                                          title=''
+                                          className="w-full"
+                                        />
+                                      );
+                                    } catch (error) {
+                                      console.error('Error rendering LineGraph for request:', result.request?.requestName, error);
+                                      return (
+                                        <div className="text-center py-4 text-slate-400 border border-slate-600 rounded">
+                                          <p className="text-sm">Chart unavailable</p>
+                                          <p className="text-xs mt-1">Data format error</p>
+                                        </div>
+                                      );
+                                    }
+                                  })()
+                                  }
+                                </div>
                               </div>
                             </div>
                           )}

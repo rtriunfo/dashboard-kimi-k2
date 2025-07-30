@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 
 interface ChartDimensions {
   width: number;
@@ -27,6 +27,21 @@ export const useResponsiveChart = (config: ResponsiveChartConfig = {}) => {
     margin: { top: 40, right: 120, bottom: 60, left: 80 }
   });
 
+  // Memoize config to prevent infinite re-renders
+  const memoizedConfig = useMemo(() => ({
+    aspectRatio: config.aspectRatio ?? 16 / 10,
+    minWidth: config.minWidth ?? 320,
+    minHeight: config.minHeight ?? 200,
+    maxWidth: config.maxWidth ?? 1200,
+    maxHeight: config.maxHeight ?? 800
+  }), [
+    config.aspectRatio,
+    config.minWidth,
+    config.minHeight,
+    config.maxWidth,
+    config.maxHeight
+  ]);
+
   const updateDimensions = useCallback(() => {
     if (!containerRef.current) return;
 
@@ -46,14 +61,14 @@ export const useResponsiveChart = (config: ResponsiveChartConfig = {}) => {
       margin = { top: 30, right: 35, bottom: 70, left: 35 };
     }
 
-    // Calculate responsive dimensions
+    // Calculate responsive dimensions using memoized config
     const {
-      aspectRatio = 16 / 10,
-      minWidth = 320,
-      minHeight = 200,
-      maxWidth = 1200,
-      maxHeight = 800
-    } = config;
+      aspectRatio,
+      minWidth,
+      minHeight,
+      maxWidth,
+      maxHeight
+    } = memoizedConfig;
 
     // Use more horizontal space by using almost full container width
     let width = Math.max(minWidth, Math.min(containerWidth - 20, maxWidth));
@@ -74,7 +89,7 @@ export const useResponsiveChart = (config: ResponsiveChartConfig = {}) => {
       height,
       margin
     });
-  }, [config]);
+  }, [memoizedConfig]);
 
   useEffect(() => {
     updateDimensions();
