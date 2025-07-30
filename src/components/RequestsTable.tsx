@@ -747,11 +747,16 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                     });
                                     resizeObserver.observe(el);
                                     
-                                    // Clean up on unmount
-                                    return () => {
+                                    // Store cleanup function on the element for later cleanup
+                                    (el as any)._chartCleanup = () => {
                                       chart.dispose();
                                       resizeObserver.disconnect();
                                     };
+                                  } else {
+                                    // Cleanup when element is removed
+                                    if ((el as any)?._chartCleanup) {
+                                      (el as any)._chartCleanup();
+                                    }
                                   }
                                 }} />
                               </div>
@@ -865,15 +870,15 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                           selectedMode: false,
                                           itemWidth: 12,
                                           itemHeight: 12,
-                                          itemGap: 15, // Reduce gap between legend items
+                                          itemGap: 15, 
                                           padding: 6,
                                           },
                                         series: [
                                           {
                                             name: 'Requirements',
                                             type: 'pie',
-                                            radius: ['50%', '90%'], // Make the chart bigger
-                                            center: ['50%', '50%'], // Center the chart
+                                            radius: ['50%', '90%'], 
+                                            center: ['50%', '50%'], 
                                             startAngle: 180,
                                             endAngle: 360,
                                             itemStyle: {
@@ -882,18 +887,18 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                               borderColor: '#0f172a'
                                             },
                                             label: {
-                                              show: false // Remove percentage labels
+                                              show: false 
                                             },
                                             data: [
                                               ...(failed > 0 ? [{ 
                                                 value: failed, 
-                                                name: 'FAIL', 
+                                                name: 'FAILED', 
                                                 itemStyle: { color: '#ef4444' }
                                               }] : []),
                                               { 
                                                 value: passed, 
-                                                name: 'PASS', 
-                                                itemStyle: { color: '#10b981' } // Green from your design system
+                                                name: 'PASSED', 
+                                                itemStyle: { color: '#10b981' } 
                                               }
                                             ]
                                           }
@@ -912,11 +917,16 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
                                       });
                                       resizeObserver.observe(el);
                                       
-                                      // Clean up on unmount
-                                      return () => {
+                                      // Store cleanup function on the element for later cleanup
+                                      (el as any)._chartCleanup = () => {
                                         chart.dispose();
                                         resizeObserver.disconnect();
                                       };
+                                    } else {
+                                      // Cleanup when element is removed
+                                      if ((el as any)?._chartCleanup) {
+                                        (el as any)._chartCleanup();
+                                      }
                                     }
                                   }} />
                                 </div>
