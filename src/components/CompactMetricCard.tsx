@@ -14,8 +14,8 @@ export const CompactMetricCard: React.FC<CompactMetricCardProps> = ({ icon: Icon
       <div className="flex items-center gap-2">
         <Icon className={`w-4 h-4 ${color} flex-shrink-0`} />
         <div className="min-w-0">
-          <p className="text-xs text-slate-400 truncate">{label}</p>
-          <p className="text-sm font-semibold text-white truncate">{value}</p>
+          <span className="text-xs text-slate-400 truncate block">{label}</span>
+          <span className="text-sm font-semibold text-white truncate block">{value}</span>
         </div>
       </div>
     </div>
