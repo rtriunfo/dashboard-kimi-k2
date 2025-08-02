@@ -25,7 +25,7 @@ describe('StatusFilterDropdown', () => {
       rate: 10,
       rateGranularity: 'second',
       testRequirements: true,
-      statistics: {},
+      statistics: true,
       requirements: []
     },
     { 
@@ -48,7 +48,7 @@ describe('StatusFilterDropdown', () => {
       rate: 10,
       rateGranularity: 'second',
       testRequirements: true,
-      statistics: {},
+      statistics: true,
       requirements: []
     },
     { 
@@ -71,7 +71,7 @@ describe('StatusFilterDropdown', () => {
       rate: 10,
       rateGranularity: 'second',
       testRequirements: true,
-      statistics: {},
+      statistics: true,
       requirements: []
     },
   ];
