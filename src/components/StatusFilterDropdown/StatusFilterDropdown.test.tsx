@@ -5,9 +5,39 @@ import '@testing-library/jest-dom';
 
 describe('StatusFilterDropdown', () => {
   const mockRequestResults = [
-    { id: 1, status: 'PASSED', request: { requestName: 'Test 1' } },
-    { id: 2, status: 'FAILED', request: { requestName: 'Test 2' } },
-    { id: 3, status: 'PASSED', request: { requestName: 'Test 3' } },
+    { 
+      id: 1, 
+      status: 'PASSED', 
+      severity: 'minor',
+      request: { requestName: 'Test 1' },
+      totalCount: 100,
+      passCount: 100,
+      failCount: 0,
+      errorPercentage: 0,
+      responseTimes: { min: 10, max: 50, percentiles: { '50': 25, '95': 45 } }
+    },
+    { 
+      id: 2, 
+      status: 'FAILED', 
+      severity: 'major',
+      request: { requestName: 'Test 2' },
+      totalCount: 100,
+      passCount: 80,
+      failCount: 20,
+      errorPercentage: 20,
+      responseTimes: { min: 15, max: 100, percentiles: { '50': 30, '95': 80 } }
+    },
+    { 
+      id: 3, 
+      status: 'PASSED', 
+      severity: 'minor',
+      request: { requestName: 'Test 3' },
+      totalCount: 100,
+      passCount: 100,
+      failCount: 0,
+      errorPercentage: 0,
+      responseTimes: { min: 8, max: 40, percentiles: { '50': 20, '95': 35 } }
+    },
   ];
 
   const defaultProps = {
