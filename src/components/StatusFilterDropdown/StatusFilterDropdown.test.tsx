@@ -21,7 +21,7 @@ describe('StatusFilterDropdown', () => {
 
   it('renders the dropdown button with default text', () => {
     render(<StatusFilterDropdown {...defaultProps} />);
-    expect(screen.getByText('Status ▼')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
   });
 
   it('shows the count of selected statuses', () => {
@@ -36,7 +36,7 @@ describe('StatusFilterDropdown', () => {
 
   it('opens dropdown when button is clicked', () => {
     render(<StatusFilterDropdown {...defaultProps} />);
-    const button = screen.getByText('Status ▼');
+    const button = screen.getByRole('button', { name: /status/i });
     fireEvent.click(button);
     expect(screen.getByText('PASSED')).toBeInTheDocument();
     expect(screen.getByText('FAILED')).toBeInTheDocument();
@@ -50,11 +50,11 @@ describe('StatusFilterDropdown', () => {
     };
     render(<StatusFilterDropdown {...props} />);
     
-    const button = screen.getByText('Status ▼');
+    const button = screen.getByRole('button', { name: /status/i });
     fireEvent.click(button);
     
-    const passedOption = screen.getByText('PASSED');
-    fireEvent.click(passedOption);
+    const passedCheckbox = screen.getByRole('checkbox', { name: /passed/i });
+    fireEvent.click(passedCheckbox);
     
     expect(mockOnStatusToggle).toHaveBeenCalledWith('PASSED');
   });
@@ -66,10 +66,10 @@ describe('StatusFilterDropdown', () => {
     };
     render(<StatusFilterDropdown {...props} />);
     
-    const button = screen.getByText('Status ▼');
+    const button = screen.getByRole('button', { name: /status/i });
     fireEvent.click(button);
     
-    expect(screen.getByText('Clear filters')).toBeInTheDocument();
+    expect(screen.getByText('Clear all filters')).toBeInTheDocument();
   });
 
   it('calls onClearFilters when clear filters is clicked', () => {
@@ -81,10 +81,10 @@ describe('StatusFilterDropdown', () => {
     };
     render(<StatusFilterDropdown {...props} />);
     
-    const button = screen.getByText('Status ▼');
+    const button = screen.getByRole('button', { name: /status/i });
     fireEvent.click(button);
     
-    const clearButton = screen.getByText('Clear filters');
+    const clearButton = screen.getByText('Clear all filters');
     fireEvent.click(clearButton);
     
     expect(mockOnClearFilters).toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe('StatusFilterDropdown', () => {
   it('closes dropdown when clicking outside', () => {
     render(<StatusFilterDropdown {...defaultProps} />);
     
-    const button = screen.getByText('Status ▼');
+    const button = screen.getByRole('button', { name: /status/i });
     fireEvent.click(button);
     expect(screen.getByText('PASSED')).toBeInTheDocument();
     
