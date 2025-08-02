@@ -55,18 +55,21 @@ const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
       <div>
         <button
           type="button"
-          className={`inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${hasActiveFilters ? 'ring-2 ring-indigo-500' : ''}`}
+          className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
           id="status-menu"
           aria-expanded="true"
           aria-haspopup="true"
           onClick={toggleDropdown}
         >
-          Status ▼
+          <span>Status</span>
           {hasActiveFilters && (
-            <span className="ml-2 inline-flex items-center justify-center h-4 w-4 rounded-full bg-indigo-500 text-white text-xs">
+            <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
               {selectedStatuses.size}
             </span>
           )}
+          <span className="text-xs">
+            {isOpen ? '▲' : '▼'}
+          </span>
         </button>
       </div>
 
