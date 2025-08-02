@@ -20,7 +20,7 @@ test('dashboard test to check the results table functionality', async ({ page })
   await page.locator('div').filter({ hasText: /^Min:3msMax:5000ms$/ }).first().click();
   await page.getByText('SummaryResponse TimesMetadataRequests').click();
   await page.getByRole('button', { name: 'Requests' }).click();
-  await expect(page.getByRole('button', { name: 'Status ▼' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Status' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Severity ▼' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Numeric Filter ▼' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Expand All' })).toBeVisible();
