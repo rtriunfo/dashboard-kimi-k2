@@ -14,7 +14,12 @@ describe('StatusFilterDropdown', () => {
       passCount: 100,
       failCount: 0,
       errorPercentage: 0,
-      responseTimes: { min: 10, max: 50, percentiles: { '50': 25, '95': 45 } }
+      responseTimes: { min: 10, max: 50, percentiles: { '50': 25, '95': 45 } },
+      rate: 10,
+      rateGranularity: 'second',
+      testRequirements: true,
+      statistics: {},
+      requirements: []
     },
     { 
       id: 2, 
@@ -25,7 +30,12 @@ describe('StatusFilterDropdown', () => {
       passCount: 80,
       failCount: 20,
       errorPercentage: 20,
-      responseTimes: { min: 15, max: 100, percentiles: { '50': 30, '95': 80 } }
+      responseTimes: { min: 15, max: 100, percentiles: { '50': 30, '95': 80 } },
+      rate: 10,
+      rateGranularity: 'second',
+      testRequirements: true,
+      statistics: {},
+      requirements: []
     },
     { 
       id: 3, 
@@ -36,7 +46,12 @@ describe('StatusFilterDropdown', () => {
       passCount: 100,
       failCount: 0,
       errorPercentage: 0,
-      responseTimes: { min: 8, max: 40, percentiles: { '50': 20, '95': 35 } }
+      responseTimes: { min: 8, max: 40, percentiles: { '50': 20, '95': 35 } },
+      rate: 10,
+      rateGranularity: 'second',
+      testRequirements: true,
+      statistics: {},
+      requirements: []
     },
   ];
 
