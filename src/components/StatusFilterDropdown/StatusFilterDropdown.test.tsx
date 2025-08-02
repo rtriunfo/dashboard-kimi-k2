@@ -26,7 +26,12 @@ describe('StatusFilterDropdown', () => {
       rateGranularity: 'second',
       testRequirements: true,
       statistics: true,
-      requirements: []
+      requirements: {
+        status: 'PASSED',
+        passed: 100,
+        failed: 0,
+        percentiles: []
+      }
     },
     { 
       id: 2, 
@@ -49,7 +54,12 @@ describe('StatusFilterDropdown', () => {
       rateGranularity: 'second',
       testRequirements: true,
       statistics: true,
-      requirements: []
+      requirements: {
+        status: 'FAILED',
+        passed: 80,
+        failed: 20,
+        percentiles: []
+      }
     },
     { 
       id: 3, 
@@ -72,7 +82,12 @@ describe('StatusFilterDropdown', () => {
       rateGranularity: 'second',
       testRequirements: true,
       statistics: true,
-      requirements: []
+      requirements: {
+        status: 'PASSED',
+        passed: 100,
+        failed: 0,
+        percentiles: []
+      }
     },
   ];
 
