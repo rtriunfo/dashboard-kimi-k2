@@ -9,7 +9,14 @@ describe('StatusFilterDropdown', () => {
       id: 1, 
       status: 'PASSED', 
       severity: 'minor',
-      request: { requestName: 'Test 1' },
+      request: { 
+        id: 1,
+        requestName: 'Test 1',
+        requestDescription: 'Test description 1',
+        requestPriority: 'high',
+        tags: 'tag1,tag2',
+        createdTime: '2023-01-01T00:00:00Z'
+      },
       totalCount: 100,
       passCount: 100,
       failCount: 0,
@@ -25,7 +32,14 @@ describe('StatusFilterDropdown', () => {
       id: 2, 
       status: 'FAILED', 
       severity: 'major',
-      request: { requestName: 'Test 2' },
+      request: { 
+        id: 2,
+        requestName: 'Test 2',
+        requestDescription: 'Test description 2',
+        requestPriority: 'medium',
+        tags: 'tag3,tag4',
+        createdTime: '2023-01-02T00:00:00Z'
+      },
       totalCount: 100,
       passCount: 80,
       failCount: 20,
@@ -41,7 +55,14 @@ describe('StatusFilterDropdown', () => {
       id: 3, 
       status: 'PASSED', 
       severity: 'minor',
-      request: { requestName: 'Test 3' },
+      request: { 
+        id: 3,
+        requestName: 'Test 3',
+        requestDescription: 'Test description 3',
+        requestPriority: 'low',
+        tags: 'tag5,tag6',
+        createdTime: '2023-01-03T00:00:00Z'
+      },
       totalCount: 100,
       passCount: 100,
       failCount: 0,
