@@ -5,6 +5,7 @@ import { StatusBadge } from './StatusBadge';
 import { SeverityBadge } from './SeverityBadge';
 import { XCircle } from 'lucide-react';
 import LineGraph from './LineGraph';
+import StatusFilterDropdown from "@/components/StatusFilterDropdown";
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -17,7 +18,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const [selectedSeverities, setSelectedSeverities] = useState<Set<string>>(new Set());
   const [isSeverityDropdownOpen, setIsSeverityDropdownOpen] = useState(false);
   const [numericField, setNumericField] = useState<string>('');
@@ -331,54 +332,14 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         <div className="flex justify-start gap-3 flex-wrap items-start">
           {/* Status Filter Dropdown */}
           {testData.testRequirements && availableStatuses.length > 0 && (
-            <div className="relative" ref={statusDropdownRef}>
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
-              >
-                <span>Status</span>
-                {selectedStatuses.size > 0 && (
-                  <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
-                    {selectedStatuses.size}
-                  </span>
-                )}
-                <span className="text-xs">
-                  {isDropdownOpen ? '▲' : '▼'}
-                </span>
-              </button>
-              
-              {isDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto">
-                  <div className="p-2">
-                    {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
-                      <button
-                        onClick={clearFilters}
-                        className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
-                      >
-                        Clear all filters
-                      </button>
-                    )}
-                    {availableStatuses.map(status => (
-                      <label
-                        key={status}
-                        className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedStatuses.has(status)}
-                          onChange={() => handleStatusToggle(status)}
-                          className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
-                        />
-                        <span className="text-sm text-white flex-1">{status}</span>
-                        <span className="text-xs text-slate-400">
-                          {requestResults.filter(r => r.status === status).length}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <StatusFilterDropdown
+              selectedStatuses={selectedStatuses}
+              availableStatuses={availableStatuses}
+              requestResults={requestResults}
+              onStatusToggle={handleStatusToggle}
+              onClearFilters={clearFilters}
+              hasActiveFilters={selectedStatuses.size > 0 || selectedSeverities.size > 0 || Boolean(numericField && numericValue)}
+            />
           )}
 
           {/* Severity Filter Dropdown */}

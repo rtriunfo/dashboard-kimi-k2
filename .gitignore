@@ -3,3 +3,13 @@
 .vscode
 .aider*
 .DS_Store
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+*storybook.log
+storybook-static

@@ -23,23 +23,53 @@ function App() {
 
   useEffect(() => {
     const loadScenarios = async () => {
-      console.log('Loading scenario:', selectedScenario);
+      console.log('🔍 [App] Starting to load scenarios...');
+      console.log('🔍 [App] Selected scenario ID:', selectedScenario);
+      
       setIsLoading(true);
       try {
+        console.log('🔍 [App] Fetching available scenarios...');
         const scenarios = await getAvailableScenarios();
-        console.log('Available scenarios:', scenarios.map(s => s.id));
+        console.log('✅ [App] Available scenarios:', scenarios.map(s => ({
+          id: s.id,
+          name: s.name,
+          hasData: !!s.data
+        })));
+        
         setAvailableScenarios(scenarios);
+        
+        if (scenarios.length === 0) {
+          console.warn('⚠️ [App] No scenarios found!');
+          return;
+        }
+        
+        console.log(`🔍 [App] Loading scenario with ID: ${selectedScenario}`);
         const scenario = await getTestScenario(selectedScenario);
-        console.log('Loaded scenario:', scenario?.name, 'with data:', !!scenario?.data);
+        console.log('✅ [App] Loaded scenario:', {
+          id: scenario?.id,
+          name: scenario?.name,
+          hasData: !!scenario?.data,
+          dataKeys: scenario?.data ? Object.keys(scenario.data) : 'no data'
+        });
+        
+        if (!scenario) {
+          console.error('❌ [App] Failed to load scenario:', selectedScenario);
+          return;
+        }
+        
         setCurrentScenario(scenario);
+        console.log('✅ [App] Scenario state updated in component');
       } catch (error) {
-        console.error('Failed to load scenarios:', error);
+        console.error('❌ [App] Failed to load scenarios:', error);
       } finally {
+        console.log('🔍 [App] Finished loading scenarios');
         setIsLoading(false);
       }
     };
     
-    loadScenarios();
+    loadScenarios().catch(error => {
+      console.error('❌ [App] Unhandled error in loadScenarios:', error);
+    });
   }, [selectedScenario]);
 
   const testData = currentScenario?.data;
