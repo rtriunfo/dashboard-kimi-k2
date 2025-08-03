@@ -75,40 +75,37 @@ const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
 
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+          className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="status-menu"
         >
-          <div className="py-1" role="none">
-            {availableStatuses.map((status) => (
-              <button
-                key={status}
-                className={`w-full text-left px-4 py-2 text-sm ${selectedStatuses.has(status) ? 'bg-indigo-100 text-indigo-900' : 'text-gray-700'} hover:bg-gray-100`}
-                role="menuitem"
-                onClick={() => handleStatusToggle(status)}
-              >
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                    checked={selectedStatuses.has(status)}
-                    onChange={() => {}}
-                  />
-                  <span className="ml-2">{status}</span>
-                </div>
-              </button>
-            ))}
+          <div className="p-2">
             {hasActiveFilters && (
-              <div className="border-t border-gray-100">
-                <button
-                  className="w-full text-left px-4 py-2 text-sm text-indigo-600 hover:bg-indigo-50"
-                  onClick={handleClearFilters}
-                >
-                  Clear filters
-                </button>
-              </div>
+              <button
+                onClick={handleClearFilters}
+                className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
+              >
+                Clear all filters
+              </button>
             )}
+            {availableStatuses.map((status) => (
+              <label
+                key={status}
+                className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedStatuses.has(status)}
+                  onChange={() => handleStatusToggle(status)}
+                  className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                />
+                <span className="text-sm text-white flex-1">{status}</span>
+                <span className="text-xs text-slate-400">
+                  {requestResults.filter(r => r.status === status).length}
+                </span>
+              </label>
+            ))}
           </div>
         </div>
       )}

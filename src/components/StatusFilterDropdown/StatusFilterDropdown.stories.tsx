@@ -2,18 +2,35 @@ import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import StatusFilterDropdown from './StatusFilterDropdown';
 import { RequestResult } from '../../types';
+import '../../index.css';
 
 export default {
   title: 'Components/StatusFilterDropdown',
   component: StatusFilterDropdown,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
+    backgrounds: {
+      default: 'dark',
+      values: [
+        { name: 'dark', value: '#0f172a' },
+        { name: 'light', value: '#ffffff' },
+      ],
+    },
     docs: {
       description: {
         component: 'A dropdown component for filtering request results by status.',
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div className="p-8 bg-slate-900 min-h-screen">
+        <div className="flex gap-4">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
   argTypes: {
     selectedStatuses: {
       control: { type: 'object' },
