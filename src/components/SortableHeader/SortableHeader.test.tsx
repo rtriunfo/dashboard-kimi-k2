@@ -1,7 +1,17 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { SortableHeader, SortColumn, SortDirection } from './SortableHeader';
+import { SortableHeader, SortColumn, SortDirection } from '@components/SortableHeader';
+
+function renderWithTable(ui: React.ReactElement) {
+  return render(
+    <table>
+      <thead>
+        <tr>{ui}</tr>
+      </thead>
+    </table>
+  );
+}
 
 describe('SortableHeader', () => {
   const mockOnSort = jest.fn();
@@ -20,21 +30,21 @@ describe('SortableHeader', () => {
 
   // Render tests with minimal props
   it('renders with minimal props', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     expect(screen.getByRole('columnheader')).toBeInTheDocument();
     expect(screen.getByText('Test Header')).toBeInTheDocument();
   });
 
   it('applies default className when none provided', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
     expect(header).toHaveClass('px-6', 'py-4', 'text-center', 'text-sm', 'font-semibold', 'text-white');
   });
 
   it('applies custom className when provided', () => {
-    render(
+    renderWithTable(
       <SortableHeader 
         {...defaultProps} 
         className="custom-class text-left" 
@@ -47,7 +57,7 @@ describe('SortableHeader', () => {
 
   // Behavior tests simulating user interaction
   it('calls onSort when clicked', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
     fireEvent.click(header);
@@ -57,7 +67,7 @@ describe('SortableHeader', () => {
   });
 
   it('shows ascending sort indicator when column is sorted ascending', () => {
-    render(
+    renderWithTable(
       <SortableHeader 
         {...defaultProps}
         sortColumn="name"
@@ -69,7 +79,7 @@ describe('SortableHeader', () => {
   });
 
   it('shows descending sort indicator when column is sorted descending', () => {
-    render(
+    renderWithTable(
       <SortableHeader 
         {...defaultProps}
         sortColumn="name"
@@ -81,7 +91,7 @@ describe('SortableHeader', () => {
   });
 
   it('does not show sort indicator when column is not the active sort column', () => {
-    render(
+    renderWithTable(
       <SortableHeader 
         {...defaultProps}
         column="status"
@@ -99,7 +109,7 @@ describe('SortableHeader', () => {
     const columns: SortColumn[] = ['name', 'status', 'severity', 'min', 'max', 'totalCount', 'errorPercentage'];
     
     columns.forEach(column => {
-      const { unmount } = render(
+      const { unmount } = renderWithTable(
         <SortableHeader 
           {...defaultProps}
           column={column}
@@ -116,7 +126,7 @@ describe('SortableHeader', () => {
   });
 
   it('applies correct flex justification for name column', () => {
-    render(
+    renderWithTable(
       <SortableHeader 
         {...defaultProps}
         column="name"
@@ -128,7 +138,7 @@ describe('SortableHeader', () => {
   });
 
   it('applies correct flex justification for non-name columns', () => {
-    render(
+    renderWithTable(
       <SortableHeader 
         {...defaultProps}
         column="status"
@@ -141,28 +151,28 @@ describe('SortableHeader', () => {
 
   // Accessibility checks
   it('has proper cursor pointer styling', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
     expect(header).toHaveClass('cursor-pointer');
   });
 
   it('has hover effects', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
     expect(header).toHaveClass('hover:bg-slate-700/30');
   });
 
   it('prevents text selection', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
     expect(header).toHaveClass('select-none');
   });
 
   it('has transition effects', () => {
-    render(<SortableHeader {...defaultProps} />);
+    renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
     expect(header).toHaveClass('transition-colors');

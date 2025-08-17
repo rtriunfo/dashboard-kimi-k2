@@ -7,6 +7,8 @@ import { XCircle } from 'lucide-react';
 import LineGraph from './LineGraph';
 import StatusFilterDropdown from "@/components/StatusFilterDropdown";
 
+import { SortableHeader as HeaderCell } from '@components/SortableHeader';
+
 interface RequestsTableProps {
   testData: TestResults;
 }
@@ -18,6 +20,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [selectedSeverities, setSelectedSeverities] = useState<Set<string>>(new Set());
   const [isSeverityDropdownOpen, setIsSeverityDropdownOpen] = useState(false);
@@ -305,25 +308,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
       }
     };
 
-    const SortableHeader: React.FC<{ column: SortColumn; children: React.ReactNode; className?: string }> = ({ 
-      column, 
-      children, 
-      className = "px-6 py-4 text-center text-sm font-semibold text-white" 
-    }) => (
-      <th 
-        className={`${className} cursor-pointer hover:bg-slate-700/30 transition-colors select-none`}
-        onClick={() => handleSort(column)}
-      >
-        <div className={`flex items-center gap-1 ${column === 'name' ? 'justify-start' : 'justify-center'}`}>
-          {children}
-          {sortColumn === column && (
-            <span className="text-xs">
-              {sortDirection === 'asc' ? '↑' : '↓'}
-            </span>
-          )}
-        </div>
-      </th>
-    );
 
   return (
     <div className="space-y-4">
@@ -516,36 +500,36 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
         <thead>
           <tr className="border-b border-slate-700">
-            <SortableHeader column="name" className="px-6 py-4 text-left text-sm font-semibold text-white">
+            <HeaderCell column="name" className="px-6 py-4 text-left text-sm font-semibold text-white" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
               Name
-            </SortableHeader>
+            </HeaderCell>
             {testData.testRequirements && (
-              <SortableHeader column="status">
+              <HeaderCell column="status" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
                 Status
-              </SortableHeader>
+              </HeaderCell>
             )}
             {testData.severityVersion && (
-              <SortableHeader column="severity">
+              <HeaderCell column="severity" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
                 Severity
-              </SortableHeader>
+              </HeaderCell>
             )}
-            <SortableHeader column="min">
+            <HeaderCell column="min" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
               Min
-            </SortableHeader>
+            </HeaderCell>
             {availablePercentiles.map(percentile => (
-              <SortableHeader key={percentile} column={percentile}>
+              <HeaderCell key={percentile} column={percentile} sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
                 {parseFloat(percentile) === 100 ? '100' : `${parseFloat(percentile)}`}
-              </SortableHeader>
+              </HeaderCell>
             ))}
-            <SortableHeader column="max">
+            <HeaderCell column="max" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
               Max
-            </SortableHeader>
-            <SortableHeader column="totalCount">
+            </HeaderCell>
+            <HeaderCell column="totalCount" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
               Count
-            </SortableHeader>
-            <SortableHeader column="errorPercentage">
+            </HeaderCell>
+            <HeaderCell column="errorPercentage" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
               Errors
-            </SortableHeader>
+            </HeaderCell>
           </tr>
         </thead>
         <tbody>

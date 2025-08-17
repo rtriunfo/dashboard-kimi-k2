@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { SortableHeader } from './SortableHeader';
+import { SortableHeader } from '@components/SortableHeader';
 
 const meta: Meta<typeof SortableHeader> = {
   title: 'Components/SortableHeader',

@@ -4,15 +4,12 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@components/SortableHeader$': '<rootDir>/src/components/SortableHeader/index.ts',
     '^@components/(.*)$': '<rootDir>/src/components/$1',
   },
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: {
-        jsx: 'react-jsx',
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
-      },
+      tsconfig: '<rootDir>/tsconfig.app.json',
     }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
