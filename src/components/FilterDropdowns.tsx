@@ -101,10 +101,11 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
       {testData.testRequirements && availableStatuses.length > 0 && (
         <div className="relative" ref={statusDropdownRef}>
           <button
+            type="button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
           >
-            <span>Status</span>
+            Status
             {selectedStatuses.size > 0 && (
               <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full">
                 {selectedStatuses.size}
@@ -120,6 +121,7 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
               <div className="p-2">
                 {hasActiveFilters && (
                   <button
+                    type="button"
                     onClick={clearFilters}
                     className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
                   >
@@ -153,6 +155,7 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
       {testData.severityVersion && availableSeverities.length > 0 && (
         <div className="relative" ref={severityDropdownRef}>
           <button
+            type="button"
             onClick={() => setIsSeverityDropdownOpen(!isSeverityDropdownOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
           >
@@ -205,6 +208,7 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
       {numericFields.length > 0 && (
         <div className="relative" ref={numericDropdownRef}>
           <button
+            type="button"
             onClick={() => setIsNumericDropdownOpen(!isNumericDropdownOpen)}
             className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
           >
@@ -224,6 +228,7 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
               <div className="p-3 space-y-3">
                 {hasActiveFilters && (
                   <button
+                    type="button"
                     onClick={clearFilters}
                     className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors"
                   >
@@ -241,7 +246,7 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
                     <option value="">Select field...</option>
                     {numericFields.map(field => (
                       <option key={field.key} value={field.key}>
-                        {field.label}
+                        {field.key === 'responseTime.min' ? 'Min RT' : field.key === 'responseTime.max' ? 'Max RT' : field.label}
                       </option>
                     ))}
                   </select>
@@ -286,6 +291,7 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
       {/* Expand/Collapse Controls */}
       <div className="flex gap-2 items-center">
         <button
+          type="button"
           onClick={toggleExpandAll}
           className={`flex items-center gap-2 px-4 py-2 text-sm ${
             isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-slate-800/50 border-slate-700'
@@ -293,14 +299,14 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
         >
           {isAllExpanded ? (
             <>
-              <span>Collapse All</span>
+              Collapse All
               <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
               </svg>
             </>
           ) : (
             <>
-              <span>Expand All</span>
+              Expand All
               <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -310,10 +316,11 @@ export const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
         
         {hasActiveFilters && (
           <button
+            type="button"
             onClick={clearFilters}
             className="flex items-center gap-2 px-3 py-2 text-xs text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 rounded-lg transition-colors backdrop-blur-sm"
           >
-            <span>Clear Filters</span>
+            <span>Clear all filters</span>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>

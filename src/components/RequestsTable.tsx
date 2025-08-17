@@ -8,6 +8,7 @@ import LineGraph from './LineGraph';
 import StatusFilterDropdown from "@/components/StatusFilterDropdown";
 
 import { SortableHeader as HeaderCell } from '@components/SortableHeader';
+import SeverityFilterDropdown from "@/components/SeverityFilterDropdown";
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -23,7 +24,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [selectedSeverities, setSelectedSeverities] = useState<Set<string>>(new Set());
-  const [isSeverityDropdownOpen, setIsSeverityDropdownOpen] = useState(false);
   const [numericField, setNumericField] = useState<string>('');
   const [numericOperator, setNumericOperator] = useState<'gt' | 'lt'>('gt');
   const [numericValue, setNumericValue] = useState<string>('');
@@ -33,7 +33,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   
   // Refs for dropdowns to handle click outside
   const statusDropdownRef = useRef<HTMLDivElement>(null);
-  const severityDropdownRef = useRef<HTMLDivElement>(null);
   const numericDropdownRef = useRef<HTMLDivElement>(null);
 
   // Handle click outside to close dropdowns
@@ -41,9 +40,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
-      }
-      if (severityDropdownRef.current && !severityDropdownRef.current.contains(event.target as Node)) {
-        setIsSeverityDropdownOpen(false);
       }
       if (numericDropdownRef.current && !numericDropdownRef.current.contains(event.target as Node)) {
         setIsNumericDropdownOpen(false);
@@ -328,54 +324,14 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
           {/* Severity Filter Dropdown */}
           {testData.severityVersion && availableSeverities.length > 0 && (
-            <div className="relative" ref={severityDropdownRef}>
-              <button
-                onClick={() => setIsSeverityDropdownOpen(!isSeverityDropdownOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
-              >
-                <span>Severity</span>
-                {selectedSeverities.size > 0 && (
-                  <span className="bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full">
-                    {selectedSeverities.size}
-                  </span>
-                )}
-                <span className="text-xs">
-                  {isSeverityDropdownOpen ? '▲' : '▼'}
-                </span>
-              </button>
-              
-              {isSeverityDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto">
-                  <div className="p-2">
-                    {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
-                      <button
-                        onClick={clearFilters}
-                        className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
-                      >
-                        Clear all filters
-                      </button>
-                    )}
-                    {availableSeverities.map(severity => (
-                      <label
-                        key={severity}
-                        className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedSeverities.has(severity)}
-                          onChange={() => handleSeverityToggle(severity)}
-                          className="rounded border-slate-600 bg-slate-700 text-orange-500 focus:ring-orange-500 focus:ring-offset-0"
-                        />
-                        <span className="text-sm text-white flex-1">{severity}</span>
-                        <span className="text-xs text-slate-400">
-                          {requestResults.filter(r => r.severity === severity).length}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <SeverityFilterDropdown
+              selectedSeverities={selectedSeverities}
+              availableSeverities={availableSeverities}
+              requestResults={requestResults}
+              onSeverityToggle={handleSeverityToggle}
+              onClearFilters={clearFilters}
+              hasActiveFilters={selectedStatuses.size > 0 || selectedSeverities.size > 0 || Boolean(numericField && numericValue)}
+            />
           )}
 
           {/* Numeric Filter Dropdown */}

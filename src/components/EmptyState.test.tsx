@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { EmptyState } from './EmptyState';
@@ -35,8 +34,9 @@ describe('EmptyState', () => {
   it('handles empty message', () => {
     render(<EmptyState message="" />);
     
-    const element = screen.getByText('');
+    const element = screen.getByTestId('empty-state');
     expect(element).toBeInTheDocument();
+    expect(element).toHaveTextContent('');
   });
 
   it('handles long message', () => {
