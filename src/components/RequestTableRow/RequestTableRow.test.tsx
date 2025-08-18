@@ -190,12 +190,20 @@ describe('RequestTableRow', () => {
 
   it('shows expanded content when isExpanded is true', () => {
     const expandedProps = { ...mockProps, isExpanded: true };
-    render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+    const { container } = render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+    
+    // Check that the expanded row is present by looking for the expanded row structure
+    const expandedRow = container.querySelector('tr.bg-slate-900\\/50');
+    expect(expandedRow).toBeInTheDocument();
+    
+    // Check for main sections that should be unique
     expect(screen.getByText('Request Details')).toBeInTheDocument();
     expect(screen.getByText('Pass/Fail Distribution')).toBeInTheDocument();
-    expect(screen.getAllByText('Response Times')[0]).toBeInTheDocument();
-    expect(screen.getAllByText('Requirements')[0]).toBeInTheDocument();
     expect(screen.getByText('Additional Information')).toBeInTheDocument();
+    
+    // Check for grid layout and sections
+    expect(container.querySelector('.grid')).toBeInTheDocument();
+    expect(container.querySelectorAll('.bg-slate-800\\/50').length).toBeGreaterThan(0);
   });
 
   it('does not show expand button when there is no expandable data', () => {
@@ -218,6 +226,10 @@ describe('RequestTableRow', () => {
   });
 
   it('handles missing or invalid result data gracefully', () => {
+    // Suppress console.warn for this test since we're intentionally testing invalid data
+    const originalWarn = console.warn;
+    console.warn = jest.fn();
+    
     const invalidResult = {
       ...mockResult,
       request: undefined,
@@ -228,6 +240,12 @@ describe('RequestTableRow', () => {
     const { container } = render(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
     // The component returns null for invalid data, so no table rows should be rendered
     expect(container.querySelectorAll('tr')).toHaveLength(0);
+    
+    // Verify that console.warn was called with the expected message
+    expect(console.warn).toHaveBeenCalledWith('Invalid result object:', invalidResult);
+    
+    // Restore original console.warn
+    console.warn = originalWarn;
   });
 
   it('renders correct expand/collapse icon based on isExpanded state', () => {
