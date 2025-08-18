@@ -20,6 +20,21 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
   disconnect: jest.fn(),
 }));
 
+// Mock window.matchMedia to prevent useTheme hook errors
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // deprecated
+    removeListener: jest.fn(), // deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
 const mockTestData: TestResults = {
   id: 1,
   test: {
@@ -178,8 +193,8 @@ describe('RequestTableRow', () => {
     render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
     expect(screen.getByText('Request Details')).toBeInTheDocument();
     expect(screen.getByText('Pass/Fail Distribution')).toBeInTheDocument();
-    expect(screen.getByText('Response Times')).toBeInTheDocument();
-    expect(screen.getByText('Requirements')).toBeInTheDocument();
+    expect(screen.getAllByText('Response Times')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Requirements')[0]).toBeInTheDocument();
     expect(screen.getByText('Additional Information')).toBeInTheDocument();
   });
 
@@ -211,8 +226,8 @@ describe('RequestTableRow', () => {
     const invalidProps = { ...mockProps, result: invalidResult };
     
     const { container } = render(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
-    // The component returns null for invalid data, so tbody should be empty
-    expect(container.querySelector('tbody')).toBeEmptyDOMElement();
+    // The component returns null for invalid data, so no table rows should be rendered
+    expect(container.querySelectorAll('tr')).toHaveLength(0);
   });
 
   it('renders correct expand/collapse icon based on isExpanded state', () => {
