@@ -9,7 +9,7 @@ import StatusFilterDropdown from "@/components/StatusFilterDropdown";
 
 import { SortableHeader as HeaderCell } from '@components/SortableHeader';
 import SeverityFilterDropdown from "@/components/SeverityFilterDropdown";
-import NumericFilterDropdown from "@/components/NumericFilterDropdown/NumericFilterDropdown";
+import NumericFilterDropdown from "@/components/NumericFilterDropdown";
 
 interface RequestsTableProps {
   testData: TestResults;
