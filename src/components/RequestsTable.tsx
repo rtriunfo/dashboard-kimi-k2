@@ -3,6 +3,7 @@ import { TestResults, RequestResult } from '../types';
 import { RequestsTableFilters } from './RequestsTableFilters';
 import { RequestTableRow } from './RequestTableRow';
 import { RequestsTableHeader } from './RequestsTableHeader';
+import { RequestsTableContainer } from './RequestsTableContainer';
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -46,24 +47,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     const formatResponseTime = (time: number) => {
       return `${time}`;
     };
-
-    // Early return if no data
-    if (!testData) {
-      return (
-        <div className="text-center py-8 text-slate-400">
-          No test data available
-        </div>
-      );
-    }
-
-    // Early return if no requestResults
-    if (!requestResults || requestResults.length === 0) {
-      return (
-        <div className="text-center py-8 text-slate-400">
-          No request data available
-        </div>
-      );
-    }
 
     // Get available percentiles dynamically from the first result and exclude 100% if it equals MAX
     const availablePercentiles = useMemo(() => {
@@ -320,8 +303,11 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
         clearFilters={clearFilters}
       />
 
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
+      <RequestsTableContainer
+        testData={testData}
+        requestResults={requestResults}
+        filteredAndSortedResults={filteredAndSortedResults}
+      >
         <RequestsTableHeader
           testData={testData}
           availablePercentiles={availablePercentiles}
@@ -343,20 +329,7 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
             />
           ))}
         </tbody>
-        </table>
-        
-        {filteredAndSortedResults.length === 0 && requestResults.length > 0 && (
-          <div className="text-center py-8 text-slate-400">
-            No requests match the selected filters
-          </div>
-        )}
-        
-        {requestResults.length === 0 && (
-          <div className="text-center py-8 text-slate-400">
-            No request data available
-          </div>
-        )}
-      </div>
+      </RequestsTableContainer>
     </div>
   );
 };
