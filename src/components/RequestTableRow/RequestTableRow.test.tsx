@@ -211,7 +211,8 @@ describe('RequestTableRow', () => {
     const invalidProps = { ...mockProps, result: invalidResult };
     
     const { container } = render(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
-    expect(container.firstChild).toBeEmptyDOMElement();
+    // The component returns null for invalid data, so tbody should be empty
+    expect(container.querySelector('tbody')).toBeEmptyDOMElement();
   });
 
   it('renders correct expand/collapse icon based on isExpanded state', () => {
