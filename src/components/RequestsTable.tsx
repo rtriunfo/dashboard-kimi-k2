@@ -2,8 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { TestResults, RequestResult } from '../types';
 import { RequestsTableFilters } from './RequestsTableFilters';
 import { RequestTableRow } from './RequestTableRow';
-
-import { SortableHeader as HeaderCell } from '@components/SortableHeader';
+import { RequestsTableHeader } from './RequestsTableHeader';
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -323,40 +322,13 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
-        <thead>
-          <tr className="border-b border-slate-700">
-            <HeaderCell column="name" className="px-6 py-4 text-left text-sm font-semibold text-white" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-              Name
-            </HeaderCell>
-            {testData.testRequirements && (
-              <HeaderCell column="status" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-                Status
-              </HeaderCell>
-            )}
-            {testData.severityVersion && (
-              <HeaderCell column="severity" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-                Severity
-              </HeaderCell>
-            )}
-            <HeaderCell column="min" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-              Min
-            </HeaderCell>
-            {availablePercentiles.map(percentile => (
-              <HeaderCell key={percentile} column={percentile} sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-                {parseFloat(percentile) === 100 ? '100' : `${parseFloat(percentile)}`}
-              </HeaderCell>
-            ))}
-            <HeaderCell column="max" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-              Max
-            </HeaderCell>
-            <HeaderCell column="totalCount" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-              Count
-            </HeaderCell>
-            <HeaderCell column="errorPercentage" sortColumn={sortColumn} sortDirection={sortDirection} onSort={handleSort}>
-              Errors
-            </HeaderCell>
-          </tr>
-        </thead>
+        <RequestsTableHeader
+          testData={testData}
+          availablePercentiles={availablePercentiles}
+          sortColumn={sortColumn}
+          sortDirection={sortDirection}
+          onSort={handleSort}
+        />
         <tbody>
           {filteredAndSortedResults.map((result, index) => (
             <RequestTableRow
