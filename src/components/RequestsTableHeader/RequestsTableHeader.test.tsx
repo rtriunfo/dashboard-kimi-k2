@@ -5,11 +5,15 @@ import { TestResults } from '../../types';
 
 // Mock the SortableHeader component
 jest.mock('@components/SortableHeader', () => ({
-  SortableHeader: ({ children, onSort, column, ...props }: any) => (
-    <th {...props} onClick={() => onSort(column)} data-testid={`header-${column}`}>
-      {children}
-    </th>
-  ),
+  SortableHeader: ({ children, onSort, column, className, ...props }: any) => {
+    // Filter out React-specific props that shouldn't be passed to DOM
+    const { sortColumn, sortDirection, ...domProps } = props;
+    return (
+      <th {...domProps} className={className} onClick={() => onSort(column)} data-testid={`header-${column}`}>
+        {children}
+      </th>
+    );
+  },
 }));
 
 const mockTestData: TestResults = {
@@ -84,7 +88,11 @@ describe('RequestsTableHeader', () => {
   });
 
   it('renders all required headers', () => {
-    render(<RequestsTableHeader {...mockProps} />);
+    render(
+      <table>
+        <RequestsTableHeader {...mockProps} />
+      </table>
+    );
     
     expect(screen.getByText('Name')).toBeInTheDocument();
     expect(screen.getByText('Status')).toBeInTheDocument();
@@ -96,7 +104,11 @@ describe('RequestsTableHeader', () => {
   });
 
   it('renders percentile headers correctly', () => {
-    render(<RequestsTableHeader {...mockProps} />);
+    render(
+      <table>
+        <RequestsTableHeader {...mockProps} />
+      </table>
+    );
     
     expect(screen.getByText('50')).toBeInTheDocument();
     expect(screen.getByText('95')).toBeInTheDocument();
@@ -109,7 +121,11 @@ describe('RequestsTableHeader', () => {
       availablePercentiles: ['50', '95', '100.0'],
     };
     
-    render(<RequestsTableHeader {...propsWithHundred} />);
+    render(
+      <table>
+        <RequestsTableHeader {...propsWithHundred} />
+      </table>
+    );
     
     expect(screen.getByText('100')).toBeInTheDocument();
   });
@@ -120,7 +136,11 @@ describe('RequestsTableHeader', () => {
       testData: { ...mockTestData, testRequirements: false },
     };
     
-    render(<RequestsTableHeader {...propsWithoutRequirements} />);
+    render(
+      <table>
+        <RequestsTableHeader {...propsWithoutRequirements} />
+      </table>
+    );
     
     expect(screen.queryByText('Status')).not.toBeInTheDocument();
   });
@@ -131,13 +151,21 @@ describe('RequestsTableHeader', () => {
       testData: { ...mockTestData, severityVersion: '' },
     };
     
-    render(<RequestsTableHeader {...propsWithoutSeverity} />);
+    render(
+      <table>
+        <RequestsTableHeader {...propsWithoutSeverity} />
+      </table>
+    );
     
     expect(screen.queryByText('Severity')).not.toBeInTheDocument();
   });
 
   it('calls onSort when header is clicked', () => {
-    render(<RequestsTableHeader {...mockProps} />);
+    render(
+      <table>
+        <RequestsTableHeader {...mockProps} />
+      </table>
+    );
     
     fireEvent.click(screen.getByTestId('header-name'));
     expect(mockProps.onSort).toHaveBeenCalledWith('name');
@@ -152,7 +180,11 @@ describe('RequestsTableHeader', () => {
       availablePercentiles: [],
     };
     
-    render(<RequestsTableHeader {...propsWithoutPercentiles} />);
+    render(
+      <table>
+        <RequestsTableHeader {...propsWithoutPercentiles} />
+      </table>
+    );
     
     // Should still render basic headers
     expect(screen.getByText('Name')).toBeInTheDocument();
