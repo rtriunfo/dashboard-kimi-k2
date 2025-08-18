@@ -10,10 +10,12 @@ A set of clear, actionable rules for safe and scalable component refactoring dur
 
 ## 🔁 1. Micro-Iteration Cycle
 
+- Ensure all tests are passing before you start to make changes
+- For playwright tests don't worry about starting the server just run the test.
 - Only make **one small change per iteration**
 - After each change, **run the component test first**:
   ```bash
-  npx jest src/components/ComponentName
+  npx jest
   ```
 - If component tests pass, **then run the E2E test**:
   ```bash
@@ -39,6 +41,7 @@ A set of clear, actionable rules for safe and scalable component refactoring dur
   ```
   components/
     Card/
+      index.ts
       Card.tsx
       Card.test.tsx
       Card.stories.tsx

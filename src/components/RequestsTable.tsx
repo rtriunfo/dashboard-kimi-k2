@@ -3,13 +3,10 @@ import * as echarts from 'echarts';
 import { TestResults, RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
 import { SeverityBadge } from './SeverityBadge';
-import { XCircle } from 'lucide-react';
 import LineGraph from './LineGraph';
-import StatusFilterDropdown from "@/components/StatusFilterDropdown";
+import { RequestsTableFilters } from './RequestsTableFilters';
 
 import { SortableHeader as HeaderCell } from '@components/SortableHeader';
-import SeverityFilterDropdown from "@/components/SeverityFilterDropdown";
-import NumericFilterDropdown from "@/components/NumericFilterDropdown";
 
 interface RequestsTableProps {
   testData: TestResults;
@@ -22,7 +19,6 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [selectedSeverities, setSelectedSeverities] = useState<Set<string>>(new Set());
   const [numericField, setNumericField] = useState<string>('');
@@ -32,16 +28,12 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const [isAllExpanded, setIsAllExpanded] = useState(false);
   
-  // Refs for dropdowns to handle click outside
-  const statusDropdownRef = useRef<HTMLDivElement>(null);
+  // Ref for dropdown to handle click outside
   const numericDropdownRef = useRef<HTMLDivElement>(null);
 
   // Handle click outside to close dropdowns
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
       if (numericDropdownRef.current && !numericDropdownRef.current.contains(event.target as Node)) {
         setIsNumericDropdownOpen(false);
       }
@@ -308,86 +300,29 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
 
   return (
     <div className="space-y-4">
-      {/* Filter Dropdowns */}
-      {((testData.testRequirements && availableStatuses.length > 0) || (testData.severityVersion && availableSeverities.length > 0) || numericFields.length > 0) && (
-        <div className="flex justify-start gap-3 flex-wrap items-start">
-          {/* Status Filter Dropdown */}
-          {testData.testRequirements && availableStatuses.length > 0 && (
-            <StatusFilterDropdown
-              selectedStatuses={selectedStatuses}
-              availableStatuses={availableStatuses}
-              requestResults={requestResults}
-              onStatusToggle={handleStatusToggle}
-              onClearFilters={clearFilters}
-              hasActiveFilters={selectedStatuses.size > 0 || selectedSeverities.size > 0 || Boolean(numericField && numericValue)}
-            />
-          )}
-
-          {/* Severity Filter Dropdown */}
-          {testData.severityVersion && availableSeverities.length > 0 && (
-            <SeverityFilterDropdown
-              selectedSeverities={selectedSeverities}
-              availableSeverities={availableSeverities}
-              requestResults={requestResults}
-              onSeverityToggle={handleSeverityToggle}
-              onClearFilters={clearFilters}
-              hasActiveFilters={selectedStatuses.size > 0 || selectedSeverities.size > 0 || Boolean(numericField && numericValue)}
-            />
-          )}
-
-          {/* Numeric Filter Dropdown */}
-          {numericFields.length > 0 && (
-            <NumericFilterDropdown
-              numericFields={numericFields}
-              numericField={numericField}
-              setNumericField={setNumericField}
-              numericOperator={numericOperator}
-              setNumericOperator={setNumericOperator}
-              numericValue={numericValue}
-              setNumericValue={setNumericValue}
-              isOpen={isNumericDropdownOpen}
-              setIsOpen={setIsNumericDropdownOpen}
-              dropdownRef={numericDropdownRef}
-              hasActiveFilters={selectedStatuses.size > 0 || selectedSeverities.size > 0 || Boolean(numericField && numericValue)}
-              onClearFilters={clearFilters}
-            />
-          )}
-          <div className="flex gap-2 items-center">
-            <button
-              onClick={toggleExpandAll}
-              className={`flex items-center gap-2 px-4 py-2 text-sm ${
-                isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-slate-800/50 border-slate-700'
-              } text-white rounded-lg border hover:bg-slate-700/50 transition-colors backdrop-blur-sm`}
-            >
-              {isAllExpanded ? (
-                <>
-                  <span>Collapse All</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                  </svg>
-                </>
-              ) : (
-                <>
-                  <span>Expand All</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </>
-              )}
-            </button>
-            
-            {(selectedStatuses.size > 0 || selectedSeverities.size > 0 || (numericField && numericValue)) && (
-              <button
-                onClick={clearFilters}
-                className="flex items-center gap-2 px-4 py-2 text-sm bg-slate-800/50 hover:bg-slate-700/50 text-white rounded-lg border border-slate-700 transition-colors backdrop-blur-sm"
-              >
-                <XCircle className="w-3 h-3" />
-                Clear all filters
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+      <RequestsTableFilters
+        testData={testData}
+        availableStatuses={availableStatuses}
+        availableSeverities={availableSeverities}
+        numericFields={numericFields}
+        selectedStatuses={selectedStatuses}
+        selectedSeverities={selectedSeverities}
+        numericField={numericField}
+        numericOperator={numericOperator}
+        numericValue={numericValue}
+        isNumericDropdownOpen={isNumericDropdownOpen}
+        isAllExpanded={isAllExpanded}
+        numericDropdownRef={numericDropdownRef}
+        requestResults={requestResults}
+        onStatusToggle={handleStatusToggle}
+        onSeverityToggle={handleSeverityToggle}
+        setNumericField={setNumericField}
+        setNumericOperator={setNumericOperator}
+        setNumericValue={setNumericValue}
+        setIsNumericDropdownOpen={setIsNumericDropdownOpen}
+        toggleExpandAll={toggleExpandAll}
+        clearFilters={clearFilters}
+      />
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
