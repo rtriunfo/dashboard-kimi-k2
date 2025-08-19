@@ -1,14 +1,14 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
-interface MetricCardProps {
+export interface MetricCardProps {
   icon: LucideIcon;
   title: string;
   value: string;
   color: string;
 }
 
-export const MetricCard: React.FC<MetricCardProps> = ({ icon: Icon, title, value, color }) => {
+const MetricCard: React.FC<MetricCardProps> = ({ icon: Icon, title, value, color }) => {
   return (
     <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700 hover:border-slate-600 transition-all duration-200">
       <div className="flex items-center justify-between">
@@ -21,3 +21,5 @@ export const MetricCard: React.FC<MetricCardProps> = ({ icon: Icon, title, value
     </div>
   );
 };
+
+export default MetricCard;
