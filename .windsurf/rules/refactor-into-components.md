@@ -8,7 +8,16 @@ A set of clear, actionable rules for safe and scalable component refactoring dur
 
 ---
 
-## 🔁 1. Micro-Iteration Cycle
+## 🔁 1. Micro-Iteration Cycle (Test-First Approach)
+
+- Ensure all tests are passing before you start
+- **FIRST**: Create the component subfolder with ALL required files:
+  - `ComponentName.tsx` (moved from original location)
+  - [index.ts]
+  - `ComponentName.test.tsx` (comprehensive tests)
+  - `ComponentName.stories.tsx` (Storybook stories)
+- **THEN**: Update imports and run tests
+- Only proceed if both component and E2E tests pass
 
 - Ensure all tests are passing before you start to make changes
 - For playwright tests don't worry about starting the server just run the test.
@@ -46,6 +55,30 @@ A set of clear, actionable rules for safe and scalable component refactoring dur
       Card.test.tsx
       Card.stories.tsx
   ```
+## ✅ 3.1 Component Refactor Checklist
+
+When refactoring any component, ensure ALL of the following are completed:
+
+- [ ] Component moved to its own subfolder
+- [ ] [index.ts]
+- [ ] `ComponentName.test.tsx` with comprehensive unit tests
+- [ ] `ComponentName.stories.tsx` with Storybook stories
+- [ ] All import statements updated
+- [ ] Component tests pass
+- [ ] E2E tests pass
+- [ ] Changes committed
+
+**⚠️ CRITICAL: Do not consider refactoring complete without ALL files present**
+
+
+## 📋 3.2 Before Starting - Examine Patterns
+
+Before refactoring any component:
+- **Scan `components/` directory** for properly structured components
+- **Copy test patterns** from similar components (e.g., `NumericFilterDropdown/`)
+- **Copy story patterns** from existing [.stories.tsx]
+- **Ensure consistency** with established testing and documentation practices
+
 
 ---
 
@@ -89,3 +122,13 @@ A set of clear, actionable rules for safe and scalable component refactoring dur
 - **Test components first, then integration** - component tests are faster and catch issues earlier
 - Continuously scan for reuse opportunities
 - Ensure all components have proper structure and styling discipline
+
+---
+
+## 🔍 8. Final Validation
+
+Before marking refactor complete:
+- [ ] Run `ls components/ComponentName/` and verify 4 files present
+- [ ] Verify test coverage matches or exceeds similar components
+- [ ] Verify stories cover main use cases and edge cases
+- [ ] All tests passing (component + E2E)
