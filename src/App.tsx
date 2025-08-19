@@ -5,7 +5,7 @@ import MetricCard from './components/MetricCard';
 import ResponseTimeChart from './components/ResponseTimeChart';
 import { ResponseTimesDetailChart } from './components/ResponseTimesDetailChart';
 import { StatusBadge } from './components/StatusBadge';
-import { RequestStats } from './components/RequestStats';
+import RequestStats from './components/RequestStats';
 import AssertionStats from './components/AssertionStats';
 import { SeverityStats } from './components/SeverityStats';
 import { CompactMetricCard } from './components/CompactMetricCard';
@@ -143,10 +143,10 @@ function App() {
   // Show loading state
   if (isLoading || !testData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading dashboard...</p>
+          <div className="w-32 h-32 mx-auto mb-4 border-b-2 border-white rounded-full animate-spin"></div>
+          <p className="text-lg text-white">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -168,7 +168,7 @@ function App() {
                 <p className="flex items-center gap-2 text-slate-400">
                   <Activity className="w-4 h-4" />
                   {testData.test.description}
-                  <span className="ml-2 px-2 py-1 text-xs bg-slate-700 rounded text-slate-300">
+                  <span className="px-2 py-1 ml-2 text-xs rounded bg-slate-700 text-slate-300">
                     Scenario: {selectedScenario}
                   </span>
                 </p>
@@ -258,12 +258,12 @@ function App() {
             </div>
             
             {/* Single Response Times Card */}
-            <div className="mt-4 p-3 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700">
+            <div className="p-3 mt-4 border rounded-lg bg-slate-800/50 backdrop-blur-sm border-slate-700">
               <div className="flex items-start gap-3">
-                <Clock className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
-                <div className="flex-1 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center">
+                <Clock className="flex-shrink-0 w-4 h-4 mt-1 text-blue-400" />
+                <div className="grid flex-1 grid-cols-3 gap-2 text-center sm:grid-cols-4 lg:grid-cols-7">
                   <div>
-                    <div className="text-xs text-slate-400 mb-1">Min</div>
+                    <div className="mb-1 text-xs text-slate-400">Min</div>
                     <div className="text-base font-bold text-slate-300">{testData.responseTimes.min}<span className="ml-1 text-xs">ms</span></div>
                   </div>
                   {Object.entries(testData.responseTimes.percentiles)
@@ -271,12 +271,12 @@ function App() {
                     .sort(([a], [b]) => parseFloat(a) - parseFloat(b))
                     .map(([percentile, value]) => (
                       <div key={percentile}>
-                        <div className="text-xs text-slate-400 mb-1">P{parseFloat(percentile)}</div>
+                        <div className="mb-1 text-xs text-slate-400">P{parseFloat(percentile)}</div>
                         <div className="text-base font-bold text-slate-300">{value}<span className="ml-1 text-xs">ms</span></div>
                       </div>
                     ))}
                   <div>
-                    <div className="text-xs text-slate-400 mb-1">Max</div>
+                    <div className="mb-1 text-xs text-slate-400">Max</div>
                     <div className="text-base font-bold text-slate-300">{testData.responseTimes.max}<span className="ml-1 text-xs">ms</span></div>
                   </div>
                 </div>
