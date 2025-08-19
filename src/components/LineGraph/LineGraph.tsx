@@ -1,12 +1,12 @@
 import React, { useMemo, useCallback } from 'react';
-import { useResponsiveChart } from '../hooks/useResponsiveChart';
-import { useAccessibility } from '../hooks/useAccessibility';
-import { useChartInteractions } from '../hooks/useChartInteractions';
-import { useTheme } from '../hooks/useTheme';
-import { Tooltip } from './ui/Tooltip';
-import { LoadingSpinner } from './ui/LoadingSpinner';
-import { ErrorBoundary, ErrorState } from './ui/ErrorBoundary';
-import { ResponseTimeData, RequirementData, ChartPoint } from '../types/chart.types';
+import { useResponsiveChart } from '../../hooks/useResponsiveChart';
+import { useAccessibility } from '../../hooks/useAccessibility';
+import { useChartInteractions } from '../../hooks/useChartInteractions';
+import { useTheme } from '../../hooks/useTheme';
+import { Tooltip } from '../ui/Tooltip';
+import { LoadingSpinner } from '../ui/LoadingSpinner';
+import { ErrorBoundary, ErrorState } from '../ui/ErrorBoundary';
+import { ResponseTimeData, RequirementData, ChartPoint } from '../../types/chart.types';
 
 interface LineGraphProps {
   responseTimes: ResponseTimeData;

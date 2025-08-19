@@ -2,7 +2,7 @@ import React from 'react';
 import * as echarts from 'echarts';
 import { RequestResult } from '../types';
 import { StatusBadge } from './StatusBadge';
-import LineGraph from './LineGraph';
+import LineGraph from './LineGraph/';
 
 interface ExpandedRowContentProps {
   result: RequestResult;
