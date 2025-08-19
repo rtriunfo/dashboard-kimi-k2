@@ -1,8 +1,8 @@
 import React from 'react';
 import { Shield, ShieldCheck, ShieldAlert, ShieldOff } from 'lucide-react';
-import PieChart from './PieChart';
+import PieChart from '../PieChart';
 
-interface AssertionStatsProps {
+export interface AssertionStatsProps {
   stats: {
     total: number;
     passed: number;
@@ -11,7 +11,7 @@ interface AssertionStatsProps {
   };
 }
 
-export const AssertionStats: React.FC<AssertionStatsProps> = ({ stats }) => {
+const AssertionStats: React.FC<AssertionStatsProps> = ({ stats }) => {
   const passRate = ((stats.passed / stats.total) * 100).toFixed(1);
   
   const pieData = [
@@ -76,3 +76,5 @@ export const AssertionStats: React.FC<AssertionStatsProps> = ({ stats }) => {
     </div>
   );
 };
+
+export default AssertionStats;

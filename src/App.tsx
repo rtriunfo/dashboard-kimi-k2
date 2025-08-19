@@ -6,7 +6,7 @@ import ResponseTimeChart from './components/ResponseTimeChart';
 import { ResponseTimesDetailChart } from './components/ResponseTimesDetailChart';
 import { StatusBadge } from './components/StatusBadge';
 import { RequestStats } from './components/RequestStats';
-import { AssertionStats } from './components/AssertionStats';
+import AssertionStats from './components/AssertionStats';
 import { SeverityStats } from './components/SeverityStats';
 import { CompactMetricCard } from './components/CompactMetricCard';
 import { getTestScenario, getAvailableScenarios, TestScenario } from './config/testReportAdapter';
