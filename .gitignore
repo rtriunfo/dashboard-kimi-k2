@@ -3,3 +3,5 @@
 .vscode
 .aider*
 .DS_Store
+playwright-report
+test-results
