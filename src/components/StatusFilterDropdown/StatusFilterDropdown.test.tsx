@@ -1,0 +1,184 @@
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import StatusFilterDropdown from './StatusFilterDropdown';
+import '@testing-library/jest-dom';
+
+describe('StatusFilterDropdown', () => {
+  const mockRequestResults = [
+    { 
+      id: 1, 
+      status: 'PASSED', 
+      severity: 'minor',
+      request: { 
+        id: 1,
+        requestName: 'Test 1',
+        requestDescription: 'Test description 1',
+        requestPriority: 'high',
+        tags: 'tag1,tag2',
+        createdTime: '2023-01-01T00:00:00Z'
+      },
+      totalCount: 100,
+      passCount: 100,
+      failCount: 0,
+      errorPercentage: 0,
+      responseTimes: { min: 10, max: 50, percentiles: { '50': 25, '95': 45 } },
+      rate: 10,
+      rateGranularity: 'second',
+      testRequirements: true,
+      statistics: true,
+      requirements: {
+        status: 'PASSED',
+        passed: 100,
+        failed: 0,
+        percentiles: []
+      }
+    },
+    { 
+      id: 2, 
+      status: 'FAILED', 
+      severity: 'major',
+      request: { 
+        id: 2,
+        requestName: 'Test 2',
+        requestDescription: 'Test description 2',
+        requestPriority: 'medium',
+        tags: 'tag3,tag4',
+        createdTime: '2023-01-02T00:00:00Z'
+      },
+      totalCount: 100,
+      passCount: 80,
+      failCount: 20,
+      errorPercentage: 20,
+      responseTimes: { min: 15, max: 100, percentiles: { '50': 30, '95': 80 } },
+      rate: 10,
+      rateGranularity: 'second',
+      testRequirements: true,
+      statistics: true,
+      requirements: {
+        status: 'FAILED',
+        passed: 80,
+        failed: 20,
+        percentiles: []
+      }
+    },
+    { 
+      id: 3, 
+      status: 'PASSED', 
+      severity: 'minor',
+      request: { 
+        id: 3,
+        requestName: 'Test 3',
+        requestDescription: 'Test description 3',
+        requestPriority: 'low',
+        tags: 'tag5,tag6',
+        createdTime: '2023-01-03T00:00:00Z'
+      },
+      totalCount: 100,
+      passCount: 100,
+      failCount: 0,
+      errorPercentage: 0,
+      responseTimes: { min: 8, max: 40, percentiles: { '50': 20, '95': 35 } },
+      rate: 10,
+      rateGranularity: 'second',
+      testRequirements: true,
+      statistics: true,
+      requirements: {
+        status: 'PASSED',
+        passed: 100,
+        failed: 0,
+        percentiles: []
+      }
+    },
+  ];
+
+  const defaultProps = {
+    selectedStatuses: new Set<string>(),
+    availableStatuses: ['PASSED', 'FAILED'],
+    requestResults: mockRequestResults,
+    onStatusToggle: jest.fn(),
+    onClearFilters: jest.fn(),
+    hasActiveFilters: false,
+  };
+
+  it('renders the dropdown button with default text', () => {
+    render(<StatusFilterDropdown {...defaultProps} />);
+    expect(screen.getByText('Status')).toBeInTheDocument();
+  });
+
+  it('shows the count of selected statuses', () => {
+    const props = {
+      ...defaultProps,
+      selectedStatuses: new Set(['PASSED']),
+      hasActiveFilters: true,
+    };
+    render(<StatusFilterDropdown {...props} />);
+    expect(screen.getByText('1')).toBeInTheDocument();
+  });
+
+  it('opens dropdown when button is clicked', () => {
+    render(<StatusFilterDropdown {...defaultProps} />);
+    const button = screen.getByRole('button', { name: /status/i });
+    fireEvent.click(button);
+    expect(screen.getByText('PASSED')).toBeInTheDocument();
+    expect(screen.getByText('FAILED')).toBeInTheDocument();
+  });
+
+  it('calls onStatusToggle when status is clicked', () => {
+    const mockOnStatusToggle = jest.fn();
+    const props = {
+      ...defaultProps,
+      onStatusToggle: mockOnStatusToggle,
+    };
+    render(<StatusFilterDropdown {...props} />);
+    
+    const button = screen.getByRole('button', { name: /status/i });
+    fireEvent.click(button);
+    
+    const passedCheckbox = screen.getByRole('checkbox', { name: /passed/i });
+    fireEvent.click(passedCheckbox);
+    
+    expect(mockOnStatusToggle).toHaveBeenCalledWith('PASSED');
+  });
+
+  it('shows clear filters option when filters are active', () => {
+    const props = {
+      ...defaultProps,
+      hasActiveFilters: true,
+    };
+    render(<StatusFilterDropdown {...props} />);
+    
+    const button = screen.getByRole('button', { name: /status/i });
+    fireEvent.click(button);
+    
+    expect(screen.getByText('Clear all filters')).toBeInTheDocument();
+  });
+
+  it('calls onClearFilters when clear filters is clicked', () => {
+    const mockOnClearFilters = jest.fn();
+    const props = {
+      ...defaultProps,
+      hasActiveFilters: true,
+      onClearFilters: mockOnClearFilters,
+    };
+    render(<StatusFilterDropdown {...props} />);
+    
+    const button = screen.getByRole('button', { name: /status/i });
+    fireEvent.click(button);
+    
+    const clearButton = screen.getByText('Clear all filters');
+    fireEvent.click(clearButton);
+    
+    expect(mockOnClearFilters).toHaveBeenCalled();
+  });
+
+  it('closes dropdown when clicking outside', () => {
+    render(<StatusFilterDropdown {...defaultProps} />);
+    
+    const button = screen.getByRole('button', { name: /status/i });
+    fireEvent.click(button);
+    expect(screen.getByText('PASSED')).toBeInTheDocument();
+    
+    fireEvent.mouseDown(document.body);
+    expect(screen.queryByText('PASSED')).not.toBeInTheDocument();
+  });
+});
