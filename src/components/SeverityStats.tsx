@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertTriangle, AlertCircle, Info, CheckCircle } from 'lucide-react';
-import { PieChart } from './PieChart';
+import PieChart from './PieChart';
 
 interface SeverityStatsProps {
   stats: {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface PieChartProps {
+export interface PieChartProps {
   data: Array<{
     label: string;
     value: number;
@@ -9,7 +9,7 @@ interface PieChartProps {
   size?: number;
 }
 
-export const PieChart: React.FC<PieChartProps> = ({ data, size = 120 }) => {
+const PieChart: React.FC<PieChartProps> = ({ data, size = 120 }) => {
   const total = data.reduce((sum, item) => sum + item.value, 0);
   if (total === 0) return null;
 
@@ -84,3 +84,5 @@ export const PieChart: React.FC<PieChartProps> = ({ data, size = 120 }) => {
     </svg>
   );
 };
+
+export default PieChart;

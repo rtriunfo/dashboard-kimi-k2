@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import { PieChart } from './PieChart';
+import PieChart from './PieChart';
 
 interface RequestStatsProps {
   stats: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shield, ShieldCheck, ShieldAlert, ShieldOff } from 'lucide-react';
-import { PieChart } from './PieChart';
+import PieChart from './PieChart';
 
 interface AssertionStatsProps {
   stats: {
