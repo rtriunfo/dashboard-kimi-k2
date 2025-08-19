@@ -1,8 +1,8 @@
 import React from 'react';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import PieChart from './PieChart';
+import PieChart from '../PieChart';
 
-interface RequestStatsProps {
+export interface RequestStatsProps {
   stats: {
     total: number;
     passed: number;
@@ -11,7 +11,7 @@ interface RequestStatsProps {
   };
 }
 
-export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
+const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
   const successRate = ((stats.passed / stats.total) * 100).toFixed(1);
   
   const pieData = [
@@ -76,3 +76,5 @@ export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
     </div>
   );
 };
+
+export default RequestStats;
