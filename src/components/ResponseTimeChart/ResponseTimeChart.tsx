@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart3 } from 'lucide-react';
 
-interface ResponseTimeChartProps {
+export interface ResponseTimeChartProps {
   responseTimes: {
     min: number;
     max: number;
@@ -9,7 +9,7 @@ interface ResponseTimeChartProps {
   };
 }
 
-export const ResponseTimeChart: React.FC<ResponseTimeChartProps> = ({ responseTimes }) => {
+const ResponseTimeChart: React.FC<ResponseTimeChartProps> = ({ responseTimes }) => {
   const percentiles = [
     { label: '50th', value: responseTimes.percentiles["50.0"], color: 'bg-blue-500' },
     { label: '90th', value: responseTimes.percentiles["90.0"], color: 'bg-green-500' },
@@ -59,3 +59,5 @@ export const ResponseTimeChart: React.FC<ResponseTimeChartProps> = ({ responseTi
     </div>
   );
 };
+
+export default ResponseTimeChart;
