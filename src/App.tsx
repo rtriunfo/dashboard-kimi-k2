@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch, Calendar, Timer, BarChart3, Percent, Info, FileText, GitCommit, Settings, ChevronDown, XCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch, Calendar, Timer, BarChart3, Percent, Info, FileText, GitCommit, Settings, XCircle } from 'lucide-react';
 import { TestResults } from './types';
 import MetricCard from './components/MetricCard';
 import ResponseTimeChart from './components/ResponseTimeChart';
@@ -12,6 +12,7 @@ import CompactMetricCard from './components/CompactMetricCard';
 import { getTestScenario, getAvailableScenarios, TestScenario } from './config/testReportAdapter';
 import RequestsTable from './components/RequestsTable';
 import TabNavigation, { TabType } from './components/TabNavigation';
+import ScenarioSelector from './components/ScenarioSelector';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('summary');
@@ -20,7 +21,6 @@ function App() {
   const [currentScenario, setCurrentScenario] = useState<TestScenario | null>(null);
   const [availableScenarios, setAvailableScenarios] = useState<TestScenario[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const loadScenarios = async () => {
@@ -89,19 +89,6 @@ function App() {
     }
   }, [testData, selectedScenario]);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsScenarioDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   const formatDuration = (seconds: number) => {
     const days = Math.floor(seconds / 86400); // 86400 seconds in a day
@@ -177,43 +164,16 @@ function App() {
               
               <div className="flex items-center gap-4">
                 {/* Scenario Selector */}
-                <div className="relative" ref={dropdownRef}>
-                  <button
-                    onClick={() => setIsScenarioDropdownOpen(!isScenarioDropdownOpen)}
-                    disabled={isLoading}
-                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors border rounded-lg bg-slate-700/50 border-slate-600 hover:bg-slate-600/50 disabled:opacity-50"
-                  >
-                    {isLoading ? (
-                      <span>Loading...</span>
-                    ) : (
-                      <>
-                        <span>{currentScenario?.name || 'Select Scenario'}</span>
-                        <ChevronDown className={`w-4 h-4 transition-transform ${isScenarioDropdownOpen ? 'rotate-180' : ''}`} />
-                      </>
-                    )}
-                  </button>
-                  
-                  {!isLoading && isScenarioDropdownOpen && (
-                    <div className="absolute right-0 z-50 mt-2 overflow-hidden border rounded-lg shadow-lg bg-slate-800 border-slate-600 min-w-64">
-                      {availableScenarios.map((scenario) => (
-                        <button
-                          key={scenario.id}
-                          onClick={() => {
-                            console.log('Selecting scenario:', scenario.id, scenario.name);
-                            setSelectedScenario(scenario.id);
-                            setIsScenarioDropdownOpen(false);
-                          }}
-                          className={`w-full px-4 py-3 text-left transition-colors hover:bg-slate-700 ${
-                            selectedScenario === scenario.id ? 'bg-slate-700 text-blue-400' : 'text-white'
-                          }`}
-                        >
-                          <div className="font-medium">{scenario.name}</div>
-                          <div className="text-xs text-slate-400">{scenario.description}</div>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <ScenarioSelector
+                  selectedScenario={selectedScenario}
+                  currentScenario={currentScenario}
+                  availableScenarios={availableScenarios}
+                  isLoading={isLoading}
+                  isDropdownOpen={isScenarioDropdownOpen}
+                  onScenarioChange={setSelectedScenario}
+                  onToggleDropdown={() => setIsScenarioDropdownOpen(!isScenarioDropdownOpen)}
+                  onCloseDropdown={() => setIsScenarioDropdownOpen(false)}
+                />
                 
                 <StatusBadge status={testData.status} size="lg" showIcon={true} />
               </div>
