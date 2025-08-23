@@ -11,9 +11,10 @@ import SeverityStats from './components/SeverityStats';
 import CompactMetricCard from './components/CompactMetricCard';
 import { getTestScenario, getAvailableScenarios, TestScenario } from './config/testReportAdapter';
 import RequestsTable from './components/RequestsTable';
+import TabNavigation, { TabType } from './components/TabNavigation';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes' | 'requests'>('summary');
+  const [activeTab, setActiveTab] = useState<TabType>('summary');
   const [selectedScenario, setSelectedScenario] = useState<string>('test-report-data');
   const [isScenarioDropdownOpen, setIsScenarioDropdownOpen] = useState(false);
   const [currentScenario, setCurrentScenario] = useState<TestScenario | null>(null);
@@ -287,52 +288,7 @@ function App() {
 
         <main className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
           {/* Tab Navigation */}
-          <div className="mb-6">
-            <div className="border-b border-slate-700">
-              <nav className="flex -mb-px space-x-8">
-                <button
-                  onClick={() => setActiveTab('summary')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === 'summary'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-slate-400 hover:text-slate-300'
-                  }`}
-                >
-                  Summary
-                </button>
-                <button
-                  onClick={() => setActiveTab('responseTimes')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === 'responseTimes'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-slate-400 hover:text-slate-300'
-                  }`}
-                >
-                  Response Times
-                </button>
-                <button
-                  onClick={() => setActiveTab('metadata')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === 'metadata'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-slate-400 hover:text-slate-300'
-                  }`}
-                >
-                  Metadata
-                </button>
-                <button
-                  onClick={() => setActiveTab('requests')}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === 'requests'
-                      ? 'border-blue-500 text-blue-400'
-                      : 'border-transparent text-slate-400 hover:text-slate-300'
-                  }`}
-                >
-                  Requests
-                </button>
-              </nav>
-            </div>
-          </div>
+          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* Tab Content */}
           {activeTab === 'summary' ? (
