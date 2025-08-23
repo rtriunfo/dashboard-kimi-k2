@@ -2,7 +2,7 @@ import React from 'react';
 import * as echarts from 'echarts';
 import { RequestResult, TestResults } from '../../types';
 import { StatusBadge } from '../StatusBadge';
-import { SeverityBadge } from '../SeverityBadge';
+import SeverityBadge from '../SeverityBadge';
 import LineGraph from '../LineGraph/';
 
 interface RequestTableRowProps {

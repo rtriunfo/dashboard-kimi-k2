@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface SeverityBadgeProps {
+export interface SeverityBadgeProps {
   severity: string;
 }
 
-export const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity }) => {
+const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity }) => {
   const getSeverityColor = (severity: string) => {
     switch (severity?.toUpperCase()) {
       case 'BLOCKER':
@@ -30,3 +30,5 @@ export const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity }) => {
     </span>
   );
 };
+
+export default SeverityBadge;
