@@ -3,7 +3,7 @@ import { AlertTriangle, CheckCircle, Clock, TrendingUp, Activity, Zap, GitBranch
 import { TestResults } from './types';
 import MetricCard from './components/MetricCard';
 import ResponseTimeChart from './components/ResponseTimeChart';
-import { ResponseTimesDetailChart } from './components/ResponseTimesDetailChart';
+import ResponseTimesDetailChart from './components/ResponseTimesDetailChart';
 import StatusBadge from './components/StatusBadge';
 import RequestStats from './components/RequestStats';
 import AssertionStats from './components/AssertionStats';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Clock } from 'lucide-react';
 
-interface ResponseTimesDetailChartProps {
+export interface ResponseTimesDetailChartProps {
   responseTimes: {
     min: number;
     max: number;
@@ -9,7 +9,7 @@ interface ResponseTimesDetailChartProps {
   };
 }
 
-export const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ responseTimes }) => {
+const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ responseTimes }) => {
   const [chartType, setChartType] = useState<'bar' | 'line'>('line');
   
   const percentileKeys = Object.keys(responseTimes.percentiles).sort((a, b) => parseFloat(a) - parseFloat(b));
@@ -225,3 +225,5 @@ export const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> =
     </div>
   );
 };
+
+export default ResponseTimesDetailChart;
