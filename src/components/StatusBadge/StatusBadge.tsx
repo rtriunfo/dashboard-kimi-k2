@@ -1,13 +1,13 @@
 import React from 'react';
 import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 
-interface StatusBadgeProps {
+export interface StatusBadgeProps {
   status: string;
   size?: 'sm' | 'lg';
   showIcon?: boolean;
 }
 
-export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', showIcon = false }) => {
+const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', showIcon = false }) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pass':
@@ -40,3 +40,5 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, size = 'sm', s
     </span>
   );
 };
+
+export default StatusBadge;
