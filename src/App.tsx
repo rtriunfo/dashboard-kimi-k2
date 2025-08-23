@@ -13,6 +13,7 @@ import { getTestScenario, getAvailableScenarios, TestScenario } from './config/t
 import RequestsTable from './components/RequestsTable';
 import TabNavigation, { TabType } from './components/TabNavigation';
 import ScenarioSelector from './components/ScenarioSelector';
+import LoadingSpinner from './components/LoadingSpinner';
 
 function App() {
   const [activeTab, setActiveTab] = useState<TabType>('summary');
@@ -130,14 +131,7 @@ function App() {
 
   // Show loading state
   if (isLoading || !testData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <div className="text-center">
-          <div className="w-32 h-32 mx-auto mb-4 border-b-2 border-white rounded-full animate-spin"></div>
-          <p className="text-lg text-white">Loading dashboard...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading dashboard..." />;
   }
 
   return (
