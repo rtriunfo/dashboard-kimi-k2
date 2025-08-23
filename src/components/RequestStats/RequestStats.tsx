@@ -1,8 +1,8 @@
 import React from 'react';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import PieChart from './PieChart';
+import PieChart from '../PieChart';
 
-interface RequestStatsProps {
+export interface RequestStatsProps {
   stats: {
     total: number;
     passed: number;
@@ -21,8 +21,8 @@ export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
   ].filter(item => item.value > 0);
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700">
-      <h3 className="text-lg font-semibold text-white mb-4">Request Statistics</h3>
+    <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+      <h3 className="mb-4 text-lg font-semibold text-white">Request Statistics</h3>
       
       <div className="flex items-start gap-6">
         <div className="flex-1 space-y-4">
@@ -31,7 +31,7 @@ export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
               <CheckCircle className="w-5 h-5 text-green-400" />
               <span className="text-slate-300">Passed</span>
             </div>
-            <span className="text-white font-medium">{stats.passed}</span>
+            <span className="font-medium text-white">{stats.passed}</span>
           </div>
           
           <div className="flex items-center justify-between">
@@ -39,7 +39,7 @@ export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
               <XCircle className="w-5 h-5 text-red-400" />
               <span className="text-slate-300">Failed</span>
             </div>
-            <span className="text-white font-medium">{stats.failed}</span>
+            <span className="font-medium text-white">{stats.failed}</span>
           </div>
           
           <div className="flex items-center justify-between">
@@ -47,7 +47,7 @@ export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
               <AlertCircle className="w-5 h-5 text-yellow-400" />
               <span className="text-slate-300">Unavailable</span>
             </div>
-            <span className="text-white font-medium">{stats.unavailable}</span>
+            <span className="font-medium text-white">{stats.unavailable}</span>
           </div>
           
           <div className="pt-4 border-t border-slate-700">
@@ -76,3 +76,5 @@ export const RequestStats: React.FC<RequestStatsProps> = ({ stats }) => {
     </div>
   );
 };
+
+export default RequestStats;
