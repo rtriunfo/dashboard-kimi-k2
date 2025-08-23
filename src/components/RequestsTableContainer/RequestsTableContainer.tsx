@@ -1,6 +1,6 @@
 import React from 'react';
 import { TestResults, RequestResult } from '../../types';
-import { EmptyState } from '../EmptyState';
+import EmptyState from '../EmptyState';
 
 interface RequestsTableContainerProps {
   testData: TestResults;

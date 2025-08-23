@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { EmptyState } from './EmptyState';
+import EmptyState from './EmptyState';
 
 describe('EmptyState', () => {
   // Render tests with minimal props

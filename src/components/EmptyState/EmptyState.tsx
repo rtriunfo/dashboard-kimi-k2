@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface EmptyStateProps {
+export interface EmptyStateProps {
   message: string;
   className?: string;
 }
@@ -9,7 +9,7 @@ interface EmptyStateProps {
  * A reusable empty state component that displays a centered message
  * with consistent styling across the application
  */
-export const EmptyState: React.FC<EmptyStateProps> = ({ 
+const EmptyState: React.FC<EmptyStateProps> = ({ 
   message, 
   className = "text-center py-8 text-slate-400" 
 }) => (
@@ -17,3 +17,5 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
     {message}
   </div>
 );
+
+export default EmptyState;
