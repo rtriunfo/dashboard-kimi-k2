@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test('dashboard test to check the results table functionality', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  const baseUrl = process.env.BASE_URL || 'http://localhost:5173';
+  await page.goto(baseUrl);
   await page.locator('div').filter({ hasText: 'Performance ReportPeak Hour Load TestScenario: test-report-dataPeak Hour Load' }).nth(3).click();
   await page.locator('div').filter({ hasText: /^Start Time04:54 PMWed 23 Feb 2022$/ }).first().click();
   await page.locator('div').filter({ hasText: /^Duration1d 1h 33m 30s$/ }).first().click();
