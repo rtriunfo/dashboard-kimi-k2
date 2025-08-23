@@ -22,7 +22,7 @@ jobs:
     - name: Run Playwright tests Chromium
       run: npx playwright test tests/hardcoded.spec.ts --project=chromium
     - name: Run Playwright tests Firefox
-      run: npx playwright test tests/cross-browser.spec.ts --project=firefox
+      run: npx playwright test tests/cross-browser.spec.ts
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
