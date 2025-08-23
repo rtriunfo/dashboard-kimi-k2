@@ -1,8 +1,8 @@
 import React from 'react';
 import { AlertTriangle, AlertCircle, Info, CheckCircle } from 'lucide-react';
-import PieChart from './PieChart';
+import PieChart from '../PieChart';
 
-interface SeverityStatsProps {
+export interface SeverityStatsProps {
   stats: {
     blocker: number;
     critical: number;
@@ -12,7 +12,7 @@ interface SeverityStatsProps {
   };
 }
 
-export const SeverityStats: React.FC<SeverityStatsProps> = ({ stats }) => {
+const SeverityStats: React.FC<SeverityStatsProps> = ({ stats }) => {
   const pieData = [
     { label: 'Blocker', value: stats.blocker, color: '#ef4444' },
     { label: 'Critical', value: stats.critical, color: '#f97316' },
@@ -95,3 +95,5 @@ export const SeverityStats: React.FC<SeverityStatsProps> = ({ stats }) => {
     </div>
   );
 };
+
+export default SeverityStats;
