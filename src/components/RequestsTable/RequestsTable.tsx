@@ -1,18 +1,18 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { TestResults, RequestResult } from '../types';
-import { RequestsTableFilters } from './RequestsTableFilters';
-import { RequestTableRow } from './RequestTableRow';
-import { RequestsTableHeader } from './RequestsTableHeader';
-import { RequestsTableContainer } from './RequestsTableContainer';
+import { TestResults, RequestResult } from '../../types';
+import { RequestsTableFilters } from '../RequestsTableFilters';
+import { RequestTableRow } from '../RequestTableRow';
+import { RequestsTableHeader } from '../RequestsTableHeader';
+import { RequestsTableContainer } from '../RequestsTableContainer';
 
-interface RequestsTableProps {
+export interface RequestsTableProps {
   testData: TestResults;
 }
 
 type SortColumn = 'name' | 'status' | 'severity' | 'min' | 'max' | 'totalCount' | 'errorPercentage' | string;
 type SortDirection = 'asc' | 'desc';
 
-export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
+const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
   const [sortColumn, setSortColumn] = useState<SortColumn>('name');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
@@ -333,3 +333,5 @@ export const RequestsTable: React.FC<RequestsTableProps> = ({ testData }) => {
     </div>
   );
 };
+
+export default RequestsTable;

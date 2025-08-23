@@ -10,7 +10,7 @@ import AssertionStats from './components/AssertionStats';
 import SeverityStats from './components/SeverityStats';
 import CompactMetricCard from './components/CompactMetricCard';
 import { getTestScenario, getAvailableScenarios, TestScenario } from './config/testReportAdapter';
-import { RequestsTable } from './components/RequestsTable';
+import RequestsTable from './components/RequestsTable';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'summary' | 'metadata' | 'responseTimes' | 'requests'>('summary');
