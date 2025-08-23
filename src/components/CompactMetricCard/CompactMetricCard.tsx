@@ -1,14 +1,14 @@
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
-interface CompactMetricCardProps {
+export interface CompactMetricCardProps {
   icon: LucideIcon;
   label: string;
   value: string;
   color: string;
 }
 
-export const CompactMetricCard: React.FC<CompactMetricCardProps> = ({ icon: Icon, label, value, color }) => {
+const CompactMetricCard: React.FC<CompactMetricCardProps> = ({ icon: Icon, label, value, color }) => {
   return (
     <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-3 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200 group">
       <div className="flex items-center gap-2">
@@ -21,3 +21,5 @@ export const CompactMetricCard: React.FC<CompactMetricCardProps> = ({ icon: Icon
     </div>
   );
 };
+
+export default CompactMetricCard;
