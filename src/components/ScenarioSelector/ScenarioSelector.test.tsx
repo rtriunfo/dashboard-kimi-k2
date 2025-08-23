@@ -1,5 +1,4 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ScenarioSelector, { ScenarioSelectorProps, TestScenario } from './ScenarioSelector';
 
 const mockScenarios: TestScenario[] = [
@@ -26,14 +25,14 @@ const defaultProps: ScenarioSelectorProps = {
   availableScenarios: mockScenarios,
   isLoading: false,
   isDropdownOpen: false,
-  onScenarioChange: vi.fn(),
-  onToggleDropdown: vi.fn(),
-  onCloseDropdown: vi.fn(),
+  onScenarioChange: jest.fn(),
+  onToggleDropdown: jest.fn(),
+  onCloseDropdown: jest.fn(),
 };
 
 describe('ScenarioSelector', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('Rendering', () => {
@@ -59,7 +58,7 @@ describe('ScenarioSelector', () => {
     it('renders chevron icon with correct rotation', () => {
       const { rerender } = render(<ScenarioSelector {...defaultProps} />);
       
-      const chevron = screen.getByTestId('chevron-down') || document.querySelector('.lucide-chevron-down');
+      const chevron = document.querySelector('.lucide-chevron-down');
       expect(chevron).toBeInTheDocument();
       
       // Test closed state
@@ -81,7 +80,7 @@ describe('ScenarioSelector', () => {
 
   describe('Dropdown Interactions', () => {
     it('calls onToggleDropdown when button is clicked', () => {
-      const mockToggle = vi.fn();
+      const mockToggle = jest.fn();
       render(<ScenarioSelector {...defaultProps} onToggleDropdown={mockToggle} />);
       
       fireEvent.click(screen.getByRole('button'));
@@ -89,7 +88,7 @@ describe('ScenarioSelector', () => {
     });
 
     it('does not call onToggleDropdown when button is disabled', () => {
-      const mockToggle = vi.fn();
+      const mockToggle = jest.fn();
       render(<ScenarioSelector {...defaultProps} isLoading={true} onToggleDropdown={mockToggle} />);
       
       fireEvent.click(screen.getByRole('button'));
@@ -99,10 +98,10 @@ describe('ScenarioSelector', () => {
     it('renders dropdown options when open and not loading', () => {
       render(<ScenarioSelector {...defaultProps} isDropdownOpen={true} />);
       
-      expect(screen.getByText('Peak Hour Load Test')).toBeInTheDocument();
+      // Check for unique descriptions instead of names that appear in both button and dropdown
       expect(screen.getByText('High traffic simulation during peak hours')).toBeInTheDocument();
-      expect(screen.getByText('Baseline Performance Test')).toBeInTheDocument();
-      expect(screen.getByText('Stress Test')).toBeInTheDocument();
+      expect(screen.getByText('Standard performance baseline measurement')).toBeInTheDocument();
+      expect(screen.getByText('Maximum load capacity testing')).toBeInTheDocument();
     });
 
     it('does not render dropdown when closed', () => {
@@ -122,8 +121,8 @@ describe('ScenarioSelector', () => {
 
   describe('Scenario Selection', () => {
     it('calls onScenarioChange and onCloseDropdown when scenario is selected', () => {
-      const mockScenarioChange = vi.fn();
-      const mockCloseDropdown = vi.fn();
+      const mockScenarioChange = jest.fn();
+      const mockCloseDropdown = jest.fn();
       
       render(
         <ScenarioSelector 
@@ -162,7 +161,7 @@ describe('ScenarioSelector', () => {
 
   describe('Click Outside Behavior', () => {
     it('calls onCloseDropdown when clicking outside', async () => {
-      const mockCloseDropdown = vi.fn();
+      const mockCloseDropdown = jest.fn();
       
       render(
         <div>
@@ -179,7 +178,7 @@ describe('ScenarioSelector', () => {
     });
 
     it('does not call onCloseDropdown when clicking inside', async () => {
-      const mockCloseDropdown = vi.fn();
+      const mockCloseDropdown = jest.fn();
       
       render(<ScenarioSelector {...defaultProps} onCloseDropdown={mockCloseDropdown} />);
       
@@ -271,14 +270,16 @@ describe('ScenarioSelector', () => {
         />
       );
       
-      expect(screen.getByText(longScenario.name)).toBeInTheDocument();
+      // Check for the unique description instead of the name that appears in both places
       expect(screen.getByText(longScenario.description)).toBeInTheDocument();
+      // Verify the name appears at least once
+      expect(screen.getAllByText(longScenario.name).length).toBeGreaterThan(0);
     });
   });
 
   describe('Console Logging', () => {
     it('logs scenario selection', () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
       
       render(<ScenarioSelector {...defaultProps} isDropdownOpen={true} />);
       

@@ -1,15 +1,14 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
 import TabNavigation, { TabNavigationProps, TabType } from './TabNavigation';
 
 const defaultProps: TabNavigationProps = {
   activeTab: 'summary',
-  onTabChange: vi.fn(),
+  onTabChange: jest.fn(),
 };
 
 describe('TabNavigation', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('Rendering', () => {
@@ -52,7 +51,7 @@ describe('TabNavigation', () => {
 
   describe('Tab Interactions', () => {
     it('calls onTabChange when Summary tab is clicked', () => {
-      const mockOnTabChange = vi.fn();
+      const mockOnTabChange = jest.fn();
       render(<TabNavigation {...defaultProps} onTabChange={mockOnTabChange} />);
       
       fireEvent.click(screen.getByRole('button', { name: 'Summary' }));
@@ -60,7 +59,7 @@ describe('TabNavigation', () => {
     });
 
     it('calls onTabChange when Response Times tab is clicked', () => {
-      const mockOnTabChange = vi.fn();
+      const mockOnTabChange = jest.fn();
       render(<TabNavigation {...defaultProps} onTabChange={mockOnTabChange} />);
       
       fireEvent.click(screen.getByRole('button', { name: 'Response Times' }));
@@ -68,7 +67,7 @@ describe('TabNavigation', () => {
     });
 
     it('calls onTabChange when Metadata tab is clicked', () => {
-      const mockOnTabChange = vi.fn();
+      const mockOnTabChange = jest.fn();
       render(<TabNavigation {...defaultProps} onTabChange={mockOnTabChange} />);
       
       fireEvent.click(screen.getByRole('button', { name: 'Metadata' }));
@@ -76,7 +75,7 @@ describe('TabNavigation', () => {
     });
 
     it('calls onTabChange when Requests tab is clicked', () => {
-      const mockOnTabChange = vi.fn();
+      const mockOnTabChange = jest.fn();
       render(<TabNavigation {...defaultProps} onTabChange={mockOnTabChange} />);
       
       fireEvent.click(screen.getByRole('button', { name: 'Requests' }));
@@ -84,7 +83,7 @@ describe('TabNavigation', () => {
     });
 
     it('does not call onTabChange multiple times for single click', () => {
-      const mockOnTabChange = vi.fn();
+      const mockOnTabChange = jest.fn();
       render(<TabNavigation {...defaultProps} onTabChange={mockOnTabChange} />);
       
       fireEvent.click(screen.getByRole('button', { name: 'Summary' }));
@@ -132,6 +131,13 @@ describe('TabNavigation', () => {
       
       const nav = screen.getByRole('navigation');
       expect(nav).toBeInTheDocument();
+    });
+
+    it('renders with correct CSS classes', () => {
+      render(<TabNavigation {...defaultProps} />);
+      
+      const summaryTab = screen.getByRole('button', { name: 'Summary' });
+      expect(summaryTab).toHaveClass('py-2', 'px-1', 'border-b-2', 'font-medium', 'text-sm', 'transition-colors');
     });
 
     it('buttons are keyboard accessible', () => {
