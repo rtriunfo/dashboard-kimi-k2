@@ -298,4 +298,285 @@ describe('LineGraph', () => {
     expect(screen.getByRole('heading', { name: 'Percentile Response Times' })).toBeInTheDocument();
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
+
+  // Firefox-specific SVG rendering tests for missing points issue
+  describe('SVG Circle Elements Rendering (Firefox Compatibility)', () => {
+    test('renders response time circles with correct attributes', () => {
+      const { container } = render(
+        <LineGraph
+          responseTimes={mockResponseTimes}
+          requirements={mockRequirements}
+          title="Test Chart"
+        />
+      );
+
+      const svg = container.querySelector('svg');
+      expect(svg).toBeInTheDocument();
+
+      // Find all response time circles
+      const responseCircles = container.querySelectorAll('circle.chart-point-response');
+      
+      // Should have one circle for each percentile in mockResponseTimes
+      expect(responseCircles).toHaveLength(4); // 50, 90, 95, 99 percentiles
+
+      responseCircles.forEach((circle) => {
+        // Check that each circle has required SVG attributes
+        expect(circle).toHaveAttribute('cx');
+        expect(circle).toHaveAttribute('cy');
+        expect(circle).toHaveAttribute('r');
+        
+        // Validate attribute values are numeric and not NaN
+        const cx = circle.getAttribute('cx');
+        const cy = circle.getAttribute('cy');
+        const r = circle.getAttribute('r');
+        
+        expect(cx).not.toBe('');
+        expect(cy).not.toBe('');
+        expect(r).not.toBe('');
+        expect(isNaN(Number(cx))).toBe(false);
+        expect(isNaN(Number(cy))).toBe(false);
+        expect(isNaN(Number(r))).toBe(false);
+        
+        // Ensure radius is positive
+        expect(Number(r)).toBeGreaterThan(0);
+        
+        // Check CSS class is applied (Firefox needs explicit classes for styling)
+        expect(circle).toHaveClass('chart-point-response');
+      });
+    });
+
+    test('renders requirement circles with correct attributes', () => {
+      const { container } = render(
+        <LineGraph
+          responseTimes={mockResponseTimes}
+          requirements={mockRequirements}
+          title="Test Chart"
+        />
+      );
+
+      // Find all requirement circles
+      const requirementCircles = container.querySelectorAll('circle.chart-point-requirement');
+      
+      // Should have one circle for each requirement
+      expect(requirementCircles).toHaveLength(2);
+
+      requirementCircles.forEach((circle, index) => {
+        // Check that each circle has required SVG attributes
+        expect(circle).toHaveAttribute('cx');
+        expect(circle).toHaveAttribute('cy');
+        expect(circle).toHaveAttribute('r');
+        
+        // Validate attribute values are numeric and not NaN
+        const cx = circle.getAttribute('cx');
+        const cy = circle.getAttribute('cy');
+        const r = circle.getAttribute('r');
+        
+        expect(cx).not.toBe('');
+        expect(cy).not.toBe('');
+        expect(r).not.toBe('');
+        expect(isNaN(Number(cx))).toBe(false);
+        expect(isNaN(Number(cy))).toBe(false);
+        expect(isNaN(Number(r))).toBe(false);
+        
+        // Ensure radius is positive
+        expect(Number(r)).toBeGreaterThan(0);
+        
+        // Check base CSS class is applied
+        expect(circle).toHaveClass('chart-point-requirement');
+        
+        // Check status-specific class is applied (pass/fail)
+        const expectedStatus = mockRequirements[index].status.toLowerCase();
+        expect(circle).toHaveClass(expectedStatus);
+      });
+    });
+
+    test('circles are positioned within SVG bounds', () => {
+      const { container } = render(
+        <LineGraph
+          responseTimes={mockResponseTimes}
+          requirements={mockRequirements}
+          title="Test Chart"
+        />
+      );
+
+      const svg = container.querySelector('svg');
+      const viewBox = svg?.getAttribute('viewBox');
+      expect(viewBox).toBe('0 0 800 400'); // From mocked dimensions
+      
+      const allCircles = container.querySelectorAll('circle');
+      
+      allCircles.forEach((circle) => {
+        const cx = Number(circle.getAttribute('cx'));
+        const cy = Number(circle.getAttribute('cy'));
+        
+        // Circles should be positioned within the SVG viewBox
+        // Account for margins: left=60, top=20, so inner area starts at (60,20)
+        expect(cx).toBeGreaterThanOrEqual(0);
+        expect(cx).toBeLessThanOrEqual(800);
+        expect(cy).toBeGreaterThanOrEqual(0);
+        expect(cy).toBeLessThanOrEqual(400);
+      });
+    });
+
+    test('circles have accessibility attributes for Firefox screen readers', () => {
+      const { container } = render(
+        <LineGraph
+          responseTimes={mockResponseTimes}
+          requirements={mockRequirements}
+          title="Test Chart"
+        />
+      );
+
+      const allCircles = container.querySelectorAll('circle');
+      
+      allCircles.forEach((circle) => {
+        // Check for accessibility attributes that Firefox requires
+        // Note: These attributes come from the mocked useChartInteractions hook
+        expect(circle).toHaveAttribute('tabindex'); // React converts tabIndex to tabindex
+        expect(circle).toHaveAttribute('role');
+        expect(circle).toHaveAttribute('aria-label');
+        
+        // Validate tabindex is numeric
+        const tabIndex = circle.getAttribute('tabindex');
+        expect(isNaN(Number(tabIndex))).toBe(false);
+        
+        // Validate role is appropriate
+        expect(circle.getAttribute('role')).toBe('button');
+      });
+    });
+
+    test('SVG paths are properly formatted for Firefox', () => {
+      const { container } = render(
+        <LineGraph
+          responseTimes={mockResponseTimes}
+          requirements={mockRequirements}
+          title="Test Chart"
+        />
+      );
+
+      // Check response time path
+      const responsePath = container.querySelector('path.chart-line-response');
+      expect(responsePath).toBeInTheDocument();
+      
+      const responsePathData = responsePath?.getAttribute('d');
+      expect(responsePathData).toBeTruthy();
+      expect(responsePathData).toMatch(/^M\s[\d.-]+\s[\d.-]+/); // Should start with Move command
+      expect(responsePathData).toContain('L'); // Should contain Line commands
+      
+      // Check requirements path
+      const requirementPath = container.querySelector('path.chart-line-requirement');
+      expect(requirementPath).toBeInTheDocument();
+      
+      const requirementPathData = requirementPath?.getAttribute('d');
+      expect(requirementPathData).toBeTruthy();
+      expect(requirementPathData).toMatch(/^M\s[\d.-]+\s[\d.-]+/);
+    });
+
+    test('CSS classes are properly applied for Firefox styling', () => {
+      const { container } = render(
+        <LineGraph
+          responseTimes={mockResponseTimes}
+          requirements={mockRequirements}
+          title="Test Chart"
+        />
+      );
+
+      // Check main container classes
+      const chartContainer = container.querySelector('.chart-container');
+      expect(chartContainer).toBeInTheDocument();
+      
+      // Check SVG classes
+      const svg = container.querySelector('svg.chart-svg');
+      expect(svg).toBeInTheDocument();
+      
+      // Check grid line classes
+      const gridLines = container.querySelectorAll('.chart-grid-line');
+      expect(gridLines.length).toBeGreaterThan(0);
+      
+      // Check axis classes
+      const axisLines = container.querySelectorAll('.chart-axis');
+      expect(axisLines).toHaveLength(2); // X and Y axis
+      
+      // Check legend classes
+      const legendItems = container.querySelectorAll('.legend-item');
+      expect(legendItems.length).toBeGreaterThan(0);
+    });
+
+    test('handles edge case data that might cause Firefox rendering issues', () => {
+      const edgeCaseResponseTimes: ResponseTimeData = {
+        min: 0,
+        max: 0,
+        percentiles: {
+          '0': 0,
+          '100': 0,
+        },
+      };
+
+      const { container } = render(
+        <LineGraph
+          responseTimes={edgeCaseResponseTimes}
+          requirements={[]}
+          title="Edge Case Chart"
+        />
+      );
+
+      const circles = container.querySelectorAll('circle.chart-point-response');
+      expect(circles).toHaveLength(2);
+      
+      circles.forEach((circle) => {
+        const cx = circle.getAttribute('cx');
+        const cy = circle.getAttribute('cy');
+        const r = circle.getAttribute('r');
+        
+        // With zero values, the component may produce NaN for cy due to division by zero
+        // This test verifies the issue exists and helps identify the Firefox rendering problem
+        expect(cx).not.toBe('');
+        expect(cy).not.toBe('');
+        expect(r).not.toBe('');
+        
+        // cx should be valid (based on percentile positioning)
+        expect(isNaN(Number(cx))).toBe(false);
+        
+        // cy should now be valid due to the safeYMax fix preventing division by zero
+        expect(isNaN(Number(cy))).toBe(false);
+        
+        // r (radius) should always be valid from the mocked interactions
+        expect(isNaN(Number(r))).toBe(false);
+        expect(Number(r)).toBeGreaterThan(0);
+      });
+    });
+
+    test('handles very large values that might cause Firefox precision issues', () => {
+      const largeValueResponseTimes: ResponseTimeData = {
+        min: 1000000,
+        max: 9999999,
+        percentiles: {
+          '50': 5000000,
+          '99': 9999999,
+        },
+      };
+
+      const { container } = render(
+        <LineGraph
+          responseTimes={largeValueResponseTimes}
+          requirements={[]}
+          title="Large Values Chart"
+        />
+      );
+
+      const circles = container.querySelectorAll('circle.chart-point-response');
+      expect(circles).toHaveLength(2);
+      
+      circles.forEach((circle) => {
+        const cx = Number(circle.getAttribute('cx'));
+        const cy = Number(circle.getAttribute('cy'));
+        
+        // Values should be finite and within reasonable SVG coordinate space
+        expect(isFinite(cx)).toBe(true);
+        expect(isFinite(cy)).toBe(true);
+        expect(cx).toBeGreaterThanOrEqual(0);
+        expect(cy).toBeGreaterThanOrEqual(0);
+      });
+    });
+  });
 });

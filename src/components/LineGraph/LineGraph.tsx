@@ -98,13 +98,16 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
     const allPoints = [...responseTimePoints, ...requirementPoints];
     const yMin = 0;
     const yMax = Math.max(...allPoints.map(p => p.y)) * 1.1;
+    
+    // Ensure yMax is never equal to yMin to prevent division by zero
+    const safeYMax = yMax <= yMin ? yMin + 1 : yMax;
 
     // Scale functions
     const xScale = (x: number) => {
       const index = allPercentiles.indexOf(x);
       return (index / (allPercentiles.length - 1)) * innerWidth;
     };
-    const yScale = (y: number) => innerHeight - ((y - yMin) / (yMax - yMin)) * innerHeight;
+    const yScale = (y: number) => innerHeight - ((y - yMin) / (safeYMax - yMin)) * innerHeight;
 
     // Determine overall requirements status
     const allRequirementsPassed = requirements.length > 0 && requirements.every(req => req.status === 'PASS');
@@ -115,7 +118,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
       requirementPoints,
       allPercentiles,
       yMin,
-      yMax,
+      yMax: safeYMax,
       xScale,
       yScale,
       sortedRequirements,
@@ -371,6 +374,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
                 key={`response-${index}`}
                 cx={xScale(point.x)}
                 cy={yScale(point.y)}
+                r="4"
                 {...interactions.getInteractionProps(
                   `response-${index}`,
                   point,
@@ -395,6 +399,7 @@ const LineGraphContent: React.FC<LineGraphProps> = ({
                 key={`req-${index}`}
                 cx={xScale(req.percentile)}
                 cy={yScale(req.value)}
+                r="8"
                 {...interactions.getInteractionProps(
                   `requirement-${index}`,
                   { x: req.percentile, y: req.value, percentile: req.percentile, value: req.value, status: req.status },
