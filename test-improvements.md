@@ -86,12 +86,19 @@
   - [✅] Test pagination edge cases
   - [✅] Created comprehensive test suite with 59 test cases
 
-### [ ] 6. RequestTableRow Interactive Features (67.91% branch coverage)
-- **Uncovered Lines**: 183, 189-190, 195, 241, 256-257, 353, 359-360, 365
+### [✅] 6. RequestTableRow Interactive Features (93.1% statements, 79.1% branches)
+- **Previous Coverage**: 67.91% branch coverage → **New Coverage**: 93.1% statements, 79.1% branches, 86.66% functions, 92.98% lines
+- **Remaining Uncovered Lines**: 183, 195, 353, 365 (minor edge cases)
 - **Tasks**:
-  - [ ] Test row expansion with invalid data
-  - [ ] Test chart rendering error states
-  - [ ] Test interaction edge cases
+  - [✅] Test row expansion with invalid data scenarios
+  - [✅] Test chart rendering error states and cleanup functions
+  - [✅] Test interaction edge cases and error handling
+  - [✅] Test ResizeObserver functionality and chart cleanup
+  - [✅] Test requirements section with invalid data
+  - [✅] Test pass/fail chart edge cases
+  - [✅] Test additional information section scenarios
+  - [✅] Test error percentage color coding thresholds
+  - [✅] Created comprehensive test suite with 28 test cases
 
 ### [ ] 7. Other Hook Improvements
 #### useTheme.ts (43.75% branch coverage)
