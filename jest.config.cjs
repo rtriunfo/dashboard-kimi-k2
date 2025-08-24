@@ -7,6 +7,9 @@ module.exports = {
     '^@components/SortableHeader$': '<rootDir>/src/components/SortableHeader/index.ts',
     '^@components/(.*)$': '<rootDir>/src/components/$1',
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$))'
+  ],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.app.json',

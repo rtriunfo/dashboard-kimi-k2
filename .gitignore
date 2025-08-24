@@ -13,4 +13,6 @@ node_modules/
 
 *storybook.log
 storybook-static
+/coverage
+
 
