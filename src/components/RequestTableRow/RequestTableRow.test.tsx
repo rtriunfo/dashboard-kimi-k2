@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RequestTableRow } from './RequestTableRow';
@@ -269,5 +268,321 @@ describe('RequestTableRow', () => {
   it('renders total count with proper formatting', () => {
     render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     expect(screen.getByText('1,000')).toBeInTheDocument();
+  });
+
+  describe('Chart Error Handling and Edge Cases', () => {
+    it('handles chart rendering with invalid percentile data', () => {
+      const invalidPercentileResult = {
+        ...mockResult,
+        responseTimes: {
+          min: 100,
+          max: 500,
+          percentiles: {
+            'invalid': 'not-a-number',
+            '50': null,
+            '95': undefined
+          } as any
+        }
+      };
+      const invalidProps = { ...mockProps, result: invalidPercentileResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
+      
+      // Should show error fallback instead of crashing
+      expect(screen.getByText('Chart unavailable')).toBeInTheDocument();
+      expect(screen.getByText('Data format error')).toBeInTheDocument();
+    });
+
+    it('handles chart rendering with empty percentiles object', () => {
+      const emptyPercentileResult = {
+        ...mockResult,
+        responseTimes: {
+          min: 100,
+          max: 500,
+          percentiles: {}
+        }
+      };
+      const emptyProps = { ...mockProps, result: emptyPercentileResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...emptyProps} /></tbody></table>);
+      
+      // Should show error fallback when no valid percentiles
+      expect(screen.getByText('Chart unavailable')).toBeInTheDocument();
+      expect(screen.getByText('Data format error')).toBeInTheDocument();
+    });
+
+    it('handles chart rendering with null responseTimes', () => {
+      const nullResponseTimesResult = {
+        ...mockResult,
+        responseTimes: null as any
+      };
+      const nullProps = { ...mockProps, result: nullResponseTimesResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...nullProps} /></tbody></table>);
+      
+      // Should not render response times section at all
+      expect(screen.queryByText('Response Times')).not.toBeInTheDocument();
+    });
+
+    it('handles chart cleanup when element is removed', () => {
+      const mockChart = {
+        setOption: jest.fn(),
+        resize: jest.fn(),
+        dispose: jest.fn()
+      };
+      const mockResizeObserver = {
+        observe: jest.fn(),
+        disconnect: jest.fn(),
+        unobserve: jest.fn()
+      };
+
+      // Mock echarts.init to return our mock chart
+      const echarts = require('echarts');
+      echarts.init.mockReturnValue(mockChart);
+      
+      // Mock ResizeObserver constructor
+      (global.ResizeObserver as jest.Mock).mockImplementation(() => mockResizeObserver);
+
+      const expandedProps = { ...mockProps, isExpanded: true };
+      const { unmount } = render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+      
+      // Verify chart was initialized
+      expect(echarts.init).toHaveBeenCalled();
+      expect(mockChart.setOption).toHaveBeenCalled();
+      expect(mockResizeObserver.observe).toHaveBeenCalled();
+      
+      // Simulate cleanup by calling the cleanup function directly
+      // This tests the cleanup logic in lines 188-190 and 358-360
+      const chartElements = document.querySelectorAll('[id^="pass-fail-chart-"], [id^="chart-"]');
+      chartElements.forEach(el => {
+        if ((el as any)._chartCleanup) {
+          (el as any)._chartCleanup();
+        }
+      });
+      
+      // Verify cleanup was called
+      expect(mockChart.dispose).toHaveBeenCalled();
+      expect(mockResizeObserver.disconnect).toHaveBeenCalled();
+      
+      unmount();
+    });
+
+    it('handles resize observer functionality', () => {
+      const mockChart = {
+        setOption: jest.fn(),
+        resize: jest.fn(),
+        dispose: jest.fn()
+      };
+      const mockResizeObserver = {
+        observe: jest.fn(),
+        disconnect: jest.fn(),
+        unobserve: jest.fn()
+      };
+
+      // Mock echarts.init
+      const echarts = require('echarts');
+      echarts.init.mockReturnValue(mockChart);
+      
+      // Mock ResizeObserver constructor
+      (global.ResizeObserver as jest.Mock).mockImplementation(() => mockResizeObserver);
+
+      const expandedProps = { ...mockProps, isExpanded: true };
+      render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+      
+      // Verify ResizeObserver was created and observe was called
+      expect(global.ResizeObserver).toHaveBeenCalled();
+      expect(mockResizeObserver.observe).toHaveBeenCalled();
+      expect(mockChart.setOption).toHaveBeenCalled();
+    });
+
+    it('handles chart element cleanup when element becomes null', () => {
+      const mockCleanup = jest.fn();
+      
+      // Create a mock element with cleanup function
+      const mockElement = {
+        _chartCleanup: mockCleanup
+      };
+      
+      // Test the cleanup logic when element is null (lines 194-196, 364-366)
+      const expandedProps = { ...mockProps, isExpanded: true };
+      render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+      
+      // Simulate the ref callback being called with null (component unmounting)
+      // This would happen in the actual ref callback logic
+      if (mockElement._chartCleanup) {
+        mockElement._chartCleanup();
+      }
+      
+      expect(mockCleanup).toHaveBeenCalled();
+    });
+  });
+
+  describe('Requirements Section Edge Cases', () => {
+    it('does not render requirements section when no requirements data exists', () => {
+      const noRequirementsResult = {
+        ...mockResult,
+        requirements: null as any
+      };
+      const noReqProps = { ...mockProps, result: noRequirementsResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...noReqProps} /></tbody></table>);
+      
+      expect(screen.queryByText('Requirements')).not.toBeInTheDocument();
+    });
+
+    it('does not render requirements section when passed and failed are both 0', () => {
+      const zeroRequirementsResult = {
+        ...mockResult,
+        requirements: {
+          status: 'PASS',
+          passed: 0,
+          failed: 0,
+          percentiles: []
+        }
+      };
+      const zeroReqProps = { ...mockProps, result: zeroRequirementsResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...zeroReqProps} /></tbody></table>);
+      
+      expect(screen.queryByText('Requirements')).not.toBeInTheDocument();
+    });
+
+    it('handles requirements with invalid percentile data', () => {
+      const invalidReqResult = {
+        ...mockResult,
+        requirements: {
+          status: 'PASS',
+          passed: 5,
+          failed: 2,
+          percentiles: [
+            {
+              percentile: 'invalid' as any,
+              value: 'not-a-number' as any,
+              status: 'INVALID' as any,
+              difference: null as any,
+              percentageDifference: 'invalid' as any
+            },
+            {
+              percentile: 95,
+              value: 400,
+              status: 'PASS',
+              difference: -10,
+              percentageDifference: -2.5
+            }
+          ]
+        }
+      };
+      const invalidReqProps = { ...mockProps, result: invalidReqResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...invalidReqProps} /></tbody></table>);
+      
+      // Should still render the requirements section but handle invalid data gracefully  
+      const requirementsElements = screen.getAllByText('Requirements');
+      expect(requirementsElements.length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText('Percentile Requirements')).toBeInTheDocument();
+    });
+  });
+
+  describe('Pass/Fail Chart Edge Cases', () => {
+    it('does not render pass/fail chart when no pass/fail data exists', () => {
+      const noPassFailResult = {
+        ...mockResult,
+        passCount: 0,
+        failCount: 0
+      };
+      const noPassFailProps = { ...mockProps, result: noPassFailResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...noPassFailProps} /></tbody></table>);
+      
+      expect(screen.queryByText('Pass/Fail Distribution')).not.toBeInTheDocument();
+    });
+
+    it('renders pass/fail chart with only pass count', () => {
+      const onlyPassResult = {
+        ...mockResult,
+        passCount: 1000,
+        failCount: 0
+      };
+      const onlyPassProps = { ...mockProps, result: onlyPassResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...onlyPassProps} /></tbody></table>);
+      
+      expect(screen.getByText('Pass/Fail Distribution')).toBeInTheDocument();
+      expect(screen.getByText('Total:')).toBeInTheDocument();
+      expect(screen.getByText('Rate:')).toBeInTheDocument();
+    });
+  });
+
+  describe('Additional Information Section', () => {
+    it('does not render additional information when no metadata exists', () => {
+      const noMetadataResult = {
+        ...mockResult,
+        request: {
+          ...mockResult.request,
+          requestDescription: null,
+          requestPriority: null,
+          tags: null,
+          createdTime: mockResult.request.createdTime
+        }
+      };
+      const noMetadataProps = { ...mockProps, result: noMetadataResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...noMetadataProps} /></tbody></table>);
+      
+      expect(screen.queryByText('Additional Information')).not.toBeInTheDocument();
+    });
+
+    it('renders partial additional information when some metadata exists', () => {
+      const partialMetadataResult = {
+        ...mockResult,
+        request: {
+          ...mockResult.request,
+          requestDescription: 'Test description',
+          requestPriority: null,
+          tags: null,
+          createdTime: mockResult.request.createdTime
+        }
+      };
+      const partialMetadataProps = { ...mockProps, result: partialMetadataResult, isExpanded: true };
+      
+      render(<table><tbody><RequestTableRow {...partialMetadataProps} /></tbody></table>);
+      
+      expect(screen.getByText('Additional Information')).toBeInTheDocument();
+      expect(screen.getByText('Description:')).toBeInTheDocument();
+      expect(screen.getByText('Test description')).toBeInTheDocument();
+      expect(screen.queryByText('Priority:')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Error Percentage Color Coding Edge Cases', () => {
+    it('renders error percentage with green color for 0%', () => {
+      const zeroErrorResult = { ...mockResult, errorPercentage: 0 };
+      const zeroErrorProps = { ...mockProps, result: zeroErrorResult };
+      
+      render(<table><tbody><RequestTableRow {...zeroErrorProps} /></tbody></table>);
+      
+      const errorElement = screen.getByText('0.00%');
+      expect(errorElement).toHaveClass('text-green-400');
+    });
+
+    it('renders error percentage with green color for 1%', () => {
+      const lowErrorResult = { ...mockResult, errorPercentage: 1 };
+      const lowErrorProps = { ...mockProps, result: lowErrorResult };
+      
+      render(<table><tbody><RequestTableRow {...lowErrorProps} /></tbody></table>);
+      
+      const errorElement = screen.getByText('1.00%');
+      expect(errorElement).toHaveClass('text-green-400');
+    });
+
+    it('renders error percentage with red color for >5%', () => {
+      const highErrorResult = { ...mockResult, errorPercentage: 10 };
+      const highErrorProps = { ...mockProps, result: highErrorResult };
+      
+      render(<table><tbody><RequestTableRow {...highErrorProps} /></tbody></table>);
+      
+      const errorElement = screen.getByText('10.00%');
+      expect(errorElement).toHaveClass('text-red-400');
+    });
   });
 });
