@@ -55,7 +55,7 @@ const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
       <div>
         <button
           type="button"
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700 text-sm text-white hover:bg-slate-700/50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-slate-700 text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors shadow-sm"
           id="status-menu"
           aria-expanded="true"
           aria-haspopup="true"
@@ -75,7 +75,7 @@ const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
 
       {isOpen && (
         <div
-          className="absolute top-full left-0 mt-1 z-50 bg-slate-800 border border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto"
+          className="absolute top-full left-0 mt-1 z-50 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg min-w-48 max-h-64 overflow-y-auto"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="status-menu"
@@ -84,7 +84,7 @@ const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
             {hasActiveFilters && (
               <button
                 onClick={handleClearFilters}
-                className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors mb-1"
+                className="w-full text-left px-3 py-2 text-xs text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded transition-colors mb-1"
               >
                 Clear all filters
               </button>
@@ -92,16 +92,16 @@ const StatusFilterDropdown: React.FC<StatusFilterDropdownProps> = ({
             {availableStatuses.map((status) => (
               <label
                 key={status}
-                className="flex items-center gap-2 px-3 py-2 hover:bg-slate-700 rounded cursor-pointer transition-colors"
+                className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded cursor-pointer transition-colors"
               >
                 <input
                   type="checkbox"
                   checked={selectedStatuses.has(status)}
                   onChange={() => handleStatusToggle(status)}
-                  className="rounded border-slate-600 bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                  className="rounded border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
                 />
-                <span className="text-sm text-white flex-1">{status}</span>
-                <span className="text-xs text-slate-400">
+                <span className="text-sm text-gray-900 dark:text-white flex-1">{status}</span>
+                <span className="text-xs text-gray-500 dark:text-slate-400">
                   {requestResults.filter(r => r.status === status).length}
                 </span>
               </label>
