@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import RequestsTable from './RequestsTable';
 import { TestResults } from '../../types';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 
 const meta: Meta<typeof RequestsTable> = {
   title: 'Components/RequestsTable',
@@ -13,6 +14,13 @@ const meta: Meta<typeof RequestsTable> = {
       }
     }
   },
+  decorators: [
+    (Story) => (
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
   tags: ['autodocs'],
   argTypes: {
     testData: {

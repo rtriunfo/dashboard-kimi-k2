@@ -97,15 +97,16 @@ const mockTestData: TestResults = {
 };
 
 const mockScenario: TestScenario = {
-  id: 'test-scenario',
+  id: '1',
   name: 'Test Scenario',
+  description: 'Test scenario description',
   data: mockTestData
 };
 
 const defaultProps = {
   testData: mockTestData,
   selectedScenario: 'test-scenario',
-  currentScenario: mockScenario,
+  currentScenario: { ...mockScenario },
   availableScenarios: [mockScenario],
   isLoading: false,
   isScenarioDropdownOpen: false,
@@ -212,7 +213,7 @@ describe('DashboardHeader', () => {
     render(<DashboardHeader {...defaultProps} />);
     
     const header = screen.getByRole('banner');
-    expect(header).toHaveClass('relative', 'z-20', 'border-b', 'bg-slate-800/50', 'backdrop-blur-sm', 'border-slate-700');
+    expect(header).toHaveClass('relative', 'z-20', 'border-b', 'bg-white/90', 'backdrop-blur-sm', 'border-gray-200');
   });
 
   it('applies correct grid classes for metric cards', () => {

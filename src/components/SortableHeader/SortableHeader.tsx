@@ -18,13 +18,13 @@ interface SortableHeaderProps {
 export const SortableHeader: React.FC<SortableHeaderProps> = ({ 
   column, 
   children, 
-  className = "px-6 py-4 text-center text-sm font-semibold text-white",
+  className = "px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white",
   sortColumn,
   sortDirection,
   onSort
 }) => (
   <th 
-    className={`${className} cursor-pointer hover:bg-slate-700/30 transition-colors select-none`}
+    className={`${className} cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700/30 transition-colors select-none`}
     onClick={() => onSort(column)}
   >
     <div className={`flex items-center gap-1 ${column === 'name' ? 'justify-start' : 'justify-center'}`}>

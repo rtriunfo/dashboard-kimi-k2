@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Activity, Users, Clock, TrendingUp } from 'lucide-react';
 import CompactMetricCard from './CompactMetricCard';
@@ -30,12 +29,12 @@ describe('CompactMetricCard', () => {
     const { container } = render(<CompactMetricCard {...defaultProps} />);
     
     const cardElement = container.firstChild as HTMLElement;
-    expect(cardElement).toHaveClass('bg-slate-800/30');
+    expect(cardElement).toHaveClass('bg-white/80');
     expect(cardElement).toHaveClass('backdrop-blur-sm');
     expect(cardElement).toHaveClass('rounded-lg');
     expect(cardElement).toHaveClass('p-3');
     expect(cardElement).toHaveClass('border');
-    expect(cardElement).toHaveClass('border-slate-700/50');
+    expect(cardElement).toHaveClass('border-gray-200');
   });
 
   it('renders different icon types correctly', () => {
@@ -86,7 +85,7 @@ describe('CompactMetricCard', () => {
     const labelElement = screen.getByText(longLabel);
     expect(labelElement).toHaveClass('truncate');
     expect(labelElement).toHaveClass('text-xs');
-    expect(labelElement).toHaveClass('text-slate-400');
+    expect(labelElement).toHaveClass('text-gray-600');
   });
 
   it('handles long values with truncation', () => {
@@ -97,7 +96,7 @@ describe('CompactMetricCard', () => {
     expect(valueElement).toHaveClass('truncate');
     expect(valueElement).toHaveClass('text-sm');
     expect(valueElement).toHaveClass('font-semibold');
-    expect(valueElement).toHaveClass('text-white');
+    expect(valueElement).toHaveClass('text-gray-900');
   });
 
   it('renders with numeric values', () => {
@@ -143,7 +142,7 @@ describe('CompactMetricCard', () => {
     const { container } = render(<CompactMetricCard {...defaultProps} />);
     
     const cardElement = container.firstChild as HTMLElement;
-    expect(cardElement).toHaveClass('hover:border-slate-600/50');
+    expect(cardElement).toHaveClass('hover:border-gray-300');
     expect(cardElement).toHaveClass('transition-all');
     expect(cardElement).toHaveClass('duration-200');
     expect(cardElement).toHaveClass('group');
@@ -152,7 +151,7 @@ describe('CompactMetricCard', () => {
   it('handles empty string values gracefully', () => {
     const { container } = render(<CompactMetricCard {...defaultProps} value="" />);
     
-    const valueElement = container.querySelector('.text-sm.font-semibold.text-white');
+    const valueElement = container.querySelector('.text-sm.font-semibold.text-gray-900');
     expect(valueElement).toBeInTheDocument();
     expect(valueElement).toHaveClass('text-sm');
     expect(valueElement?.textContent).toBe('');
@@ -161,7 +160,7 @@ describe('CompactMetricCard', () => {
   it('handles empty string labels gracefully', () => {
     const { container } = render(<CompactMetricCard {...defaultProps} label="" />);
     
-    const labelElement = container.querySelector('.text-xs.text-slate-400');
+    const labelElement = container.querySelector('.text-xs.text-gray-600');
     expect(labelElement).toBeInTheDocument();
     expect(labelElement).toHaveClass('text-xs');
     expect(labelElement?.textContent).toBe('');
@@ -181,8 +180,8 @@ describe('CompactMetricCard', () => {
     const labelElement = screen.getByText('Test Metric');
     const valueElement = screen.getByText('123');
     
-    expect(labelElement).toHaveClass('text-slate-400');
-    expect(valueElement).toHaveClass('text-white');
+    expect(labelElement).toHaveClass('text-gray-600');
+    expect(valueElement).toHaveClass('text-gray-900');
   });
 
   it('renders multiple instances without conflicts', () => {

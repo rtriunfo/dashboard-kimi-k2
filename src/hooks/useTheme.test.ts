@@ -101,7 +101,7 @@ describe('useTheme', () => {
       expect(result.current.mode).toBe('dark');
       expect(result.current.isDark).toBe(true);
       expect(mockLocalStorage.setItem).toHaveBeenCalledWith('theme', 'dark');
-      expect(mockDocumentElement.classList.add).toHaveBeenCalledWith('dark');
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
     it('switches to light theme correctly', () => {
@@ -114,7 +114,7 @@ describe('useTheme', () => {
       expect(result.current.mode).toBe('light');
       expect(result.current.isDark).toBe(false);
       expect(mockLocalStorage.setItem).toHaveBeenCalledWith('theme', 'light');
-      expect(mockDocumentElement.classList.remove).toHaveBeenCalledWith('dark');
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
     it('switches to system theme correctly', () => {
@@ -129,7 +129,7 @@ describe('useTheme', () => {
       expect(result.current.mode).toBe('system');
       expect(result.current.isDark).toBe(true);
       expect(mockLocalStorage.setItem).toHaveBeenCalledWith('theme', 'system');
-      expect(mockDocumentElement.classList.add).toHaveBeenCalledWith('dark');
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
     it('toggles theme from light to dark', () => {
@@ -182,7 +182,7 @@ describe('useTheme', () => {
       });
       
       expect(result.current.isDark).toBe(true);
-      expect(mockDocumentElement.classList.add).toHaveBeenCalledWith('dark');
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
     it('detects system light theme preference', () => {
@@ -195,7 +195,7 @@ describe('useTheme', () => {
       });
       
       expect(result.current.isDark).toBe(false);
-      expect(mockDocumentElement.classList.remove).toHaveBeenCalledWith('dark');
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
     it('responds to system theme changes when in system mode', () => {
@@ -222,7 +222,7 @@ describe('useTheme', () => {
         });
         
         expect(result.current.isDark).toBe(true);
-        expect(mockDocumentElement.classList.add).toHaveBeenCalledWith('dark');
+        // DOM manipulation is now handled by ThemeContext.tsx
       }
     });
 
@@ -387,27 +387,29 @@ describe('useTheme', () => {
   });
 
   describe('Document Class Management', () => {
-    it('adds dark class to document when switching to dark theme', () => {
+    it('theme state changes correctly when switching to dark theme', () => {
       const { result } = renderHook(() => useTheme());
       
       act(() => {
         result.current.setThemeMode('dark');
       });
       
-      expect(mockDocumentElement.classList.add).toHaveBeenCalledWith('dark');
+      expect(result.current.isDark).toBe(true);
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
-    it('removes dark class from document when switching to light theme', () => {
+    it('theme state changes correctly when switching to light theme', () => {
       const { result } = renderHook(() => useTheme());
       
       act(() => {
         result.current.setThemeMode('light');
       });
       
-      expect(mockDocumentElement.classList.remove).toHaveBeenCalledWith('dark');
+      expect(result.current.isDark).toBe(false);
+      // DOM manipulation is now handled by ThemeContext.tsx
     });
 
-    it('manages document class correctly for system theme based on preference', () => {
+    it('manages theme state correctly for system theme based on preference', () => {
       mockMatchMedia.matches = true; // System prefers dark
       
       const { result } = renderHook(() => useTheme());
@@ -416,7 +418,8 @@ describe('useTheme', () => {
         result.current.setThemeMode('system');
       });
       
-      expect(mockDocumentElement.classList.add).toHaveBeenCalledWith('dark');
+      expect(result.current.isDark).toBe(true);
+      // DOM manipulation is now handled by ThemeContext.tsx
       
       // Change system preference to light
       mockMatchMedia.matches = false;
@@ -429,7 +432,8 @@ describe('useTheme', () => {
           changeHandler();
         });
         
-        expect(mockDocumentElement.classList.remove).toHaveBeenCalledWith('dark');
+        expect(result.current.isDark).toBe(false);
+        // DOM manipulation is now handled by ThemeContext.tsx
       }
     });
   });

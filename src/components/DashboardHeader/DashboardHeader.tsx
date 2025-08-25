@@ -61,17 +61,17 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   };
 
   return (
-    <header className="relative z-20 border-b bg-slate-800/50 backdrop-blur-sm border-slate-700">
+    <header className="relative z-20 border-b bg-white/90 dark:bg-slate-800/50 backdrop-blur-sm border-gray-200 dark:border-slate-700 shadow-sm">
       <div className="px-4 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 className="mb-1 text-3xl font-bold text-white">
+            <h1 className="mb-1 text-3xl font-bold text-gray-900 dark:text-white">
               Performance Report
             </h1>
-            <p className="flex items-center gap-2 text-slate-400">
+            <p className="flex items-center gap-2 text-gray-600 dark:text-slate-400">
               <Activity className="w-4 h-4" />
               {testData.test.description}
-              <span className="px-2 py-1 ml-2 text-xs rounded bg-slate-700 text-slate-300">
+              <span className="px-2 py-1 ml-2 text-xs rounded bg-blue-100 dark:bg-slate-700 text-blue-800 dark:text-slate-300 border border-blue-200 dark:border-slate-600">
                 Scenario: {selectedScenario}
               </span>
             </p>

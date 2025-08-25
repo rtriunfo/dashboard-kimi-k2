@@ -60,7 +60,7 @@ describe('ResponseTimesDetailChart', () => {
       const barButton = screen.getByRole('button', { name: 'Bar' });
       
       expect(lineButton).toHaveClass('bg-blue-500');
-      expect(barButton).toHaveClass('bg-slate-700');
+      expect(barButton).toHaveClass('bg-gray-200');
     });
 
     it('switches to bar chart when bar button is clicked', () => {
@@ -70,7 +70,7 @@ describe('ResponseTimesDetailChart', () => {
       fireEvent.click(barButton);
       
       expect(barButton).toHaveClass('bg-blue-500');
-      expect(screen.getByRole('button', { name: 'Line' })).toHaveClass('bg-slate-700');
+      expect(screen.getByRole('button', { name: 'Line' })).toHaveClass('bg-gray-200');
     });
 
     it('switches back to line chart when line button is clicked', () => {
@@ -86,7 +86,7 @@ describe('ResponseTimesDetailChart', () => {
       // Switch back to line
       fireEvent.click(lineButton);
       expect(lineButton).toHaveClass('bg-blue-500');
-      expect(barButton).toHaveClass('bg-slate-700');
+      expect(barButton).toHaveClass('bg-gray-200');
     });
   });
 

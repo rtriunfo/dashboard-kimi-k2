@@ -639,6 +639,10 @@ describe('useAccessibility', () => {
     });
 
     it('should handle matchMedia not supported', () => {
+      // Suppress console errors for this intentional error test
+      const originalConsoleError = console.error;
+      console.error = jest.fn();
+
       Object.defineProperty(window, 'matchMedia', {
         writable: true,
         value: undefined
@@ -647,6 +651,9 @@ describe('useAccessibility', () => {
       expect(() => {
         renderHook(() => useAccessibility());
       }).toThrow();
+
+      // Restore console.error
+      console.error = originalConsoleError;
     });
   });
 });

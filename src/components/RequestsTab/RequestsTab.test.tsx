@@ -101,7 +101,7 @@ describe('RequestsTab', () => {
     render(<RequestsTab testData={mockTestData} />);
     
     const heading = screen.getByRole('heading', { name: 'Request Results' });
-    expect(heading).toHaveClass('mb-6', 'text-2xl', 'font-bold', 'text-white');
+    expect(heading).toHaveClass('mb-6', 'text-2xl', 'font-bold', 'text-gray-900');
   });
 
   it('handles different test data correctly', () => {

@@ -25,14 +25,14 @@ describe('TabNavigation', () => {
       render(<TabNavigation {...defaultProps} activeTab="summary" />);
       
       const summaryTab = screen.getByRole('button', { name: 'Summary' });
-      expect(summaryTab).toHaveClass('border-blue-500', 'text-blue-400');
+      expect(summaryTab).toHaveClass('border-blue-500', 'text-blue-600');
     });
 
     it('applies inactive styles to non-active tabs', () => {
       render(<TabNavigation {...defaultProps} activeTab="summary" />);
       
       const responseTimesTab = screen.getByRole('button', { name: 'Response Times' });
-      expect(responseTimesTab).toHaveClass('border-transparent', 'text-slate-400');
+      expect(responseTimesTab).toHaveClass('border-transparent', 'text-gray-500');
     });
 
     it('renders with correct structure and classes', () => {
@@ -42,7 +42,7 @@ describe('TabNavigation', () => {
       expect(wrapper).toHaveClass('mb-6');
       
       const borderDiv = wrapper.firstChild as HTMLElement;
-      expect(borderDiv).toHaveClass('border-b', 'border-slate-700');
+      expect(borderDiv).toHaveClass('border-b', 'border-gray-200');
       
       const nav = borderDiv.firstChild as HTMLElement;
       expect(nav).toHaveClass('flex', '-mb-px', 'space-x-8');
@@ -104,15 +104,15 @@ describe('TabNavigation', () => {
         render(<TabNavigation {...defaultProps} activeTab={tab} />);
         
         const activeTab = screen.getByRole('button', { name: label });
-        expect(activeTab).toHaveClass('border-blue-500', 'text-blue-400');
+        expect(activeTab).toHaveClass('border-blue-500', 'text-blue-600');
         
         // Check that other tabs are not active
         const allTabs = screen.getAllByRole('button');
         const inactiveTabs = allTabs.filter(t => t !== activeTab);
         
         inactiveTabs.forEach(inactiveTab => {
-          expect(inactiveTab).toHaveClass('border-transparent', 'text-slate-400');
-          expect(inactiveTab).not.toHaveClass('border-blue-500', 'text-blue-400');
+          expect(inactiveTab).toHaveClass('border-transparent', 'text-gray-500');
+          expect(inactiveTab).not.toHaveClass('border-blue-500', 'text-blue-600');
         });
       });
     });
@@ -154,7 +154,7 @@ describe('TabNavigation', () => {
       render(<TabNavigation {...defaultProps} activeTab="summary" />);
       
       const responseTimesTab = screen.getByRole('button', { name: 'Response Times' });
-      expect(responseTimesTab).toHaveClass('hover:text-slate-300');
+      expect(responseTimesTab).toHaveClass('hover:text-gray-700');
     });
 
     it('maintains active styles on active tab during hover', () => {
@@ -162,7 +162,7 @@ describe('TabNavigation', () => {
       
       const summaryTab = screen.getByRole('button', { name: 'Summary' });
       fireEvent.mouseEnter(summaryTab);
-      expect(summaryTab).toHaveClass('border-blue-500', 'text-blue-400');
+      expect(summaryTab).toHaveClass('border-blue-500', 'text-blue-600');
     });
   });
 
@@ -183,8 +183,8 @@ describe('TabNavigation', () => {
       // All tabs should be inactive
       const allTabs = screen.getAllByRole('button');
       allTabs.forEach(tab => {
-        expect(tab).toHaveClass('border-transparent', 'text-slate-400');
-        expect(tab).not.toHaveClass('border-blue-500', 'text-blue-400');
+        expect(tab).toHaveClass('border-transparent', 'text-gray-500');
+        expect(tab).not.toHaveClass('border-blue-500', 'text-blue-600');
       });
     });
   });

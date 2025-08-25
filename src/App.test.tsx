@@ -325,7 +325,7 @@ describe('App', () => {
       });
 
       const mainContainer = container.firstChild as HTMLElement;
-      expect(mainContainer).toHaveClass('min-h-screen', 'bg-gradient-to-br', 'from-slate-900', 'via-slate-800', 'to-slate-900');
+      expect(mainContainer).toHaveClass('min-h-screen', 'bg-gradient-to-br', 'from-blue-50', 'via-indigo-50', 'to-purple-50');
       
       const mainElement = screen.getByRole('main');
       expect(mainElement).toHaveClass('px-4', 'py-8', 'mx-auto', 'max-w-7xl', 'sm:px-6', 'lg:px-8');

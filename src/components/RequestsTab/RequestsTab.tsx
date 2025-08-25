@@ -9,7 +9,7 @@ export interface RequestsTabProps {
 const RequestsTab: React.FC<RequestsTabProps> = ({ testData }) => {
   return (
     <div>
-      <h2 className="mb-6 text-2xl font-bold text-white">Request Results</h2>
+      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Request Results</h2>
       <RequestsTable testData={testData} />
     </div>
   );

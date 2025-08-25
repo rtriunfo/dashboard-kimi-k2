@@ -27,98 +27,98 @@ const MetadataTab: React.FC<MetadataTabProps> = ({ testData }) => {
 
   return (
     <div>
-      <h2 className="mb-6 text-2xl font-bold text-white">Test Metadata</h2>
+      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Test Metadata</h2>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Test Information */}
-        <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
-          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
-            <Info className="w-5 h-5 text-blue-400" />
+        <div className="p-6 border bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border-gray-200 dark:border-slate-700 shadow-sm">
+          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <Info className="w-5 h-5 text-blue-500 dark:text-blue-400" />
             Test Information
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-slate-400">Test Type:</span>
-              <span className="font-medium text-white">{testData.test.type}</span>
+              <span className="text-gray-600 dark:text-slate-400">Test Type:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.test.type}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Simulation:</span>
-              <span className="text-sm font-medium text-white">{testData.test.simulationName}</span>
+              <span className="text-gray-600 dark:text-slate-400">Simulation:</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-white">{testData.test.simulationName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Environment:</span>
-              <span className="font-medium text-white">{testData.environment || 'Not specified'}</span>
+              <span className="text-gray-600 dark:text-slate-400">Environment:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.environment || 'Not specified'}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Branch:</span>
-              <span className="font-medium text-white">{testData.branch || 'Not specified'}</span>
+              <span className="text-gray-600 dark:text-slate-400">Branch:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.branch || 'Not specified'}</span>
             </div>
           </div>
         </div>
 
         {/* Version Information */}
-        <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
-          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
-            <GitCommit className="w-5 h-5 text-green-400" />
+        <div className="p-6 border bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border-gray-200 dark:border-slate-700 shadow-sm">
+          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <GitCommit className="w-5 h-5 text-green-500 dark:text-green-400" />
             Version Information
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-slate-400">Gatling Version:</span>
-              <span className="font-medium text-white">{testData.gatlingVersion}</span>
+              <span className="text-gray-600 dark:text-slate-400">Gatling Version:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.gatlingVersion}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Parser Version:</span>
-              <span className="font-medium text-white">{testData.parserVersion}</span>
+              <span className="text-gray-600 dark:text-slate-400">Parser Version:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.parserVersion}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Severity Version:</span>
-              <span className="font-medium text-white">{testData.severityVersion}</span>
+              <span className="text-gray-600 dark:text-slate-400">Severity Version:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.severityVersion}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Requirements Version:</span>
-              <span className="font-medium text-white">{testData.requirementsVersion}</span>
+              <span className="text-gray-600 dark:text-slate-400">Requirements Version:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.requirementsVersion}</span>
             </div>
           </div>
         </div>
 
         {/* File Locations */}
-        <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700 lg:col-span-2">
-          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
-            <FileText className="w-5 h-5 text-purple-400" />
+        <div className="p-6 border bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border-gray-200 dark:border-slate-700 shadow-sm lg:col-span-2">
+          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <FileText className="w-5 h-5 text-purple-500 dark:text-purple-400" />
             File Locations
           </h3>
           <div className="space-y-3">
             <div>
-              <span className="text-sm text-slate-400">Gatling Report:</span>
-              <p className="mt-1 font-mono text-sm text-white break-all">{testData.gatlingReportLocation}</p>
+              <span className="text-sm text-gray-600 dark:text-slate-400">Gatling Report:</span>
+              <p className="mt-1 font-mono text-sm text-gray-900 dark:text-white break-all">{testData.gatlingReportLocation}</p>
             </div>
             <div>
-              <span className="text-sm text-slate-400">Gatling Log:</span>
-              <p className="mt-1 font-mono text-sm text-white break-all">{testData.gatlingLogLocation}</p>
+              <span className="text-sm text-gray-600 dark:text-slate-400">Gatling Log:</span>
+              <p className="mt-1 font-mono text-sm text-gray-900 dark:text-white break-all">{testData.gatlingLogLocation}</p>
             </div>
             <div>
-              <span className="text-sm text-slate-400">Requirements File:</span>
-              <p className="mt-1 font-mono text-sm text-white break-all">{testData.requirementsFileLocation}</p>
+              <span className="text-sm text-gray-600 dark:text-slate-400">Requirements File:</span>
+              <p className="mt-1 font-mono text-sm text-gray-900 dark:text-white break-all">{testData.requirementsFileLocation}</p>
             </div>
           </div>
         </div>
 
         {/* Git Information */}
-        <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
-          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
-            <GitBranch className="w-5 h-5 text-orange-400" />
+        <div className="p-6 border bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border-gray-200 dark:border-slate-700 shadow-sm">
+          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <GitBranch className="w-5 h-5 text-orange-500 dark:text-orange-400" />
             Git Information
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-slate-400">Git Hash:</span>
-              <span className="font-mono text-sm font-medium text-white">
+              <span className="text-gray-600 dark:text-slate-400">Git Hash:</span>
+              <span className="font-mono text-sm font-medium text-gray-900 dark:text-white">
                 {testData.gitHash ? testData.gitHash.substring(0, 8) : 'Not specified'}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Test Requirements:</span>
-              <span className={`font-medium ${testData.testRequirements ? 'text-green-400' : 'text-red-400'}`}>
+              <span className="text-gray-600 dark:text-slate-400">Test Requirements:</span>
+              <span className={`font-medium ${testData.testRequirements ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
                 {testData.testRequirements ? 'Enabled' : 'Disabled'}
               </span>
             </div>
@@ -126,21 +126,21 @@ const MetadataTab: React.FC<MetadataTabProps> = ({ testData }) => {
         </div>
 
         {/* Test Configuration */}
-        <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
-          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-white">
-            <Settings className="w-5 h-5 text-cyan-400" />
+        <div className="p-6 border bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border-gray-200 dark:border-slate-700 shadow-sm">
+          <h3 className="flex items-center gap-2 mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <Settings className="w-5 h-5 text-cyan-500 dark:text-cyan-400" />
             Test Configuration
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between">
-              <span className="text-slate-400">Rate Granularity:</span>
-              <span className="font-medium text-white">{testData.rateGranularity}</span>
+              <span className="text-gray-600 dark:text-slate-400">Rate Granularity:</span>
+              <span className="font-medium text-gray-900 dark:text-white">{testData.rateGranularity}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Created:</span>
-              <span className="font-medium text-white">
+              <span className="text-gray-600 dark:text-slate-400">Created:</span>
+              <span className="font-medium text-gray-900 dark:text-white">
                 <div>{formatDate(testData.createdTime).timeStr}</div>
-                <div className="text-sm text-slate-400">{formatDate(testData.createdTime).dateStr}</div>
+                <div className="text-sm text-gray-600 dark:text-slate-400">{formatDate(testData.createdTime).dateStr}</div>
               </span>
             </div>
           </div>

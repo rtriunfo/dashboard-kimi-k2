@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import RequestStats, { RequestStatsProps } from './RequestStats';
@@ -124,7 +124,7 @@ describe('RequestStats', () => {
     render(<RequestStats stats={mockStats} />);
     
     const mainContainer = screen.getByText('Request Statistics').closest('div');
-    expect(mainContainer).toHaveClass('bg-slate-800/50', 'backdrop-blur-sm', 'rounded-xl', 'p-6', 'border', 'border-slate-700');
+    expect(mainContainer).toHaveClass('bg-white', 'backdrop-blur-sm', 'rounded-xl', 'p-6', 'border', 'border-gray-200');
   });
 
   it('handles large numbers correctly', () => {

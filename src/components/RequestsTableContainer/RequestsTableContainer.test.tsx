@@ -171,7 +171,7 @@ describe('RequestsTableContainer', () => {
     );
 
     const table = screen.getByRole('table');
-    expect(table).toHaveClass('w-full', 'border-collapse', 'bg-slate-800/50', 'backdrop-blur-sm', 'rounded-xl', 'border', 'border-slate-700');
+    expect(table).toHaveClass('w-full', 'border-collapse', 'bg-white', 'backdrop-blur-sm', 'rounded-xl', 'border', 'border-gray-200');
   });
 
   it('applies overflow-x-auto to container', () => {

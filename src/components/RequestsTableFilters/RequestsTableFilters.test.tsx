@@ -167,7 +167,7 @@ describe('RequestsTableFilters', () => {
     const { rerender } = render(<RequestsTableFilters {...mockProps} />);
     const expandBtn = screen.getByRole('button', { name: /Expand All/i });
     expect(expandBtn).toBeInTheDocument();
-    expect(expandBtn).toHaveClass('bg-slate-800/50');
+    expect(expandBtn).toHaveClass('bg-white');
 
     rerender(<RequestsTableFilters {...mockProps} isAllExpanded />);
     const collapseBtn = screen.getByRole('button', { name: /Collapse All/i });

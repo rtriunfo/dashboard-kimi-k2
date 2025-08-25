@@ -33,7 +33,7 @@
   
   /* Default chart container with background and border */
   .chart-container:not(.embedded) {
-    @apply bg-slate-800 border border-slate-700 rounded-xl;
+    @apply bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm;
   }
 
   .chart-header {
@@ -42,11 +42,11 @@
   
   /* Only add background for non-embedded charts */
   .chart-container:not(.embedded) .chart-header {
-    @apply bg-slate-800;
+    @apply bg-transparent;
   }
 
   .chart-title {
-    @apply text-sm font-semibold text-slate-300 mb-2;
+    @apply text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2;
   }
 
   /* Chart error boundary styles */
@@ -59,7 +59,7 @@
   }
 
   .chart-subtitle {
-    @apply mt-1 text-sm text-slate-400;
+    @apply mt-1 text-sm text-gray-600 dark:text-slate-400;
   }
 
   /* Responsive chart wrapper */
