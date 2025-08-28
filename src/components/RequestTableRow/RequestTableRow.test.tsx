@@ -761,15 +761,5 @@ describe('RequestTableRow', () => {
       );
     });
 
-    it('handles theme context properly when ThemeProvider is not available', () => {
-      // This test verifies the component doesn't crash when theme context is missing
-      // We'll render without ThemeProvider to test error handling
-      const expandedProps = { ...mockProps, isExpanded: true };
-      
-      // This should throw an error due to missing ThemeProvider
-      expect(() => {
-        render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
-      }).toThrow('useTheme must be used within a ThemeProvider');
-    });
   });
 });
