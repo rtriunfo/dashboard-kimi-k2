@@ -35,11 +35,11 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
   };
 
   return (
-    <div className="p-6 border bg-slate-800/50 backdrop-blur-sm rounded-xl border-slate-700">
+    <div className="p-6 border bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border-gray-200 dark:border-slate-700 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <Clock className="w-5 h-5 text-blue-400" />
-          <h3 className="text-lg font-semibold text-white">Response Times Analysis</h3>
+          <Clock className="w-5 h-5 text-blue-500 dark:text-blue-400" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Response Times Analysis</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -47,7 +47,7 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
             className={`px-3 py-1 rounded-md text-sm ${
               chartType === 'bar' 
                 ? 'bg-blue-500 text-white' 
-                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600'
             }`}
           >
             Bar
@@ -57,7 +57,7 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
             className={`px-3 py-1 rounded-md text-sm ${
               chartType === 'line' 
                 ? 'bg-blue-500 text-white' 
-                : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300 hover:bg-gray-300 dark:hover:bg-slate-600'
             }`}
           >
             Line
@@ -70,10 +70,10 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
           {percentileKeys.map((key) => (
             <div key={key} className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-300">{formatPercentileLabel(key)} Percentile</span>
-                <span className="font-medium text-white">{responseTimes.percentiles[key]}ms</span>
+                <span className="text-gray-600 dark:text-slate-300">{formatPercentileLabel(key)} Percentile</span>
+                <span className="font-medium text-gray-900 dark:text-white">{responseTimes.percentiles[key]}ms</span>
               </div>
-              <div className="w-full h-3 rounded-full bg-slate-700">
+              <div className="w-full h-3 rounded-full bg-gray-200 dark:bg-slate-700">
                 <div 
                   className={`${getColorClass(responseTimes.percentiles[key])} h-3 rounded-full transition-all duration-500`}
                   style={{ width: `${(responseTimes.percentiles[key] / maxValue) * 100}%` }}
@@ -85,7 +85,7 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
       ) : (
         <div className="relative mt-4 mb-12 h-80">
           {/* Y-axis labels container */}
-          <div className="absolute top-0 left-0 flex flex-col justify-between w-16 h-full py-2 text-xs text-slate-400">
+          <div className="absolute top-0 left-0 flex flex-col justify-between w-16 h-full py-2 text-xs text-gray-600 dark:text-slate-400">
             <div className="pr-2 text-right">{maxValue}ms</div>
             <div className="pr-2 text-right">{Math.round(maxValue * 0.75)}ms</div>
             <div className="pr-2 text-right">{Math.round(maxValue * 0.5)}ms</div>
@@ -96,16 +96,16 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
           {/* Chart container */}
           <div className="relative h-full ml-16">
             {/* Chart background grid */}
-            <div className="absolute inset-0 border-b border-l rounded-md border-slate-700/70">
-              <div className="absolute w-full border-t border-slate-700/30" style={{ bottom: '75%' }}></div>
-              <div className="absolute w-full border-t border-slate-700/30" style={{ bottom: '50%' }}></div>
-              <div className="absolute w-full border-t border-slate-700/30" style={{ bottom: '25%' }}></div>
+            <div className="absolute inset-0 border-b border-l rounded-md border-gray-300 dark:border-slate-700/70">
+              <div className="absolute w-full border-t border-gray-200 dark:border-slate-700/30" style={{ bottom: '75%' }}></div>
+              <div className="absolute w-full border-t border-gray-200 dark:border-slate-700/30" style={{ bottom: '50%' }}></div>
+              <div className="absolute w-full border-t border-gray-200 dark:border-slate-700/30" style={{ bottom: '25%' }}></div>
               
               {/* Vertical grid lines */}
               {percentileKeys.map((_, index) => (
                 <div
                   key={index}
-                  className="absolute h-full border-r border-slate-700/30"
+                  className="absolute h-full border-r border-gray-200 dark:border-slate-700/30"
                   style={{ left: `${(index / (percentileKeys.length - 1)) * 100}%` }}
                 ></div>
               ))}
@@ -190,7 +190,7 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
             </div>
             
             {/* X-axis labels */}
-            <div className="absolute left-0 right-0 flex justify-between text-xs -bottom-8 text-slate-400">
+            <div className="absolute left-0 right-0 flex justify-between text-xs -bottom-8 text-gray-600 dark:text-slate-400">
               {percentileKeys.map(key => (
                 <div key={key} className="text-center">
                   {formatPercentileLabel(key)}
@@ -201,21 +201,21 @@ const ResponseTimesDetailChart: React.FC<ResponseTimesDetailChartProps> = ({ res
         </div>
       )}
       
-      <div className="pt-6 mt-6 border-t border-slate-700">
+      <div className="pt-6 mt-6 border-t border-gray-200 dark:border-slate-700">
         <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="p-3 rounded-lg bg-slate-700/50">
-            <span className="block mb-1 text-slate-400">Minimum Response Time</span>
-            <span className="text-xl font-semibold text-white">{responseTimes.min}ms</span>
+          <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-700/50">
+            <span className="block mb-1 text-gray-600 dark:text-slate-400">Minimum Response Time</span>
+            <span className="text-xl font-semibold text-gray-900 dark:text-white">{responseTimes.min}ms</span>
           </div>
-          <div className="p-3 rounded-lg bg-slate-700/50">
-            <span className="block mb-1 text-slate-400">Maximum Response Time</span>
-            <span className="text-xl font-semibold text-white">{responseTimes.max}ms</span>
+          <div className="p-3 rounded-lg bg-gray-50 dark:bg-slate-700/50">
+            <span className="block mb-1 text-gray-600 dark:text-slate-400">Maximum Response Time</span>
+            <span className="text-xl font-semibold text-gray-900 dark:text-white">{responseTimes.max}ms</span>
           </div>
         </div>
         
-        <div className="p-4 mt-4 rounded-lg bg-slate-700/30">
-          <h4 className="mb-2 text-sm font-medium text-slate-300">Response Time Distribution</h4>
-          <p className="text-xs text-slate-400">
+        <div className="p-4 mt-4 rounded-lg bg-gray-50 dark:bg-slate-700/30">
+          <h4 className="mb-2 text-sm font-medium text-gray-700 dark:text-slate-300">Response Time Distribution</h4>
+          <p className="text-xs text-gray-600 dark:text-slate-400">
             The chart shows the distribution of response times across different percentiles.
             Lower percentiles (50th) represent typical user experience, while higher percentiles
             (99th, 99.9th) show worst-case scenarios that affect a small percentage of requests.

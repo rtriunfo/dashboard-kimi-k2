@@ -162,7 +162,7 @@ describe('MetadataTab', () => {
     expect(screen.getByText('Test Requirements:')).toBeInTheDocument();
     const enabledText = screen.getByText('Enabled');
     expect(enabledText).toBeInTheDocument();
-    expect(enabledText).toHaveClass('text-green-400');
+    expect(enabledText).toHaveClass('text-green-500');
   });
 
   it('displays test requirements status correctly when disabled', () => {
@@ -175,7 +175,7 @@ describe('MetadataTab', () => {
     
     const disabledText = screen.getByText('Disabled');
     expect(disabledText).toBeInTheDocument();
-    expect(disabledText).toHaveClass('text-red-400');
+    expect(disabledText).toHaveClass('text-red-500');
   });
 
   it('renders Test Configuration section', () => {

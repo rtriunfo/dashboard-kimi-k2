@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import AssertionStats from './AssertionStats';
@@ -113,7 +113,7 @@ describe('AssertionStats', () => {
     const { container } = render(<AssertionStats stats={mockStats} />);
     
     const mainContainer = container.firstChild as HTMLElement;
-    expect(mainContainer).toHaveClass('bg-slate-800/50', 'backdrop-blur-sm', 'rounded-xl');
+    expect(mainContainer).toHaveClass('bg-white', 'backdrop-blur-sm', 'rounded-xl');
   });
 
   it('displays stats in correct layout structure', () => {
@@ -163,9 +163,9 @@ describe('AssertionStats', () => {
     const { container } = render(<AssertionStats stats={mockStats} />);
     
     // Check for colored icons
-    const greenIcon = container.querySelector('.text-green-400');
-    const redIcon = container.querySelector('.text-red-400');
-    const yellowIcon = container.querySelector('.text-yellow-400');
+    const greenIcon = container.querySelector('.text-green-500');
+    const redIcon = container.querySelector('.text-red-500');
+    const yellowIcon = container.querySelector('.text-yellow-500');
     
     expect(greenIcon).toBeInTheDocument();
     expect(redIcon).toBeInTheDocument();

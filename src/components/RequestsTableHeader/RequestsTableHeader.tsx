@@ -22,10 +22,10 @@ export const RequestsTableHeader: React.FC<RequestsTableHeaderProps> = ({
 }) => {
   return (
     <thead>
-      <tr className="border-b border-slate-700">
+      <tr className="border-b border-gray-200 dark:border-slate-700">
         <HeaderCell 
           column="name" 
-          className="px-6 py-4 text-left text-sm font-semibold text-white" 
+          className="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white" 
           sortColumn={sortColumn} 
           sortDirection={sortDirection} 
           onSort={onSort}

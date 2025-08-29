@@ -40,7 +40,7 @@ describe('SortableHeader', () => {
     renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
-    expect(header).toHaveClass('px-6', 'py-4', 'text-center', 'text-sm', 'font-semibold', 'text-white');
+    expect(header).toHaveClass('px-6', 'py-4', 'text-center', 'text-sm', 'font-semibold', 'text-gray-900');
   });
 
   it('applies custom className when provided', () => {
@@ -161,7 +161,7 @@ describe('SortableHeader', () => {
     renderWithTable(<SortableHeader {...defaultProps} />);
     
     const header = screen.getByRole('columnheader');
-    expect(header).toHaveClass('hover:bg-slate-700/30');
+    expect(header).toHaveClass('hover:bg-gray-100');
   });
 
   it('prevents text selection', () => {

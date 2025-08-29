@@ -58,10 +58,10 @@ describe('SeverityStats', () => {
     const majorValue = screen.getByText('15');
     const minorValue = screen.getByText('20');
     
-    expect(blockerValue).toHaveClass('text-white', 'font-medium');
-    expect(criticalValue).toHaveClass('text-white', 'font-medium');
-    expect(majorValue).toHaveClass('text-white', 'font-medium');
-    expect(minorValue).toHaveClass('text-white', 'font-medium');
+    expect(blockerValue).toHaveClass('text-gray-900', 'font-medium');
+    expect(criticalValue).toHaveClass('text-gray-900', 'font-medium');
+    expect(majorValue).toHaveClass('text-gray-900', 'font-medium');
+    expect(minorValue).toHaveClass('text-gray-900', 'font-medium');
   });
 
   it('calculates and displays total issues correctly', () => {
@@ -76,7 +76,7 @@ describe('SeverityStats', () => {
     const totalElement = totalElements.find(el => 
       el.classList.contains('text-2xl') && 
       el.classList.contains('font-bold') && 
-      el.classList.contains('text-white')
+      el.classList.contains('text-gray-900')
     );
     expect(totalElement).toBeInTheDocument();
   });
@@ -144,12 +144,12 @@ describe('SeverityStats', () => {
     const container = screen.getByText('Severity Distribution').closest('div');
     expect(container).toBeInTheDocument();
     
-    // Icons should be present with correct colors
-    const redIcons = container?.querySelectorAll('.text-red-400');
-    const orangeIcons = container?.querySelectorAll('.text-orange-400');
-    const yellowIcons = container?.querySelectorAll('.text-yellow-400');
-    const blueIcons = container?.querySelectorAll('.text-blue-400');
-    const greenIcons = container?.querySelectorAll('.text-green-400');
+    // Icons should be present with correct colors (checking for both light and dark mode classes)
+    const redIcons = container?.querySelectorAll('[class*="text-red-500"]');
+    const orangeIcons = container?.querySelectorAll('[class*="text-orange-500"]');
+    const yellowIcons = container?.querySelectorAll('[class*="text-yellow-500"]');
+    const blueIcons = container?.querySelectorAll('[class*="text-blue-500"]'); // Fixed from blue-600 to blue-500
+    const greenIcons = container?.querySelectorAll('[class*="text-green-500"]');
     
     expect(redIcons?.length).toBe(1); // Blocker
     expect(orangeIcons?.length).toBe(1); // Critical

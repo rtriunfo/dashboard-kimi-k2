@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { RequestTableRow } from './RequestTableRow';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { RequestResult, TestResults } from '../../types';
 
 // Mock echarts to avoid canvas issues in tests
@@ -142,18 +142,44 @@ const mockProps = {
   formatResponseTime: (time: number) => `${time}ms`
 };
 
+// Helper function to render component with theme context
+const renderWithTheme = (component: React.ReactElement, theme: 'light' | 'dark' = 'light') => {
+  // Create a test ThemeProvider that forces the theme value
+  const TestThemeProvider = ({ children }: { children: React.ReactNode }) => {
+    const mockContextValue = {
+      theme,
+      setTheme: jest.fn(),
+      toggleTheme: jest.fn()
+    };
+    
+    return (
+      <ThemeContext.Provider value={mockContextValue}>
+        <div className={theme}>
+          {children}
+        </div>
+      </ThemeContext.Provider>
+    );
+  };
+
+  return render(
+    <TestThemeProvider>
+      {component}
+    </TestThemeProvider>
+  );
+};
+
 describe('RequestTableRow', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('renders request name correctly', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     expect(screen.getByText('Test Request')).toBeInTheDocument();
   });
 
   it('renders response time data correctly', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     expect(screen.getByText('100ms')).toBeInTheDocument(); // min
     expect(screen.getByText('200ms')).toBeInTheDocument(); // 50th percentile
     expect(screen.getByText('400ms')).toBeInTheDocument(); // 95th percentile
@@ -161,27 +187,27 @@ describe('RequestTableRow', () => {
   });
 
   it('renders status and severity badges when available', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     expect(screen.getByText('PASS')).toBeInTheDocument();
     expect(screen.getByText('LOW')).toBeInTheDocument();
   });
 
   it('renders error percentage with correct color coding', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     const errorElement = screen.getByText('2.50%');
     expect(errorElement).toBeInTheDocument();
-    expect(errorElement).toHaveClass('text-yellow-400'); // 2.5% should be yellow (> 1% but <= 5%)
+    expect(errorElement).toHaveClass('text-yellow-500'); // 2.5% should be yellow (> 1% but <= 5%)
   });
 
   it('shows expand button when there is expandable data', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     const expandButton = screen.getByRole('button');
     expect(expandButton).toBeInTheDocument();
     expect(expandButton).toHaveTextContent('▶');
   });
 
   it('calls onToggleExpansion when expand button is clicked', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     const expandButton = screen.getByRole('button');
     fireEvent.click(expandButton);
     expect(mockProps.onToggleExpansion).toHaveBeenCalledWith(1);
@@ -189,10 +215,10 @@ describe('RequestTableRow', () => {
 
   it('shows expanded content when isExpanded is true', () => {
     const expandedProps = { ...mockProps, isExpanded: true };
-    const { container } = render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+    const { container } = renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
     
     // Check that the expanded row is present by looking for the expanded row structure
-    const expandedRow = container.querySelector('tr.bg-slate-900\\/50');
+    const expandedRow = container.querySelector('tr.bg-gray-100');
     expect(expandedRow).toBeInTheDocument();
     
     // Check for main sections that should be unique
@@ -202,7 +228,7 @@ describe('RequestTableRow', () => {
     
     // Check for grid layout and sections
     expect(container.querySelector('.grid')).toBeInTheDocument();
-    expect(container.querySelectorAll('.bg-slate-800\\/50').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('.bg-white').length).toBeGreaterThan(0);
   });
 
   it('does not show expand button when there is no expandable data', () => {
@@ -219,7 +245,7 @@ describe('RequestTableRow', () => {
     };
     const noDataProps = { ...mockProps, result: noDataResult };
     
-    render(<table><tbody><RequestTableRow {...noDataProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...noDataProps} /></tbody></table>);
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
     expect(screen.getByText('Test Request')).toBeInTheDocument();
   });
@@ -236,7 +262,7 @@ describe('RequestTableRow', () => {
     } as any;
     const invalidProps = { ...mockProps, result: invalidResult };
     
-    const { container } = render(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
+    const { container } = renderWithTheme(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
     // The component returns null for invalid data, so no table rows should be rendered
     expect(container.querySelectorAll('tr')).toHaveLength(0);
     
@@ -248,30 +274,61 @@ describe('RequestTableRow', () => {
   });
 
   it('renders correct expand/collapse icon based on isExpanded state', () => {
-    const { rerender } = render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     expect(screen.getByText('▶')).toBeInTheDocument();
     
-    rerender(<table><tbody><RequestTableRow {...mockProps} isExpanded={true} /></tbody></table>);
+    // Re-render with expanded state
+    const expandedProps = { ...mockProps, isExpanded: true };
+    renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
     expect(screen.getByText('▼')).toBeInTheDocument();
   });
 
   it('applies correct row styling based on index', () => {
-    const { container } = render(<table><tbody><RequestTableRow {...mockProps} index={0} /></tbody></table>);
+    const { container } = renderWithTheme(<table><tbody><RequestTableRow {...mockProps} index={0} /></tbody></table>);
     const row = container.querySelector('tr');
-    expect(row).toHaveClass('bg-slate-800/30'); // even index
+    expect(row).toHaveClass('bg-gray-50'); // even index in light mode
 
-    const { container: container2 } = render(<table><tbody><RequestTableRow {...mockProps} index={1} /></tbody></table>);
+    const { container: container2 } = renderWithTheme(<table><tbody><RequestTableRow {...mockProps} index={1} /></tbody></table>);
     const row2 = container2.querySelector('tr');
-    expect(row2).toHaveClass('bg-slate-800/10'); // odd index
+    expect(row2).toHaveClass('bg-white'); // odd index in light mode
   });
 
   it('renders total count with proper formatting', () => {
-    render(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
+    renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>);
     expect(screen.getByText('1,000')).toBeInTheDocument();
+  });
+
+  it('renders correctly in light theme', () => {
+    const { container } = renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>, 'light');
+    const row = container.querySelector('tr');
+    expect(row).toHaveClass('bg-gray-50'); // light mode styling
+  });
+
+  it('renders correctly in dark theme', () => {
+    const { container } = renderWithTheme(<table><tbody><RequestTableRow {...mockProps} /></tbody></table>, 'dark');
+    const row = container.querySelector('tr');
+    expect(row).toHaveClass('dark:bg-slate-800/30'); // dark mode styling
+  });
+
+  it('handles theme changes correctly when expanded', () => {
+    const expandedProps = { ...mockProps, isExpanded: true };
+    const { container } = renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'light');
+    
+    // Check for light mode expanded row styling
+    const expandedRow = container.querySelector('tr.bg-gray-100');
+    expect(expandedRow).toBeInTheDocument();
+    
+    // Check for light mode card styling
+    const cards = container.querySelectorAll('.bg-white');
+    expect(cards.length).toBeGreaterThan(0);
   });
 
   describe('Chart Error Handling and Edge Cases', () => {
     it('handles chart rendering with invalid percentile data', () => {
+      // Suppress console.error for this test since we're intentionally testing error handling
+      const originalError = console.error;
+      console.error = jest.fn();
+      
       const invalidPercentileResult = {
         ...mockResult,
         responseTimes: {
@@ -286,14 +343,21 @@ describe('RequestTableRow', () => {
       };
       const invalidProps = { ...mockProps, result: invalidPercentileResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...invalidProps} /></tbody></table>);
       
       // Should show error fallback instead of crashing
       expect(screen.getByText('Chart unavailable')).toBeInTheDocument();
       expect(screen.getByText('Data format error')).toBeInTheDocument();
+      
+      // Restore original console.error
+      console.error = originalError;
     });
 
     it('handles chart rendering with empty percentiles object', () => {
+      // Suppress console.error for this test since we're intentionally testing error handling
+      const originalError = console.error;
+      console.error = jest.fn();
+      
       const emptyPercentileResult = {
         ...mockResult,
         responseTimes: {
@@ -304,24 +368,37 @@ describe('RequestTableRow', () => {
       };
       const emptyProps = { ...mockProps, result: emptyPercentileResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...emptyProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...emptyProps} /></tbody></table>);
       
       // Should show error fallback when no valid percentiles
       expect(screen.getByText('Chart unavailable')).toBeInTheDocument();
       expect(screen.getByText('Data format error')).toBeInTheDocument();
+      
+      // Restore original console.error
+      console.error = originalError;
     });
 
     it('handles chart rendering with null responseTimes', () => {
+      // Suppress console.warn for this test since we're intentionally testing invalid data
+      const originalWarn = console.warn;
+      console.warn = jest.fn();
+      
       const nullResponseTimesResult = {
         ...mockResult,
         responseTimes: null as any
       };
       const nullProps = { ...mockProps, result: nullResponseTimesResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...nullProps} /></tbody></table>);
+      const { container } = renderWithTheme(<table><tbody><RequestTableRow {...nullProps} /></tbody></table>);
       
-      // Should not render response times section at all
-      expect(screen.queryByText('Response Times')).not.toBeInTheDocument();
+      // Component should return null for invalid data (no responseTimes)
+      expect(container.querySelectorAll('tr')).toHaveLength(0);
+      
+      // Verify that console.warn was called
+      expect(console.warn).toHaveBeenCalledWith('Invalid result object:', nullResponseTimesResult);
+      
+      // Restore original console.warn
+      console.warn = originalWarn;
     });
 
     it('handles chart cleanup when element is removed', () => {
@@ -344,7 +421,7 @@ describe('RequestTableRow', () => {
       (global.ResizeObserver as jest.Mock).mockImplementation(() => mockResizeObserver);
 
       const expandedProps = { ...mockProps, isExpanded: true };
-      const { unmount } = render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+      const { unmount } = renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
       
       // Verify chart was initialized
       expect(echarts.init).toHaveBeenCalled();
@@ -387,7 +464,7 @@ describe('RequestTableRow', () => {
       (global.ResizeObserver as jest.Mock).mockImplementation(() => mockResizeObserver);
 
       const expandedProps = { ...mockProps, isExpanded: true };
-      render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
       
       // Verify ResizeObserver was created and observe was called
       expect(global.ResizeObserver).toHaveBeenCalled();
@@ -405,7 +482,7 @@ describe('RequestTableRow', () => {
       
       // Test the cleanup logic when element is null (lines 194-196, 364-366)
       const expandedProps = { ...mockProps, isExpanded: true };
-      render(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>);
       
       // Simulate the ref callback being called with null (component unmounting)
       // This would happen in the actual ref callback logic
@@ -425,7 +502,7 @@ describe('RequestTableRow', () => {
       };
       const noReqProps = { ...mockProps, result: noRequirementsResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...noReqProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...noReqProps} /></tbody></table>);
       
       expect(screen.queryByText('Requirements')).not.toBeInTheDocument();
     });
@@ -442,7 +519,7 @@ describe('RequestTableRow', () => {
       };
       const zeroReqProps = { ...mockProps, result: zeroRequirementsResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...zeroReqProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...zeroReqProps} /></tbody></table>);
       
       expect(screen.queryByText('Requirements')).not.toBeInTheDocument();
     });
@@ -474,7 +551,7 @@ describe('RequestTableRow', () => {
       };
       const invalidReqProps = { ...mockProps, result: invalidReqResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...invalidReqProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...invalidReqProps} /></tbody></table>);
       
       // Should still render the requirements section but handle invalid data gracefully  
       const requirementsElements = screen.getAllByText('Requirements');
@@ -492,7 +569,7 @@ describe('RequestTableRow', () => {
       };
       const noPassFailProps = { ...mockProps, result: noPassFailResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...noPassFailProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...noPassFailProps} /></tbody></table>);
       
       expect(screen.queryByText('Pass/Fail Distribution')).not.toBeInTheDocument();
     });
@@ -505,7 +582,7 @@ describe('RequestTableRow', () => {
       };
       const onlyPassProps = { ...mockProps, result: onlyPassResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...onlyPassProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...onlyPassProps} /></tbody></table>);
       
       expect(screen.getByText('Pass/Fail Distribution')).toBeInTheDocument();
       expect(screen.getByText('Total:')).toBeInTheDocument();
@@ -527,7 +604,7 @@ describe('RequestTableRow', () => {
       };
       const noMetadataProps = { ...mockProps, result: noMetadataResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...noMetadataProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...noMetadataProps} /></tbody></table>);
       
       expect(screen.queryByText('Additional Information')).not.toBeInTheDocument();
     });
@@ -545,7 +622,7 @@ describe('RequestTableRow', () => {
       };
       const partialMetadataProps = { ...mockProps, result: partialMetadataResult, isExpanded: true };
       
-      render(<table><tbody><RequestTableRow {...partialMetadataProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...partialMetadataProps} /></tbody></table>);
       
       expect(screen.getByText('Additional Information')).toBeInTheDocument();
       expect(screen.getByText('Description:')).toBeInTheDocument();
@@ -559,30 +636,130 @@ describe('RequestTableRow', () => {
       const zeroErrorResult = { ...mockResult, errorPercentage: 0 };
       const zeroErrorProps = { ...mockProps, result: zeroErrorResult };
       
-      render(<table><tbody><RequestTableRow {...zeroErrorProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...zeroErrorProps} /></tbody></table>);
       
       const errorElement = screen.getByText('0.00%');
-      expect(errorElement).toHaveClass('text-green-400');
+      expect(errorElement).toHaveClass('text-green-500');
     });
 
     it('renders error percentage with green color for 1%', () => {
       const lowErrorResult = { ...mockResult, errorPercentage: 1 };
       const lowErrorProps = { ...mockProps, result: lowErrorResult };
       
-      render(<table><tbody><RequestTableRow {...lowErrorProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...lowErrorProps} /></tbody></table>);
       
       const errorElement = screen.getByText('1.00%');
-      expect(errorElement).toHaveClass('text-green-400');
+      expect(errorElement).toHaveClass('text-green-500');
     });
 
     it('renders error percentage with red color for >5%', () => {
       const highErrorResult = { ...mockResult, errorPercentage: 10 };
       const highErrorProps = { ...mockProps, result: highErrorResult };
       
-      render(<table><tbody><RequestTableRow {...highErrorProps} /></tbody></table>);
+      renderWithTheme(<table><tbody><RequestTableRow {...highErrorProps} /></tbody></table>);
       
       const errorElement = screen.getByText('10.00%');
-      expect(errorElement).toHaveClass('text-red-400');
+      expect(errorElement).toHaveClass('text-red-500');
     });
+  });
+
+  describe('Theme Behavior Tests', () => {
+    beforeEach(() => {
+      // Clear console logs before each test
+      jest.clearAllMocks();
+      console.log = jest.fn();
+    });
+
+    it('logs correct theme information when component renders', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'light');
+      
+      // Check that theme logging is working
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[RequestTableRow] Theme: light, IsExpanded: true, ResultId: 1')
+      );
+    });
+
+    it('logs theme information for dark mode', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'dark');
+      
+      // Check that theme logging is working for dark mode
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[RequestTableRow] Theme: dark, IsExpanded: true, ResultId: 1')
+      );
+    });
+
+    it('logs chart theme colors in light mode', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'light');
+      
+      // Check that chart theme colors are logged correctly
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[PassFailChart] Theme colors - legend: #64748b, border: #f1f5f9')
+      );
+    });
+
+    it('logs chart theme colors in dark mode', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'dark');
+      
+      // Check that chart theme colors are logged correctly
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[PassFailChart] Theme colors - legend: #94a3b8, border: #0f172a')
+      );
+    });
+
+
+    it('uses theme-based keys for chart containers', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      const { container } = renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'light');
+      
+      // Check that chart containers exist
+      const passFailChart = container.querySelector('#pass-fail-chart-1');
+      const requirementsChartContainer = container.querySelector('#chart-1');
+      
+      expect(passFailChart).toBeInTheDocument();
+      expect(requirementsChartContainer).toBeInTheDocument();
+      
+      // The pass/fail chart should have the expected ID
+      expect(passFailChart?.id).toBe('pass-fail-chart-1');
+      expect(requirementsChartContainer?.id).toBe('chart-1');
+      
+      // The LineGraph component renders its own content structure
+      // Just verify the container exists, as the LineGraph handles its own rendering
+      expect(requirementsChartContainer).toHaveClass('w-full', 'h-28');
+    });
+
+    it('applies correct expanded row background styling in light mode', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      const { container } = renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'light');
+      
+      // Check for light mode expanded row styling
+      const expandedRow = container.querySelector('tr.bg-gray-100');
+      expect(expandedRow).toBeInTheDocument();
+    });
+
+    it('logs DOM classes when charts are initialized', () => {
+      const expandedProps = { ...mockProps, isExpanded: true };
+      
+      // Mock document.documentElement.classList
+      const mockClassList = {
+        toString: jest.fn().mockReturnValue('light some-other-class'),
+        contains: jest.fn().mockReturnValue(false)
+      };
+      Object.defineProperty(document.documentElement, 'classList', {
+        value: mockClassList,
+        writable: true
+      });
+      
+      renderWithTheme(<table><tbody><RequestTableRow {...expandedProps} /></tbody></table>, 'light');
+      
+      // Check that chart theme colors are logged
+      expect(console.log).toHaveBeenCalledWith(
+        expect.stringContaining('[PassFailChart] Theme colors - legend:')
+      );
+    });
+
   });
 });

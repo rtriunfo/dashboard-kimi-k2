@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { RequestTableRow } from './RequestTableRow';
 import { RequestResult, TestResults } from '../../types';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 
 const meta: Meta<typeof RequestTableRow> = {
   title: 'Components/RequestTableRow',
@@ -10,26 +11,28 @@ const meta: Meta<typeof RequestTableRow> = {
   },
   decorators: [
     (Story) => (
-      <div className="bg-slate-900 p-4">
-        <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
-          <thead>
-            <tr className="border-b border-slate-700">
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Name</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Status</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Severity</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Min</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">50th</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">95th</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Max</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Count</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-white">Errors</th>
-            </tr>
-          </thead>
-          <tbody>
-            <Story />
-          </tbody>
-        </table>
-      </div>
+      <ThemeProvider>
+        <div className="bg-slate-900 p-4">
+          <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
+            <thead>
+              <tr className="border-b border-slate-700">
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Name</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Status</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Severity</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Min</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">50th</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">95th</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Max</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Count</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-white">Errors</th>
+              </tr>
+            </thead>
+            <tbody>
+              <Story />
+            </tbody>
+          </table>
+        </div>
+      </ThemeProvider>
     ),
   ],
 };

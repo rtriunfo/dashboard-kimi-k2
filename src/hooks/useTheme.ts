@@ -70,12 +70,7 @@ export const useTheme = () => {
 
     setIsDark(shouldBeDark);
 
-    // Update document class
-    if (shouldBeDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    // DOM manipulation is now handled by ThemeContext.tsx - single source of truth
   }, [mode]);
 
   // Listen for system theme changes

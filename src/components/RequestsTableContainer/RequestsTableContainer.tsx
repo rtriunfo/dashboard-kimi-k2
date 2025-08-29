@@ -31,7 +31,7 @@ export const RequestsTableContainer: React.FC<RequestsTableContainerProps> = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
+      <table className="w-full border-collapse bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-xl border border-gray-200 dark:border-slate-700 shadow-sm">
         {children}
       </table>
       

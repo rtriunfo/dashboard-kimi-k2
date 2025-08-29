@@ -103,8 +103,8 @@ export const RequestsTableFilters: React.FC<RequestsTableFiltersProps> = ({
             <button
               onClick={toggleExpandAll}
               className={`flex items-center gap-2 px-4 py-2 text-sm ${
-                isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-slate-800/50 border-slate-700'
-              } text-white rounded-lg border hover:bg-slate-700/50 transition-colors backdrop-blur-sm`}
+                isAllExpanded ? 'bg-blue-500/20 border-blue-500' : 'bg-white dark:bg-slate-800/50 border-gray-200 dark:border-slate-700'
+              } text-gray-900 dark:text-white rounded-lg border hover:bg-gray-100 dark:hover:bg-slate-700/50 transition-colors backdrop-blur-sm shadow-sm`}
             >
               {isAllExpanded ? (
                 <>
@@ -126,7 +126,7 @@ export const RequestsTableFilters: React.FC<RequestsTableFiltersProps> = ({
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-2 px-4 py-2 text-sm bg-slate-800/50 hover:bg-slate-700/50 text-white rounded-lg border border-slate-700 transition-colors backdrop-blur-sm"
+                className="flex items-center gap-2 px-4 py-2 text-sm bg-white dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-700/50 text-gray-900 dark:text-white rounded-lg border border-gray-200 dark:border-slate-700 transition-colors backdrop-blur-sm shadow-sm"
               >
                 <XCircle className="w-3 h-3" />
                 Clear all filters

@@ -4,6 +4,8 @@ import { RequestResult, TestResults } from '../../types';
 import StatusBadge from '../StatusBadge';
 import SeverityBadge from '../SeverityBadge';
 import LineGraph from '../LineGraph/';
+import Requirements from '../Requirements';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface RequestTableRowProps {
   result: RequestResult;
@@ -22,8 +24,13 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
   availablePercentiles,
   isExpanded,
   onToggleExpansion,
-  formatResponseTime
+  formatResponseTime,
 }) => {
+  const { theme } = useTheme();
+  
+  // Debug logging for theme behavior
+  console.log(`[RequestTableRow] Theme: ${theme}, IsExpanded: ${isExpanded}, ResultId: ${result?.id || index}`);
+  
   // Add null checks to prevent runtime errors
   if (!result || !result.request || !result.responseTimes) {
     console.warn('Invalid result object:', result);
@@ -37,16 +44,16 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
   return (
     <React.Fragment key={result.id || index}>
       <tr 
-        className={`border-b border-slate-700/50 hover:bg-slate-700/30 transition-colors ${
-          index % 2 === 0 ? 'bg-slate-800/30' : 'bg-slate-800/10'
+        className={`border-b border-gray-200 dark:border-slate-700/50 hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors ${
+          index % 2 === 0 ? 'bg-gray-50 dark:bg-slate-800/30' : 'bg-white dark:bg-slate-800/10'
         }`}
       >
-        <td className="px-2 py-4 text-sm text-white font-medium">
+        <td className="px-2 py-4 text-sm text-gray-900 dark:text-white font-medium">
           {/* Only show accordion if there's data to display */}
           {hasExpandableData ? (
             <button
               onClick={() => onToggleExpansion(result.id || index)}
-              className="flex items-center gap-2 text-left hover:text-blue-400 transition-colors"
+              className="flex items-center gap-2 text-left hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
             >
               <span className="text-xs">
                 {isExpanded ? '▼' : '▶'}
@@ -67,24 +74,24 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
             <SeverityBadge severity={result.severity} />
           </td>
         )}
-        <td className="px-2 py-4 text-sm text-center text-slate-300">
+        <td className="px-2 py-4 text-sm text-center text-gray-600 dark:text-slate-300">
           {formatResponseTime(result.responseTimes?.min || 0)}
         </td>
         {availablePercentiles.map(percentile => (
-          <td key={percentile} className="px-2 py-4 text-sm text-center text-slate-300">
+          <td key={percentile} className="px-2 py-4 text-sm text-center text-gray-600 dark:text-slate-300">
             {formatResponseTime(result.responseTimes?.percentiles?.[percentile] || 0)}
           </td>
         ))}
-        <td className="px-2 py-4 text-sm text-center text-slate-300">
+        <td className="px-2 py-4 text-sm text-center text-gray-600 dark:text-slate-300">
           {formatResponseTime(result.responseTimes?.max || 0)}
         </td>
-        <td className="px-2 py-4 text-sm text-center text-slate-300">
+        <td className="px-2 py-4 text-sm text-center text-gray-600 dark:text-slate-300">
           {(result.totalCount || 0).toLocaleString()}
         </td>
         <td className="px-2 py-4 text-sm text-center">
           <span className={`font-medium ${
-            Number(result.errorPercentage || 0) > 5 ? 'text-red-400' : 
-            Number(result.errorPercentage || 0) > 1 ? 'text-yellow-400' : 'text-green-400'
+            Number(result.errorPercentage || 0) > 5 ? 'text-red-500 dark:text-red-400' : 
+            Number(result.errorPercentage || 0) > 1 ? 'text-yellow-500 dark:text-yellow-400' : 'text-green-500 dark:text-green-400'
           }`}>
             {Number(result.errorPercentage || 0).toFixed(2)}%
           </span>
@@ -92,21 +99,28 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
       </tr>
       
       {isExpanded && (
-        <tr className="bg-slate-900/50">
+        <tr className={`${theme === 'light' ? 'bg-gray-100' : 'bg-slate-800/50'}`}>
           <td colSpan={7 + (testData.testRequirements ? 1 : 0) + (testData.severityVersion ? 1 : 0) + availablePercentiles.length} className="px-6 py-4">
             <div className="space-y-4">
-              <h4 className="text-lg font-semibold text-white mb-3">Request Details</h4>
+              <h4 className={`text-lg font-semibold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Request Details</h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {/* Pass/Fail Chart - Only show if there's data */}
                 {(result.passCount || result.failCount) ? (
-                  <div className="bg-slate-800/50 rounded-lg p-4">
-                    <h5 className="text-sm font-semibold text-slate-300 mb-2">Pass/Fail Distribution</h5>
+                  <div className={`rounded-lg p-4 shadow-sm ${
+                    theme === 'light' 
+                      ? 'bg-white border border-gray-200' 
+                      : 'bg-slate-800/50 border border-slate-700'
+                  }`}>
+                    <h5 className={`text-sm font-semibold mb-2 ${
+                      theme === 'light' ? 'text-gray-700' : 'text-slate-300'
+                    }`}>Pass/Fail Distribution</h5>
                     <div className="text-sm">
                       {/* Pass/Fail Chart */}
                       <div>
-                        <div id={`pass-fail-chart-${result.id || index}`} className="w-full h-28" ref={el => {
+                        <div key={`pass-fail-chart-${result.id || index}-${theme}`} id={`pass-fail-chart-${result.id || index}`} className="w-full h-28" ref={el => {
                         if (el) {
+                          
                           // Initialize chart with transparent background to match parent div
                           const chart = echarts.init(el, null, {
                             renderer: 'canvas'
@@ -121,6 +135,12 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
                           const passCount = result.passCount || 0;
                           const failCount = result.failCount || 0;
                           
+                          // Theme-aware colors using React context
+                          const legendTextColor = theme === 'light' ? '#64748b' : '#94a3b8';
+                          const borderColor = theme === 'light' ? '#f1f5f9' : '#0f172a';
+                          
+                          console.log(`[PassFailChart] Theme colors - legend: ${legendTextColor}, border: ${borderColor}`);
+                          
                           // Chart options
                           const option = {
                             tooltip: {
@@ -131,7 +151,7 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
                               bottom: 18,
                               left: 'center',
                               textStyle: {
-                                color: '#94a3b8',
+                                color: legendTextColor,
                                 fontSize: 10
                               },
                               itemWidth: 12,
@@ -151,7 +171,7 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
                                 itemStyle: {
                                   borderRadius: 4,
                                   borderWidth: 2,
-                                  borderColor: '#0f172a'
+                                  borderColor: borderColor
                                 },
                                 label: {
                                   show:false
@@ -199,8 +219,8 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
                     </div>
                     
                     <div className="flex justify-between mt-2">
-                      <div><span className="text-slate-400">Total:</span> <span className="text-white">{(result.totalCount || 0).toLocaleString()}</span></div>
-                      <div><span className="text-slate-400">Rate:</span> <span className="text-white">{Number(result.rate || 0).toFixed(2)} {result.rateGranularity}</span></div>
+                      <div><span className="text-gray-600 dark:text-slate-400">Total:</span> <span className="text-gray-900 dark:text-white">{(result.totalCount || 0).toLocaleString()}</span></div>
+                      <div><span className="text-gray-600 dark:text-slate-400">Rate:</span> <span className="text-gray-900 dark:text-white">{Number(result.rate || 0).toFixed(2)} {result.rateGranularity}</span></div>
                     </div>
                   </div>
                 </div>
@@ -208,8 +228,14 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
 
                 {/* Response Times */}
                 {result.responseTimes?.percentiles && (
-                  <div className="bg-slate-800/50 rounded-lg p-4">
-                    <h5 className="text-sm font-semibold text-slate-300 mb-2">Response Times</h5>
+                  <div className={`rounded-lg p-4 shadow-sm ${
+                    theme === 'light' 
+                      ? 'bg-white border border-gray-200' 
+                      : 'bg-slate-800/50 border border-slate-700'
+                  }`}>
+                    <h5 className={`text-sm font-semibold mb-2 ${
+                      theme === 'light' ? 'text-gray-700' : 'text-slate-300'
+                    }`}>Response Times</h5>
                     <div className="h-auto">
                       <div className="chart-error-boundary">
                         {(() => {
@@ -255,7 +281,7 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
                           } catch (error) {
                             console.error('Error rendering LineGraph for request:', result.request?.requestName, error);
                             return (
-                              <div className="text-center py-4 text-slate-400 border border-slate-600 rounded">
+                              <div className="text-center py-4 text-gray-600 dark:text-slate-400 border border-gray-300 dark:border-slate-600 rounded">
                                 <p className="text-sm">Chart unavailable</p>
                                 <p className="text-xs mt-1">Data format error</p>
                               </div>
@@ -270,146 +296,35 @@ export const RequestTableRow: React.FC<RequestTableRowProps> = ({
 
                 {/* Requirements (if available and has data) */}
                 {result.requirements && (result.requirements.passed > 0 || result.requirements.failed > 0) && (
-                  <div className="bg-slate-800/50 rounded-lg p-4">
-                    <h5 className="text-sm font-semibold text-slate-300 mb-2">Requirements</h5>
-                    <div className="text-sm">
-                      {/* Requirements Chart */}
-                      <div>
-                        <div id={`chart-${result.id || index}`} className="w-full h-28" ref={el => {
-                          if (el) {
-                            // Initialize chart with transparent background to match parent div
-                            const chart = echarts.init(el, null, {
-                              renderer: 'canvas'
-                            });
-                            
-                            // Set background color through setOption instead
-                            chart.setOption({
-                              backgroundColor: 'transparent'
-                            });
-                            
-                            // Calculate pass/fail ratio
-                            const passed = result.requirements.passed || 0;
-                            const failed = result.requirements.failed || 0;
-                            
-                            // Chart options
-                            const option = {
-                              tooltip: {
-                                trigger: 'item',
-                                formatter: '{b}: {c}'
-                              },
-                              legend: {
-                                bottom:18, //Reduce gap between chart and legend
-                                left: 'center',
-                                textStyle: {
-                                  color: '#94a3b8',
-                                  fontSize: 10
-                                },
-                                selectedMode: false,
-                                itemWidth: 12,
-                                itemHeight: 12,
-                                itemGap: 15, 
-                                padding: 6,
-                                },
-                              series: [
-                                {
-                                  name: 'Requirements',
-                                  type: 'pie',
-                                  radius: ['50%', '90%'], 
-                                  center: ['50%', '50%'], 
-                                  startAngle: 180,
-                                  endAngle: 360,
-                                  itemStyle: {
-                                    borderRadius: 4,
-                                    borderWidth: 2,
-                                    borderColor: '#0f172a'
-                                  },
-                                  label: {
-                                    show: false 
-                                  },
-                                  data: [
-                                    ...(failed > 0 ? [{ 
-                                      value: failed, 
-                                      name: 'FAILED', 
-                                      itemStyle: { color: '#ef4444' }
-                                    }] : []),
-                                    { 
-                                      value: passed, 
-                                      name: 'PASSED', 
-                                      itemStyle: { color: '#10b981' } 
-                                    }
-                                  ]
-                                }
-                              ],
-                              grid: {
-                                bottom: 0
-                              }
-                            };
-                            
-                            // Apply options
-                            chart.setOption(option);
-                            
-                            // Handle resize
-                            const resizeObserver = new ResizeObserver(() => {
-                              chart.resize();
-                            });
-                            resizeObserver.observe(el);
-                            
-                            // Store cleanup function on the element for later cleanup
-                            (el as any)._chartCleanup = () => {
-                              chart.dispose();
-                              resizeObserver.disconnect();
-                            };
-                          } else {
-                            // Cleanup when element is removed
-                            if ((el as any)?._chartCleanup) {
-                              (el as any)._chartCleanup();
-                            }
-                          }
-                        }} />
-                      </div>
-                      
-                      {result.requirements.percentiles && result.requirements.percentiles.length > 0 && (
-                        <div className="mt-3">
-                          <h6 className="text-xs font-semibold text-slate-400 mb-2">Percentile Requirements</h6>
-                          <div className="space-y-1">
-                            {result.requirements.percentiles.map((req, idx) => (
-                              <div key={idx} className="flex items-center justify-between text-xs">
-                                <span className="text-slate-400">{req.percentile}th:</span>
-                                <div className="flex items-center gap-2">
-                                  <StatusBadge status={req.status} />
-                                  <span className="text-white">{req.value}ms</span>
-                                  {req.difference !== null && (
-                                    <span className={`${req.difference > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                                      ({req.difference > 0 ? '+' : ''}{req.difference}ms)
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                  <Requirements 
+                    requirements={result.requirements} 
+                    resultId={result.id || index} 
+                  />
                 )}
               </div>
 
               {/* Additional metadata if available */}
               {(result.request?.requestDescription || result.request?.requestPriority || result.request?.tags) && (
-                <div className="bg-slate-800/50 rounded-lg p-4">
-                  <h5 className="text-sm font-semibold text-slate-300 mb-2">Additional Information</h5>
+                <div className={`rounded-lg p-4 shadow-sm ${
+                  theme === 'light' 
+                    ? 'bg-white border border-gray-200' 
+                    : 'bg-slate-800/50 border border-slate-700'
+                }`}>
+                  <h5 className={`text-sm font-semibold mb-2 ${
+                    theme === 'light' ? 'text-gray-700' : 'text-slate-300'
+                  }`}>Additional Information</h5>
                   <div className="space-y-2 text-sm">
                     {result.request?.requestDescription && (
-                      <div><span className="text-slate-400">Description:</span> <span className="text-white">{result.request.requestDescription}</span></div>
+                      <div><span className="text-gray-600 dark:text-slate-400">Description:</span> <span className="text-gray-900 dark:text-white">{result.request.requestDescription}</span></div>
                     )}
                     {result.request?.requestPriority && (
-                      <div><span className="text-slate-400">Priority:</span> <span className="text-white">{result.request.requestPriority}</span></div>
+                      <div><span className="text-gray-600 dark:text-slate-400">Priority:</span> <span className="text-gray-900 dark:text-white">{result.request.requestPriority}</span></div>
                     )}
                     {result.request?.tags && (
-                      <div><span className="text-slate-400">Tags:</span> <span className="text-white">{result.request.tags}</span></div>
+                      <div><span className="text-gray-600 dark:text-slate-400">Tags:</span> <span className="text-gray-900 dark:text-white">{result.request.tags}</span></div>
                     )}
                     {result.request?.createdTime && (
-                      <div><span className="text-slate-400">Created:</span> <span className="text-white">{new Date(result.request.createdTime).toLocaleString()}</span></div>
+                      <div><span className="text-gray-600 dark:text-slate-400">Created:</span> <span className="text-gray-900 dark:text-white">{new Date(result.request.createdTime).toLocaleString()}</span></div>
                     )}
                   </div>
                 </div>

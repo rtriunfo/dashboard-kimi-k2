@@ -146,16 +146,16 @@ describe('ScenarioSelector', () => {
       const selectedButton = screen.getByText('Baseline Performance Test').closest('button');
       const unselectedButton = screen.getByText('Stress Test').closest('button');
       
-      expect(selectedButton).toHaveClass('bg-slate-700', 'text-blue-400');
-      expect(unselectedButton).toHaveClass('text-white');
-      expect(unselectedButton).not.toHaveClass('bg-slate-700', 'text-blue-400');
+      expect(selectedButton).toHaveClass('bg-slate-100', 'text-blue-600');
+      expect(unselectedButton).toHaveClass('text-slate-700');
+      expect(unselectedButton).not.toHaveClass('bg-slate-100', 'text-blue-600');
     });
 
     it('applies hover styles to scenario options', () => {
       render(<ScenarioSelector {...defaultProps} isDropdownOpen={true} />);
       
       const scenarioButton = screen.getByText('Stress Test').closest('button');
-      expect(scenarioButton).toHaveClass('hover:bg-slate-700');
+      expect(scenarioButton).toHaveClass('hover:bg-slate-100');
     });
   });
 
